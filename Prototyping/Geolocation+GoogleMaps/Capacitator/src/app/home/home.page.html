@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Ionic/Capacitor Google Maps
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="map-container">
+    <google-map></google-map>
+  </div>
+
+  <ion-card>
+    <ion-card-title>Current location</ion-card-title>
+    <ion-card-content *ngIf="currentLocation">
+      <p>Latitude: {{currentLocation.coords.latitude}}</p>
+      <p>Longtitude: {{currentLocation.coords.longitude}}</p>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
+
+<ion-footer>
+  <button ion-button color="light" full (click)="testMarker()">Test Marker</button>
+</ion-footer>
