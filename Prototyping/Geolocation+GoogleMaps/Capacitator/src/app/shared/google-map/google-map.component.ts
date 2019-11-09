@@ -134,6 +134,7 @@ export class GoogleMapComponent implements OnInit {
         };
 
         this.map = new google.maps.Map(this.element.nativeElement, mapOptions);
+
         resolve(true);
 
       }, (err) => {
@@ -157,6 +158,22 @@ export class GoogleMapComponent implements OnInit {
     });
 
     this.markers.push(marker);
+
+  }
+
+  public addInfoWindow(latitude: number, longitude: number, text: string) {
+    infoWindow = new google.maps.InfoWindow;
+    latLng = new google.maps.LatLng(latitude, longitude);
+
+    infoWindow.setPosition(latLng);
+    infoWindow.setContent(text);
+    infoWindow.open(this.map);
+    this.map.setCenter(latLng);
+  }
+
+  public addCustomMarker(latitude: number, longitude: number, img: string) {
+    // let latLng: google.maps.LatLng;
+    // latLng = new google.maps.LatLng(latitude, longitude);
 
   }
 }

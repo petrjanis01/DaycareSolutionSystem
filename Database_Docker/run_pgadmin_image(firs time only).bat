@@ -1,0 +1,1 @@
+docker run -p 5555:80 --name pgadmin -e PGADMIN_DEFAULT_EMAIL="root" -e PGADMIN_DEFAULT_PASSWORD="root" dpage/pgadmin4
