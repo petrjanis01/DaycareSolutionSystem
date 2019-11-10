@@ -7,9 +7,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{3F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaycareSolutionSystem.Database.Entities", "DaycareSolutionSystem.Entities\DaycareSolutionSystem.Database.Entities.csproj", "{3367EF61-8699-49BD-AFFA-1915B6685ED8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaycareSolutionSystem.Database.DataContext", "DaycareSolutionSystem.DataContext\DaycareSolutionSystem.Database.DataContext.csproj", "{BF2D69A8-2A4B-461B-83DA-13A349827BD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaycareSolutionSystem.Database.DataContext", "DaycareSolutionSystem.DataContext\DaycareSolutionSystem.Database.DataContext.csproj", "{BF2D69A8-2A4B-461B-83DA-13A349827BD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaycareSolutionSystem.Database.Migrator", "DaycareSolutionSystem.Database.Migrator\DaycareSolutionSystem.Database.Migrator.csproj", "{5538F7EC-7FD1-40AE-85A9-0335E5683972}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaycareSolutionSystem.Database.Migrator", "DaycareSolutionSystem.Database.Migrator\DaycareSolutionSystem.Database.Migrator.csproj", "{5538F7EC-7FD1-40AE-85A9-0335E5683972}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{F734007D-BFCA-40D8-8F7C-46F9D1D69389}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaycareSolutionSystem.Api.Host", "DaycareSolutionSystem.Api.Host\DaycareSolutionSystem.Api.Host.csproj", "{12B90E14-4C7D-48A4-B26C-AA9DB0A35112}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaycareSolutionSystem.Services", "DaycareSolutionSystem.Services\DaycareSolutionSystem.Services.csproj", "{EB86AC7D-424E-4935-8436-0BCF4F4A0B8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +35,14 @@ Global
 		{5538F7EC-7FD1-40AE-85A9-0335E5683972}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5538F7EC-7FD1-40AE-85A9-0335E5683972}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5538F7EC-7FD1-40AE-85A9-0335E5683972}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12B90E14-4C7D-48A4-B26C-AA9DB0A35112}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12B90E14-4C7D-48A4-B26C-AA9DB0A35112}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12B90E14-4C7D-48A4-B26C-AA9DB0A35112}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12B90E14-4C7D-48A4-B26C-AA9DB0A35112}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB86AC7D-424E-4935-8436-0BCF4F4A0B8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB86AC7D-424E-4935-8436-0BCF4F4A0B8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB86AC7D-424E-4935-8436-0BCF4F4A0B8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB86AC7D-424E-4935-8436-0BCF4F4A0B8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +51,7 @@ Global
 		{3367EF61-8699-49BD-AFFA-1915B6685ED8} = {3F3EAB69-D701-4929-8BF6-7405E62BC589}
 		{BF2D69A8-2A4B-461B-83DA-13A349827BD8} = {3F3EAB69-D701-4929-8BF6-7405E62BC589}
 		{5538F7EC-7FD1-40AE-85A9-0335E5683972} = {3F3EAB69-D701-4929-8BF6-7405E62BC589}
+		{12B90E14-4C7D-48A4-B26C-AA9DB0A35112} = {F734007D-BFCA-40D8-8F7C-46F9D1D69389}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0AABAE99-4277-4330-AA6D-105CF0F429BB}

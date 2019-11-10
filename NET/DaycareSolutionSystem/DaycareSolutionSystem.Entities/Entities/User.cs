@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 
@@ -8,9 +9,11 @@ namespace DaycareSolutionSystem.Database.Entities.Entities
     public class User : EntityBase
     {
         [DataMember]
+        [MaxLength(StringMaxLengthConstants.StringLengthShort)]
         public string LoginName { get; set; }
 
         [DataMember]
+        [MaxLength(StringMaxLengthConstants.StringLengthShort)]
         public string Password { get; set; }
 
         [DataMember]

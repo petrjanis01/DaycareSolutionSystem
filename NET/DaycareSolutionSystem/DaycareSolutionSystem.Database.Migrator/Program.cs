@@ -8,10 +8,30 @@ namespace DaycareSolutionSystem.Database.Migrator
     {
         static void Main(string[] args)
         {
-            using (var dc = new DssDataContext())
+            var ans = "";
+            while (ans.ToUpper().Equals("Y") == false && ans.ToUpper().Equals("N") == false)
             {
-                dc.Database.Migrate();
+                Console.WriteLine("Operation will delete whole database (if exists) and create/migrate new database structure and populate it with demo data." +
+                                  "Do you want to proceed? (Y/N)");
+
+                ans = Console.ReadLine();
             }
+
+
+            if (ans.ToUpper().Equals("N"))
+            {
+                return;
+            }
+
+            var dc = new DssDataContext();
+
+            // delete db structure
+            dc.Database.EnsureDeleted();
+
+            // create/migrate db structure
+            dc.Database.Migrate();
+
+            new DemoDataInitializer(dc).CreateDemoData();
         }
     }
 }

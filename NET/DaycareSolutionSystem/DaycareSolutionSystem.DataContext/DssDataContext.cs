@@ -23,6 +23,14 @@ namespace DaycareSolutionSystem.Database.DataContext
             optionsBuilder.UseNpgsql(connectionString);
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            // Make user login name unique.
+            builder.Entity<User>()
+                .HasIndex(u => u.LoginName)
+                .IsUnique();
+        }
+
         public virtual DbSet<DaycareSolutionSystem.Database.Entities.Entities.Action> Actions { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<AgreedClientAction> AgreedClientActions { get; set; }
