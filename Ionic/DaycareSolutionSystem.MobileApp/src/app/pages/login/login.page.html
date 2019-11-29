@@ -1,0 +1,19 @@
+<div class="login-background-img">
+    <div class="login-background-shade">
+        <ion-row>
+            <ion-col>
+                <ion-list margin class="pb-0">
+                    <ion-item mode="md">
+                        <ion-input type="text" [(ngModel)]="username" placeholder="Username" clearInput>
+                        </ion-input>
+                    </ion-item>
+                    <ion-item mode="md" style="margin-top: 10px;">
+                        <ion-input type="password" [(ngModel)]="password" placeholder="Password" clearInput>
+                        </ion-input>
+                    </ion-item>
+                </ion-list>
+                <ion-button (click)="login()">Login</ion-button>
+            </ion-col>
+        </ion-row>
+    </div>
+</div>

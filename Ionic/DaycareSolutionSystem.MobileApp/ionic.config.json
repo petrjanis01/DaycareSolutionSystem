@@ -1,0 +1,7 @@
+{
+  "name": "DaycareSolutionSystem.MobileApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

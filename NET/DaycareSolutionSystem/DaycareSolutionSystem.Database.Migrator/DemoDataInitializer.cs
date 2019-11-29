@@ -34,11 +34,19 @@ namespace DaycareSolutionSystem.Database.Migrator
             dcEmployee.Birthdate = new DateTime(1990, 6, 2);
             dcEmployee.EmployeePosition = EmployeePosition.Caregiver;
 
+            var emp = new Employee();
+            emp.Gender = Gender.Female;
+            emp.FirstName = "1";
+            emp.Surname = "aaa";
+            emp.Birthdate = new DateTime(2000,1,1);
+            emp.EmployeePosition = EmployeePosition.Manager;
+
             _dcEmployeeId = dcEmployee.Id;
 
             dataContext.Employees.AddRange(new[]
             {
                 dcEmployee,
+                emp
             });
 
             dataContext.SaveChanges();

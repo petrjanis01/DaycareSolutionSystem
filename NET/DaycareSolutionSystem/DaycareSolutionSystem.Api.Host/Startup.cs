@@ -1,22 +1,16 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using DaycareSolutionSystem.Api.Host.Services.Authentication;
 using DaycareSolutionSystem.Database.DataContext;
-using DaycareSolutionSystem.Database.Entities.Entities;
 using DaycareSolutionSystem.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace DaycareSolutionSystem.Api.Host
 {
@@ -60,6 +54,20 @@ namespace DaycareSolutionSystem.Api.Host
                 };
             });
 
+            // Swagger
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+
+
+                //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                //{
+                //    Name = "Authorization",
+                //    In = ParameterLocation.Header,
+                //    Type = SecuritySchemeType.ApiKey
+                //});
+            });
+
             services.AddControllers();
         }
 
@@ -75,6 +83,14 @@ namespace DaycareSolutionSystem.Api.Host
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
+
+            // Swagger
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseHttpsRedirection();
             app.UseRouting();

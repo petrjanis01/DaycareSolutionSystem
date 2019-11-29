@@ -1,4 +1,5 @@
-﻿    using Microsoft.AspNetCore.Authorization;
+﻿using DaycareSolutionSystem.Api.Host.Controllers.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DaycareSolutionSystem.Api.Host.Controllers
@@ -10,9 +11,9 @@ namespace DaycareSolutionSystem.Api.Host.Controllers
     {
         [Route("test")]
         [HttpGet]
-        public string GetTestString()
+        public LoginDTO GetTestString()
         {
-            return "aaaa";
+            return new LoginDTO();
         }
     }
 }

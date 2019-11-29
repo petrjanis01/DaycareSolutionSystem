@@ -39,6 +39,9 @@ namespace DaycareSolutionSystem.Database.Entities.Entities
         public DateTime ActionFinishedDateTime { get; set; }
 
         [DataMember]
+        public DateTime PlannedStartTime { get; set; }
+
+        [DataMember]
         [MaxLength(StringMaxLengthConstants.StringLengthContent)]
         public string Comment { get; set; }
 

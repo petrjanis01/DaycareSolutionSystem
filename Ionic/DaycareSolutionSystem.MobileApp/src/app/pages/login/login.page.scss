@@ -1,0 +1,12 @@
+.login-background-img {
+    background: url('/assets/img/login-background.jpg');
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+}
+
+.login-background-shade {
+    width: 100%;
+    height: 100%;
+    background: rgba($color: gray, $alpha: 0.5);
+}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
+using System.Security.Cryptography.X509Certificates;
 
 namespace DaycareSolutionSystem.Database.Entities.Entities
 {
@@ -39,6 +40,9 @@ namespace DaycareSolutionSystem.Database.Entities.Entities
 
         [DataMember]
         public int EstimatedDuration { get; set; }
+
+        [DataMember]
+        public DateTime PlannedStartTime { get; set; }
 
         [DataMember]
         public virtual HashSet<RegisteredClientAction> RegisteredClientActions { get; set; }
