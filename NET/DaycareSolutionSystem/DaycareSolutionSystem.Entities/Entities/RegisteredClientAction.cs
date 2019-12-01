@@ -39,12 +39,16 @@ namespace DaycareSolutionSystem.Database.Entities.Entities
         public DateTime ActionFinishedDateTime { get; set; }
 
         [DataMember]
-        public DateTime PlannedStartTime { get; set; }
+        public TimeSpan PlannedStartTime { get; set; }
 
         [DataMember]
         [MaxLength(StringMaxLengthConstants.StringLengthContent)]
         public string Comment { get; set; }
 
-        // TODO #Picture Add database support here
+        [DataMember]
+        public virtual Picture Photo { get; set; }
+
+        [DataMember]
+        public Guid? PhotoId { get; set; }
     }
 }

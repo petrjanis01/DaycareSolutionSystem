@@ -17,7 +17,7 @@ namespace DaycareSolutionSystem.Database.Entities.Entities
         public virtual Address Address { get; set; }
 
         [DataMember]
-        public virtual Guid? AddressId { get; set; }
+        public Guid AddressId { get; set; }
 
         [DataMember]
         public virtual HashSet<IndividualPlan> IndividualPlans { get; set; }

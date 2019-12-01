@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using DaycareSolutionSystem.Database.Entities.Entities;
 using DaycareSolutionSystem.Entities.Enums;
 
 namespace DaycareSolutionSystem.Database.Entities
@@ -21,6 +22,10 @@ namespace DaycareSolutionSystem.Database.Entities
         [DataMember]
         public Gender Gender { get; set; }
 
-        // TODO #Picture Add database support here
+        [DataMember]
+        public virtual Picture ProfilePicture { get; set; }
+
+        [DataMember]
+        public Guid? ProfilePictureId { get; set; }
     }
 }

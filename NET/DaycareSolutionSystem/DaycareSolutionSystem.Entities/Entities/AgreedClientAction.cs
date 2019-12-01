@@ -39,10 +39,10 @@ namespace DaycareSolutionSystem.Database.Entities.Entities
         public DayOfWeek Day { get; set; }
 
         [DataMember]
-        public int EstimatedDuration { get; set; }
+        public int EstimatedDurationMinutes { get; set; }
 
         [DataMember]
-        public DateTime PlannedStartTime { get; set; }
+        public TimeSpan PlannedStartTime { get; set; }
 
         [DataMember]
         public virtual HashSet<RegisteredClientAction> RegisteredClientActions { get; set; }

@@ -89,11 +89,14 @@ namespace DaycareSolutionSystem.Database.DataContext.Migrations
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("EstimatedDuration")
+                    b.Property<int>("EstimatedDurationMinutes")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("IndividualPlanId")
                         .HasColumnType("uuid");
+
+                    b.Property<TimeSpan>("PlannedStartTime")
+                        .HasColumnType("interval");
 
                     b.HasKey("Id");
 
@@ -112,7 +115,7 @@ namespace DaycareSolutionSystem.Database.DataContext.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("AddressId")
+                    b.Property<Guid>("AddressId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("Birthdate")
@@ -124,12 +127,17 @@ namespace DaycareSolutionSystem.Database.DataContext.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("ProfilePictureId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Surname")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
+
+                    b.HasIndex("ProfilePictureId");
 
                     b.ToTable("Client");
                 });
@@ -152,10 +160,15 @@ namespace DaycareSolutionSystem.Database.DataContext.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("ProfilePictureId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Surname")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProfilePictureId");
 
                     b.ToTable("Employee");
                 });
@@ -180,6 +193,24 @@ namespace DaycareSolutionSystem.Database.DataContext.Migrations
                     b.HasIndex("ClientId");
 
                     b.ToTable("IndividualPlan");
+                });
+
+            modelBuilder.Entity("DaycareSolutionSystem.Database.Entities.Entities.Picture", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<byte[]>("BinaryData")
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("MimeType")
+                        .HasColumnType("character varying(128)")
+                        .HasMaxLength(128);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Picture");
                 });
 
             modelBuilder.Entity("DaycareSolutionSystem.Database.Entities.Entities.RegisteredClientAction", b =>
@@ -213,6 +244,12 @@ namespace DaycareSolutionSystem.Database.DataContext.Migrations
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("boolean");
 
+                    b.Property<Guid?>("PhotoId")
+                        .HasColumnType("uuid");
+
+                    b.Property<TimeSpan>("PlannedStartTime")
+                        .HasColumnType("interval");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AgreedClientActionId");
@@ -220,6 +257,8 @@ namespace DaycareSolutionSystem.Database.DataContext.Migrations
                     b.HasIndex("ClientId");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("PhotoId");
 
                     b.ToTable("RegisteredClientAction");
                 });
@@ -234,14 +273,19 @@ namespace DaycareSolutionSystem.Database.DataContext.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("LoginName")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Password")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(128)")
+                        .HasMaxLength(128);
 
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("LoginName")
+                        .IsUnique();
 
                     b.ToTable("User");
                 });
@@ -271,7 +315,20 @@ namespace DaycareSolutionSystem.Database.DataContext.Migrations
                 {
                     b.HasOne("DaycareSolutionSystem.Database.Entities.Entities.Address", "Address")
                         .WithMany()
-                        .HasForeignKey("AddressId");
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DaycareSolutionSystem.Database.Entities.Entities.Picture", "ProfilePicture")
+                        .WithMany()
+                        .HasForeignKey("ProfilePictureId");
+                });
+
+            modelBuilder.Entity("DaycareSolutionSystem.Database.Entities.Entities.Employee", b =>
+                {
+                    b.HasOne("DaycareSolutionSystem.Database.Entities.Entities.Picture", "ProfilePicture")
+                        .WithMany()
+                        .HasForeignKey("ProfilePictureId");
                 });
 
             modelBuilder.Entity("DaycareSolutionSystem.Database.Entities.Entities.IndividualPlan", b =>
@@ -302,6 +359,10 @@ namespace DaycareSolutionSystem.Database.DataContext.Migrations
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("DaycareSolutionSystem.Database.Entities.Entities.Picture", "Photo")
+                        .WithMany()
+                        .HasForeignKey("PhotoId");
                 });
 
             modelBuilder.Entity("DaycareSolutionSystem.Database.Entities.Entities.User", b =>
