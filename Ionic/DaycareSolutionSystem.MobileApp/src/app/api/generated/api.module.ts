@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 
 import { AuthService } from './api/auth.service';
+import { RegisteredActionsService } from './api/registeredActions.service';
 import { TestService } from './api/test.service';
 
 @NgModule({
@@ -12,6 +13,7 @@ import { TestService } from './api/test.service';
   exports:      [],
   providers: [
     AuthService,
+    RegisteredActionsService,
     TestService ]
 })
 export class ApiModule {

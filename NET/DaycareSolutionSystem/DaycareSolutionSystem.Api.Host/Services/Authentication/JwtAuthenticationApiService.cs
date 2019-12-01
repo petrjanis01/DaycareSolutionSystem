@@ -3,23 +3,22 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using Castle.Core.Configuration;
 using DaycareSolutionSystem.Api.Host.Controllers.Authentication;
 using DaycareSolutionSystem.Database.DataContext;
 using DaycareSolutionSystem.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 
 namespace DaycareSolutionSystem.Api.Host.Services.Authentication
 {
-    public class JwtAuthenticationApiService : IJwtAuthenticationApiService
+    public class JwtAuthenticationApiService : ApiServiceBase, IJwtAuthenticationApiService
     {
         private readonly IPasswordHashService _passwordHashService;
-        private readonly DssDataContext _dataContext;
 
-        public JwtAuthenticationApiService(IPasswordHashService passwordHashService, DssDataContext dataContext)
+        public JwtAuthenticationApiService(IPasswordHashService passwordHashService, DssDataContext dataContext, IHttpContextAccessor httpContextAccessor)
+        : base(dataContext, httpContextAccessor)
         {
             _passwordHashService = passwordHashService;
-            _dataContext = dataContext;
         }
 
         public JwtSecurityToken AuthenticateUser(LoginDTO dto)

@@ -1,11 +1,14 @@
-using System.Collections.Generic;
 using System.Text;
+using DaycareSolutionSystem.Api.Host.Controllers.Authentication;
 using DaycareSolutionSystem.Api.Host.Services.Authentication;
+using DaycareSolutionSystem.Api.Host.Services.RegisteredActions;
 using DaycareSolutionSystem.Database.DataContext;
 using DaycareSolutionSystem.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,8 +33,11 @@ namespace DaycareSolutionSystem.Api.Host
 
             services.AddDbContext<DssDataContext>();
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddScoped<IPasswordHashService, PasswordHashService>();
             services.AddScoped<IJwtAuthenticationApiService, JwtAuthenticationApiService>();
+            services.AddScoped<IRegisteredActionsApiService, RegisteredActionsApiService>();
 
             // Configure authentication
             services.AddAuthentication(options =>
@@ -58,14 +64,6 @@ namespace DaycareSolutionSystem.Api.Host
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-
-
-                //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                //{
-                //    Name = "Authorization",
-                //    In = ParameterLocation.Header,
-                //    Type = SecuritySchemeType.ApiKey
-                //});
             });
 
             services.AddControllers();

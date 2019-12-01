@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TestService } from 'src/app/api/generated';
+import { TestService, RegisteredActionsService } from 'src/app/api/generated';
 import { LoginDTO } from '../../api/generated/model/loginDTO';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NavController } from '@ionic/angular';
@@ -13,7 +13,7 @@ export class LoginPage {
   public username: string;
   public password: string;
 
-  constructor(private auth: AuthenticationService, private nav: NavController, private testServ: TestService) { }
+  constructor(private auth: AuthenticationService, private nav: NavController, private reg: RegisteredActionsService) { }
 
   public async login() {
     let loginDto: LoginDTO = {
@@ -24,7 +24,8 @@ export class LoginPage {
     let loginSuccesful = await this.auth.logIn(loginDto);
 
     if (loginSuccesful) {
-      this.nav.navigateRoot('/tabs');
+      this.reg.apiRegisteredActionsGetRegisteredActionsDetailsGet(10, null).then((dtos) => console.log(dtos));
+      // this.nav.navigateRoot('/tabs');
     }
   }
 }

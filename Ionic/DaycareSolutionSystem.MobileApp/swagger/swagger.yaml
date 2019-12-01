@@ -22,6 +22,40 @@ paths:
       responses:
         '200':
           description: Success
+  "/api/RegisteredActions/get-registered-actions-details":
+    get:
+      tags:
+      - RegisteredActions
+      parameters:
+      - name: count
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: lastActionDisplayedId
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/RegisteredActionsForDayDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/RegisteredActionsForDayDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/RegisteredActionsForDayDTO"
   "/api/Test/test":
     get:
       tags:
@@ -50,3 +84,82 @@ components:
         password:
           type: string
           nullable: true
+    DayOfWeek:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      type: integer
+      format: int32
+    ClientBasicInfoDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        clientFullName:
+          type: string
+          nullable: true
+        profilePictureUri:
+          type: string
+          nullable: true
+    ActionDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+    RegisteredActionDetailDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        clientBasicInfo:
+          "$ref": "#/components/schemas/ClientBasicInfoDTO"
+        actionStartedDateTime:
+          type: string
+          format: date-time
+        actionFinishedDateTime:
+          type: string
+          format: date-time
+        actionInfo:
+          "$ref": "#/components/schemas/ActionDTO"
+        clientActionSpecificDescription:
+          type: string
+          nullable: true
+        comment:
+          type: string
+          nullable: true
+        isCompleted:
+          type: boolean
+        isCanceled:
+          type: boolean
+        photoUri:
+          type: string
+          nullable: true
+    RegisteredActionsForDayDTO:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        day:
+          "$ref": "#/components/schemas/DayOfWeek"
+        registeredActionDetails:
+          type: array
+          items:
+            "$ref": "#/components/schemas/RegisteredActionDetailDTO"
+          nullable: true
+        containsLast:
+          type: boolean
