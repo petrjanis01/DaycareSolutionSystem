@@ -10,11 +10,11 @@ namespace DaycareSolutionSystem.Api.Host.Services
     public class ApiServiceBase
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        protected readonly DssDataContext _dataContext;
+        protected readonly DssDataContext DataContext;
 
         public ApiServiceBase(DssDataContext dataContext, IHttpContextAccessor httpContextAccessor)
         {
-            _dataContext = dataContext;
+            DataContext = dataContext;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -24,7 +24,7 @@ namespace DaycareSolutionSystem.Api.Host.Services
             User currentUser;
 
             if (string.IsNullOrEmpty(loginName)
-                || (currentUser = _dataContext.Users.FirstOrDefault(u => u.LoginName == loginName)) == null)
+                || (currentUser = DataContext.Users.FirstOrDefault(u => u.LoginName == loginName)) == null)
             {
                 throw new DssNoUserFoundException();
             }

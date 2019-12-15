@@ -7,7 +7,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Authentication
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : DssBaseController
     {
         private readonly IJwtAuthenticationApiService _jwtAuthenticationService;
 

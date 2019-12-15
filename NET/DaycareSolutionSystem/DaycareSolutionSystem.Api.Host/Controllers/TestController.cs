@@ -10,10 +10,10 @@ namespace DaycareSolutionSystem.Api.Host.Controllers
     public class TestController : ControllerBase
     {
         [Route("test")]
-        [HttpGet]
-        public LoginDTO GetTestString()
+        [HttpPost]
+        public IActionResult GetTestString(string lat, string lon)
         {
-            return new LoginDTO();
+            return Ok();
         }
     }
 }

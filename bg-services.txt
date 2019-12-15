@@ -1,0 +1,1 @@
+https://stackoverflow.com/questions/32179247/can-i-run-cordova-app-in-background

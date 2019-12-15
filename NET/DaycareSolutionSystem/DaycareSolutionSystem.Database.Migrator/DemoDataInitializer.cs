@@ -18,6 +18,7 @@ namespace DaycareSolutionSystem.Database.Migrator
         private static readonly string[] _maleNames = new[] { "Liam", "Noah", "William", "James", "Oliver", "Benjamin", "Lucas" };
         private static readonly string[] _femaleNames = new[] { "Emma", "Olivia", "Ava", "Isabella", "Sophia", "Charlotte", "Mia" };
         private static readonly string[] _lastNames = new[] { "Smith", " Johnson", "Williams", "Jones", "Brown", "Davis", "Miller" };
+        // TODO change to relative
         private static readonly string _demoDataPicturesFolderPath = "D:\\School\\DaycareSolutionSystem\\DemoDataPictures";
 
         private Guid _dcEmployeeId;
@@ -412,6 +413,7 @@ namespace DaycareSolutionSystem.Database.Migrator
             dataContext.SaveChanges();
         }
 
+        // materialize all past and max 30 days into future agreed client actions to registered client actions
         private List<RegisteredClientAction> GenerateRegisteredClientActionsForAgreedClientAction(
             AgreedClientAction agreedClientAction)
         {

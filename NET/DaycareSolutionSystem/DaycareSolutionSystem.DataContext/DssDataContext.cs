@@ -1,7 +1,5 @@
 ﻿using DaycareSolutionSystem.Database.Entities.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
-using Castle.Core.Configuration.Xml;
 
 namespace DaycareSolutionSystem.Database.DataContext
 {
@@ -16,7 +14,7 @@ namespace DaycareSolutionSystem.Database.DataContext
 
             // TODO move connection string to config
             // Problem: class library itself does not have/cannot have config file but it uses config of application that uses library
-            // and so it is impossible to read connection string if its not part of config of an app that uses data context.
+            // and so it is not possible to read connection string if its not part of config of an app that uses data context.
             // Possible solution is to pass connection string when creating context.
             var connectionString = "Host=localhost;Port=5432;Database=local-db;Username=postgres;Password=postgres";
 

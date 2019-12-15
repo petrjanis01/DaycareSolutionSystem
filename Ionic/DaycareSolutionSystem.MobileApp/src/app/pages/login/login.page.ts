@@ -24,8 +24,7 @@ export class LoginPage {
     let loginSuccesful = await this.auth.logIn(loginDto);
 
     if (loginSuccesful) {
-      this.reg.apiRegisteredActionsGetRegisteredActionsDetailsGet(10, null).then((dtos) => console.log(dtos));
-      // this.nav.navigateRoot('/tabs');
+      this.nav.navigateRoot('/tabs');
     }
   }
 }

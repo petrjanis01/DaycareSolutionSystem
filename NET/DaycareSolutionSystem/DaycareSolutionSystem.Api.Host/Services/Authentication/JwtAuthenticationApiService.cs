@@ -23,7 +23,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Authentication
 
         public JwtSecurityToken AuthenticateUser(LoginDTO dto)
         {
-            var user = _dataContext.Users.FirstOrDefault(u => u.LoginName == dto.Username);
+            var user = DataContext.Users.FirstOrDefault(u => u.LoginName == dto.Username);
 
             if (user != null && _passwordHashService.HashPassword(dto.Password) == user.Password)
             {

@@ -12,7 +12,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class RegisteredActionsController : ControllerBase
+    public class RegisteredActionsController : DssBaseController
     {
         private readonly IRegisteredActionsApiService _registeredActionsApiService;
 
@@ -67,9 +67,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
             dto.ClientActionSpecificDescription = registeredClientAction.Comment;
             dto.IsCanceled = registeredClientAction.IsCanceled;
             dto.IsCompleted = registeredClientAction.IsCompleted;
-
-            // TODO photo to base64
-            dto.PhotoUri = "";
+            dto.PhotoUri = FormatPictureToBase64(registeredClientAction.Photo);
 
             return dto;
         }
@@ -90,8 +88,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
             dto.Id = client.Id;
             dto.ClientFullName = client.FullName;
 
-            // TODO photo to base64
-            dto.ProfilePictureUri = "";
+            dto.ProfilePictureUri = FormatPictureToBase64(client.ProfilePicture);
 
             return dto;
         }

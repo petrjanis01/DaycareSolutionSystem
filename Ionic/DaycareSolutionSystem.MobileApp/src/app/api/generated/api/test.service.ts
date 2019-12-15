@@ -18,7 +18,6 @@ import { ApiBase } from 'src/app/api/api-base';
 
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
-import { LoginDTO } from '../model/loginDTO';
 
 import { Configuration } from '../configuration';
 
@@ -50,15 +49,22 @@ export class TestService extends ApiBase{
         return false;
     }
 
-    public async apiTestTestGet(): Promise<LoginDTO> {
+    public async apiTestTestPost(lat?: string, lon?: string, ): Promise<any> {
+
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (lat !== undefined && lat !== null) {
+            queryParameters = queryParameters.set('lat', <any>lat);
+        }
+        if (lon !== undefined && lon !== null) {
+            queryParameters = queryParameters.set('lon', <any>lon);
+        }
 
         let headers = this.defaultHeaders;
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -70,8 +76,10 @@ export class TestService extends ApiBase{
         ];
 
 
-        let result = this.httpClient.get<LoginDTO>(`${this.basePath}/api/Test/test`,
+        let result = this.httpClient.post<any>(`${this.basePath}/api/Test/test`,
+            null,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: this.checkUserAndCreateAuthHeaders(headers),
             }

@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DaycareSolutionSystem.Database.DataContext;
-using DaycareSolutionSystem.Database.Entities.Entities;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
 {
@@ -18,17 +15,15 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
 
         public Dictionary<DateTime, List<RegisteredActionDO>> GetRegisteredActionsPerDay(int count, Guid? lastActionDisplayedId)
         {
-
-            RegisteredClientAction lastActionDisplayed;
             var startDate = lastActionDisplayedId.HasValue
-                ? (lastActionDisplayed = _dataContext.RegisteredClientActions.Find(lastActionDisplayedId)).ActionStartedDateTime
+                ? (DataContext.RegisteredClientActions.Find(lastActionDisplayedId)).ActionStartedDateTime
                 : DateTime.Today;
 
-            var registeredActions = _dataContext.RegisteredClientActions
+            var registeredActions = DataContext.RegisteredClientActions
                 .Where(rca => rca.EmployeeId == GetCurrentUser().EmployeeId
                               && rca.ActionStartedDateTime > startDate)
-                .Take(count)
                 .OrderBy(rca => rca.ActionStartedDateTime)
+                .Take(count)
                 .ToList();
 
             var registeredActionsPerDay = new Dictionary<DateTime, List<RegisteredActionDO>>();
@@ -61,7 +56,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
             // last action from list
             var lastAction = actionsForLastDay[^1];
 
-            var nextExist = _dataContext.RegisteredClientActions.Any(rca =>
+            var nextExist = DataContext.RegisteredClientActions.Any(rca =>
                 rca.ActionStartedDateTime > lastAction.RegisteredClientAction.ActionStartedDateTime);
 
             lastAction.IsLast = nextExist == false;

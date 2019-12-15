@@ -57,22 +57,21 @@ paths:
                 items:
                   "$ref": "#/components/schemas/RegisteredActionsForDayDTO"
   "/api/Test/test":
-    get:
+    post:
       tags:
       - Test
+      parameters:
+      - name: lat
+        in: query
+        schema:
+          type: string
+      - name: lon
+        in: query
+        schema:
+          type: string
       responses:
         '200':
           description: Success
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/LoginDTO"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/LoginDTO"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/LoginDTO"
 components:
   schemas:
     LoginDTO:
