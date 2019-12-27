@@ -16,6 +16,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { ApiBase } from 'src/app/api/api-base';
 import { BaseUrlService } from 'src/app/services/base-url.service';
+import { NavController } from '@ionic/angular';
+import { ToastService } from 'src/app/services/toast.service';
 
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
@@ -34,8 +36,10 @@ export class AuthService extends ApiBase{
     constructor(
         private httpClient: HttpClient,
         baseUrlService: BaseUrlService,
+         nav: NavController,
+        toast: ToastService,
         @Optional() configuration: Configuration) {
-        super(baseUrlService);
+        super(baseUrlService, nav, toast);
     }
 
     /**
@@ -85,7 +89,7 @@ export class AuthService extends ApiBase{
             }
         ).toPromise();
 
-        return this.mapDates(result);
+        return this.processResponse(result);
     }
 
 }

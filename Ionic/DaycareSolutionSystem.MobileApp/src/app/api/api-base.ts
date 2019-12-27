@@ -1,16 +1,36 @@
 import { HttpHeaders } from '@angular/common/http';
-import { AppConfig } from './../config/app.config';
 import { BaseUrlService } from '../services/base-url.service';
+import { NavController } from '@ionic/angular';
+import { ToastService } from '../services/toast.service';
 
 export class ApiBase {
     private iso8601: RegExp = /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(([+-]\d\d:\d\d)|Z)?$/;
-    protected basePath: string;
 
-    constructor(private baseUrlService: BaseUrlService) {
-        this.basePath = this.baseUrlService.getBaseUrl();
+    constructor(
+        private baseUrlService: BaseUrlService,
+        private nav: NavController,
+        private toast: ToastService) { }
+
+    protected get basePath(): string {
+        return this.baseUrlService.getBaseUrl();
     }
 
-    protected mapDates(object) {
+    protected processResponse(response: Promise<any>) {
+        let processed = response.then(resp => this.mapDates(resp))
+            .catch(e => {
+                if (e.status === 401) {
+                    this.toast.showErrorToast('Token has expired. Please login again.');
+
+                    this.logOutAndNavigateLoginPage();
+                } else {
+                    this.toast.showErrorToast(e.Detail.Message);
+                }
+            });
+
+        return processed;
+    }
+
+    private mapDates(object) {
         if (object === null || object === undefined) {
             return object;
         }
@@ -72,4 +92,12 @@ export class ApiBase {
         return token;
     }
 
+    private removeAuthToken(): void {
+        localStorage.removeItem('userAuthToken');
+    }
+
+    public async logOutAndNavigateLoginPage() {
+        await this.removeAuthToken();
+        this.nav.navigateRoot('/login');
+    }
 }

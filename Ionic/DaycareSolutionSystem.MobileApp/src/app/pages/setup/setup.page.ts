@@ -10,10 +10,13 @@ import { ToastService } from 'src/app/services/toast.service';
   styleUrls: ['./setup.page.scss'],
 })
 export class SetupPage {
-  public baseUrl = AppConfig.settings.apiBaseUrl.baseUrl;
-  public useUrlFromConfig = true;
+  public baseUrl: string;
+  public useUrlFromConfig: boolean;
 
-  constructor(private baseUrlService: BaseUrlService, private toasterService: ToastService) { }
+  constructor(private baseUrlService: BaseUrlService, private toasterService: ToastService) {
+    this.baseUrl = this.baseUrlService.getBaseUrl();
+    this.useUrlFromConfig = this.baseUrlService.useUrlFromConfig;
+  }
 
   public save() {
     this.baseUrlService.useUrlFromConfig = this.useUrlFromConfig;

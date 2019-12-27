@@ -13,6 +13,7 @@ import { AppConfig } from './config/app.config';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedComponentsModule } from './shared-components/share-components.module';
+import { AuthGuardService } from './services/auth-guard.service';
 
 export function initializeApp(appConfig: AppConfig) {
   return () => appConfig.load();
@@ -31,6 +32,7 @@ export function initializeApp(appConfig: AppConfig) {
   providers: [
     StatusBar,
     SplashScreen,
+    AuthGuardService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AppConfig,
     {

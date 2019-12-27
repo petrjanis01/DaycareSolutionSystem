@@ -3,7 +3,20 @@ import { AppConfig } from './../config/app.config';
 
 @Injectable({ providedIn: 'root' })
 export class BaseUrlService {
-    public useUrlFromConfig = true;
+
+    get useUrlFromConfig(): boolean {
+        let useUrlFromConfig = localStorage.getItem('useUrlFromConfig');
+
+        if (useUrlFromConfig != null) {
+            return useUrlFromConfig === 'true';
+        }
+
+        return true;
+    }
+
+    set useUrlFromConfig(useUrlFromConfig: boolean) {
+        localStorage.setItem('useUrlFromConfig', useUrlFromConfig.toString());
+    }
 
     public setBaseUrl(url: string) {
         localStorage.setItem('baseUrl', url);
@@ -15,7 +28,6 @@ export class BaseUrlService {
         if (this.useUrlFromConfig || baseUrl == null) {
             return AppConfig.settings.apiBaseUrl.baseUrl;
         }
-
         return baseUrl;
     }
 }
