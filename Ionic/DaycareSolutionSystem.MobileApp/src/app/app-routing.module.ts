@@ -10,7 +10,8 @@ const routes: Routes = [
   { path: 'schedule', loadChildren: './pages/schedule/schedule.module#SchedulePageModule' },
   { path: 'profile', loadChildren: './pages/profile/profile.module#ProfilePageModule' },
   { path: 'clients', loadChildren: './pages/clients/clients.module#ClientsPageModule' },
-  { path: 'map', loadChildren: './pages/map/map.module#MapPageModule' }
+  { path: 'map', loadChildren: './pages/map/map.module#MapPageModule' },
+  { path: 'setup', loadChildren: './pages/setup/setup.module#SetupPageModule' }
 ];
 @NgModule({
   imports: [

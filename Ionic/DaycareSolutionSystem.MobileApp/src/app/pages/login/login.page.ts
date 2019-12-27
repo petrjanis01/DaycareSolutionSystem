@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { TestService, RegisteredActionsService } from 'src/app/api/generated';
 import { LoginDTO } from '../../api/generated/model/loginDTO';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +13,7 @@ export class LoginPage {
   public username: string;
   public password: string;
 
-  constructor(private auth: AuthenticationService, private nav: NavController, private reg: RegisteredActionsService) { }
+  constructor(private auth: AuthenticationService, private nav: NavController, private router: Router) { }
 
   public async login() {
     let loginDto: LoginDTO = {
@@ -26,5 +26,9 @@ export class LoginPage {
     if (loginSuccesful) {
       this.nav.navigateRoot('/tabs');
     }
+  }
+
+  public openSetup() {
+    this.router.navigate(['setup']);
   }
 }

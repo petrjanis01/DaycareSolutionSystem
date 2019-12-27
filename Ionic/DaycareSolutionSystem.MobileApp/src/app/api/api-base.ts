@@ -1,11 +1,15 @@
 import { HttpHeaders } from '@angular/common/http';
-import { AuthenticationService } from '../services/authentication.service';
+import { AppConfig } from './../config/app.config';
+import { BaseUrlService } from '../services/base-url.service';
 
 export class ApiBase {
     private iso8601: RegExp = /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(([+-]\d\d:\d\d)|Z)?$/;
-    // TODO load from config
-    protected basePath = 'http://localhost:57316';
-    
+    protected basePath: string;
+
+    constructor(private baseUrlService: BaseUrlService) {
+        this.basePath = this.baseUrlService.getBaseUrl();
+    }
+
     protected mapDates(object) {
         if (object === null || object === undefined) {
             return object;

@@ -1,10 +1,11 @@
+/* tslint:disable */
 {{>licenseInfo}}
-/* tslint:disable:no-unused-variable member-ordering */
 
 import { Injectable, Optional } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { ApiBase } from 'src/app/api/api-base';
+import { BaseUrlService } from 'src/app/services/base-url.service';
 
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
@@ -38,8 +39,9 @@ export class {{classname}} extends ApiBase{
 
     constructor(
         private {{#useHttpClient}}httpClient: HttpClient{{/useHttpClient}},
+        baseUrlService: BaseUrlService,
         @Optional() configuration: Configuration) {
-        super();
+        super(baseUrlService);
     }
 
     /**
