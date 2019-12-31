@@ -55,17 +55,7 @@ export class TestService extends ApiBase{
         return false;
     }
 
-    public async apiTestTestPost(lat?: string, lon?: string, ): Promise<any> {
-
-
-
-        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (lat !== undefined && lat !== null) {
-            queryParameters = queryParameters.set('lat', <any>lat);
-        }
-        if (lon !== undefined && lon !== null) {
-            queryParameters = queryParameters.set('lon', <any>lon);
-        }
+    public async apiTestTestPost(): Promise<any> {
 
         let headers = this.defaultHeaders;
 
@@ -85,7 +75,6 @@ export class TestService extends ApiBase{
         let result = this.httpClient.post<any>(`${this.basePath}/api/Test/test`,
             null,
             {
-                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: this.checkUserAndCreateAuthHeaders(headers),
             }

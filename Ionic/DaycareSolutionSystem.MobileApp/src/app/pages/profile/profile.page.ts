@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Plugins, CameraResultType, CameraSource } from '@capacitor/core';
-import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+// import { Base64 } from '@ionic-native/base64/ngx';
 
 @Component({
   selector: 'app-profile',
@@ -9,14 +8,9 @@ import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 })
 export class ProfilePage {
 
-  constructor(private sanitizer: DomSanitizer) { }
-
-  async takePicture() {
-    const image = await Plugins.Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      resultType: CameraResultType.DataUrl,
-      source: CameraSource.Camera
-    });
+  public async onPictureChanged(event) {
+    if (event.target.files && event.target.files[0]) {
+      let picture = event.target.files[0];
+    }
   }
 }

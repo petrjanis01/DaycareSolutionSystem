@@ -5,8 +5,12 @@
 </ion-header>
 
 <ion-content>
-  <ion-button (click)="takePicture()">
-    <ion-icon name="camera" slot="icon-only"></ion-icon>
-    Change profile picture
-  </ion-button>
+  <input type="file" accept="image/*" hidden #imgInput (change)="onPictureChanged($event)">
+    <div>
+      <ion-button fill="clear" size="small" (click)="imgInput.click()" margin>
+        <ion-icon name="camera" slot="icon-only">
+        </ion-icon>
+        <ng-container i18n>Change photo</ng-container>
+      </ion-button>
+    </div>
 </ion-content>

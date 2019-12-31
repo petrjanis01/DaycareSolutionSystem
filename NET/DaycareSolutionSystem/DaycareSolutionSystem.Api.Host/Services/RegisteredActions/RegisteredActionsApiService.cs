@@ -51,6 +51,11 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
 
         private void EnsureLastIsMarked(Dictionary<DateTime, List<RegisteredActionDO>> registeredActionsPerDay)
         {
+            if (registeredActionsPerDay.Any() == false)
+            {
+                return;
+            }
+
             var actionsForLastDay = registeredActionsPerDay[registeredActionsPerDay.Keys.Max()];
 
             // last action from list

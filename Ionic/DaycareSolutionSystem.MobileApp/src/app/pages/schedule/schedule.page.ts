@@ -18,4 +18,20 @@ export class SchedulePage implements OnInit {
     console.log(this.registeredActions);
   }
 
+  public isToday(date: Date): boolean {
+    let today = new Date();
+
+    return today.getFullYear === date.getFullYear
+      && today.getMonth === date.getMonth
+      && today.getDate === date.getDate;
+  }
+
+  public getDafaultImageIfNotExists(img: string): string {
+    if (img == null) {
+      return './../../../assets/img/user-anonymous.png';
+    }
+
+    return img;
+  }
+
 }

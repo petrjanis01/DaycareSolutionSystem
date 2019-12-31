@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
+import { ApiOperationButtonComponent } from './api-operation-button/api-operation-button.component';
 
 @NgModule({
-    declarations: [],
+    declarations: [ApiOperationButtonComponent],
     imports: [],
     exports: []
 })

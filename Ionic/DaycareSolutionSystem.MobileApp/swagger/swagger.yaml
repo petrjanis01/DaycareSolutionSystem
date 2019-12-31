@@ -22,6 +22,36 @@ paths:
       responses:
         '200':
           description: Success
+  "/api/Employee/get-employee-detail":
+    get:
+      tags:
+      - Employee
+      parameters:
+      - name: employeeId
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+  "/api/Employee/change-profile-picture":
+    post:
+      tags:
+      - Employee
+      parameters:
+      - name: pictureUri
+        in: query
+        schema:
+          type: string
+      - name: employeeId
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
   "/api/RegisteredActions/get-registered-actions-details":
     get:
       tags:
@@ -60,15 +90,6 @@ paths:
     post:
       tags:
       - Test
-      parameters:
-      - name: lat
-        in: query
-        schema:
-          type: string
-      - name: lon
-        in: query
-        schema:
-          type: string
       responses:
         '200':
           description: Success
