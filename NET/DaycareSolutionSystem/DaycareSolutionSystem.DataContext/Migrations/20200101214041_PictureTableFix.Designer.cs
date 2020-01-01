@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DaycareSolutionSystem.Database.DataContext.Migrations
 {
     [DbContext(typeof(DssDataContext))]
-    [Migration("20191201001140_ImageSupport")]
-    partial class ImageSupport
+    [Migration("20200101214041_PictureTableFix")]
+    partial class PictureTableFix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -203,7 +203,7 @@ namespace DaycareSolutionSystem.Database.DataContext.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<byte[]>("Data")
+                    b.Property<byte[]>("BinaryData")
                         .HasColumnType("bytea");
 
                     b.Property<string>("MimeType")

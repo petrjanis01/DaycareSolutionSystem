@@ -35,8 +35,8 @@ namespace DaycareSolutionSystem.Database.DataContext
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<IndividualPlan> IndividualPlans { get; set; }
+        public virtual DbSet<Picture> Pictures { get; set; }
         public virtual DbSet<RegisteredClientAction> RegisteredClientActions { get; set; }
         public virtual DbSet<User> Users { get; set; }
-
     }
 }

@@ -3,8 +3,6 @@ import { LoginDTO } from '../../api/generated/model/loginDTO';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { BaseUrlService } from 'src/app/services/base-url.service';
-import { TestService } from 'src/app/api/generated';
 
 @Component({
   selector: 'app-login',

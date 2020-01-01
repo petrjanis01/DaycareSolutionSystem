@@ -28,7 +28,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Employee
 
         [HttpGet]
         [Route("get-employee-detail")]
-        public IActionResult GetEmployeeDetail(Guid? employeeId = null)
+        public EmployeeDetailDTO GetEmployeeDetail(Guid? employeeId = null)
         {
             var employee = employeeId.HasValue ? DataContext.Employees.Find(employeeId) : GetCurrentUser()?.Employee;
 
@@ -40,24 +40,39 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Employee
                 dto.EmployeePosition = employee.EmployeePosition;
                 dto.ProfilePictureUri = FormatPictureToBase64(employee.ProfilePicture);
 
-                return Ok(dto);
+                return dto;
             }
 
-            return NotFound("Employee not found.");
+            return null;
         }
 
         [HttpPost]
         [Route("change-profile-picture")]
-        public IActionResult ChangeEmployeeProfilePicture(string pictureUri, Guid? employeeId = null)
+        public IActionResult ChangeEmployeeProfilePicture(PictureDTO dto, Guid? employeeId = null)
         {
             var employee = employeeId.HasValue ? DataContext.Employees.Find(employeeId) : GetCurrentUser()?.Employee;
 
-            if (employee != null)
+            if (employee != null && dto != null)
             {
+                var picture = CreatePictureFromUri(dto.PictureUri);
+
+                if (employee.ProfilePicture != null)
+                {
+                    employee.ProfilePicture.MimeType = picture.MimeType;
+                    employee.ProfilePicture.BinaryData = picture.BinaryData;
+                }
+                else
+                {
+                    employee.ProfilePicture = picture;
+                    DataContext.Pictures.Add(picture);
+                }
+
+                DataContext.SaveChanges();
+
                 return Ok();
             }
 
-            return NotFound("Employee not found.");
+            return BadRequest();
         }
 
 

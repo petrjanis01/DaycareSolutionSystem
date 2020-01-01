@@ -35,20 +35,37 @@ paths:
       responses:
         '200':
           description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/EmployeeDetailDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/EmployeeDetailDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/EmployeeDetailDTO"
   "/api/Employee/change-profile-picture":
     post:
       tags:
       - Employee
       parameters:
-      - name: pictureUri
-        in: query
-        schema:
-          type: string
       - name: employeeId
         in: query
         schema:
           type: string
           format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PictureDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/PictureDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/PictureDTO"
       responses:
         '200':
           description: Success
@@ -90,6 +107,15 @@ paths:
     post:
       tags:
       - Test
+      parameters:
+      - name: lat
+        in: query
+        schema:
+          type: string
+      - name: lon
+        in: query
+        schema:
+          type: string
       responses:
         '200':
           description: Success
@@ -102,6 +128,33 @@ components:
           type: string
           nullable: true
         password:
+          type: string
+          nullable: true
+    EmployeePosition:
+      enum:
+      - 0
+      - 1
+      - 2
+      type: integer
+      format: int32
+    EmployeeDetailDTO:
+      type: object
+      properties:
+        fullName:
+          type: string
+          nullable: true
+        birthdate:
+          type: string
+          format: date-time
+        profilePictureUri:
+          type: string
+          nullable: true
+        employeePosition:
+          "$ref": "#/components/schemas/EmployeePosition"
+    PictureDTO:
+      type: object
+      properties:
+        pictureUri:
           type: string
           nullable: true
     DayOfWeek:

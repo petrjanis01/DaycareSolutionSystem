@@ -21,6 +21,8 @@ import { ToastService } from 'src/app/services/toast.service';
 
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
+import { EmployeeDetailDTO } from '../model/employeeDetailDTO';
+import { PictureDTO } from '../model/pictureDTO';
 
 import { Configuration } from '../configuration';
 
@@ -55,14 +57,11 @@ export class EmployeeService extends ApiBase{
         return false;
     }
 
-    public async apiEmployeeChangeProfilePicturePost(pictureUri?: string, employeeId?: string, ): Promise<any> {
+    public async apiEmployeeChangeProfilePicturePost(employeeId?: string, PictureDTO?: PictureDTO, ): Promise<any> {
 
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (pictureUri !== undefined && pictureUri !== null) {
-            queryParameters = queryParameters.set('pictureUri', <any>pictureUri);
-        }
         if (employeeId !== undefined && employeeId !== null) {
             queryParameters = queryParameters.set('employeeId', <any>employeeId);
         }
@@ -79,11 +78,18 @@ export class EmployeeService extends ApiBase{
 
         // to determine the Content-Type header
         const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
         ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
 
 
         let result = this.httpClient.post<any>(`${this.basePath}/api/Employee/change-profile-picture`,
-            null,
+            PictureDTO,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -94,7 +100,7 @@ export class EmployeeService extends ApiBase{
         return this.processResponse(result);
     }
 
-    public async apiEmployeeGetEmployeeDetailGet(employeeId?: string, ): Promise<any> {
+    public async apiEmployeeGetEmployeeDetailGet(employeeId?: string, ): Promise<EmployeeDetailDTO> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
@@ -106,6 +112,9 @@ export class EmployeeService extends ApiBase{
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -117,7 +126,7 @@ export class EmployeeService extends ApiBase{
         ];
 
 
-        let result = this.httpClient.get<any>(`${this.basePath}/api/Employee/get-employee-detail`,
+        let result = this.httpClient.get<EmployeeDetailDTO>(`${this.basePath}/api/Employee/get-employee-detail`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
