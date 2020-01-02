@@ -1,0 +1,26 @@
+<ion-card *ngIf="clientActions && client">
+
+  <div style="display: flex; flex-direction: row;">
+    <ion-avatar slot="start" style="margin: 10px;">
+      <img [src]="client.profilePicture">
+    </ion-avatar>
+    <h3 style="margin-left: 10px; padding-top: 10px;">
+      {{client.fullName}}
+    </h3>
+  </div>
+
+  <ng-container *ngFor="let action of clientActions.registeredActions">
+    <ion-item lines="full" (click)="openDetailModal(action.id)"
+      [ngClass]="{'canceled': action.isCanceled, 'completed': action.isCompleted, 'in-progress': action.isCompleted == false && action.actionStartedDateTime != null}">
+
+      <h5>
+        {{action.action.name}}
+      </h5>
+
+      <ion-icon name="md-alarm"></ion-icon>
+      {{action.plannedStartDateTime | date:'shortTime'}}
+      -
+      {{calculateEstimatedEndTime(action.plannedStartDateTime,action.estimatedDurationMinutes) | date:'shortTime'}}
+    </ion-item>
+  </ng-container>
+</ion-card>

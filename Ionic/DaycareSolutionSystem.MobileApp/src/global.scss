@@ -24,3 +24,24 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.item-separator {
+    background-color: #bfbfbf;
+     color: black;
+}
+
+ion-item.canceled{
+    --ion-background-color:rgb(255, 128, 128);
+ }
+
+ ion-item.completed{
+    --ion-background-color:rgb(128, 255, 128);
+ }
+
+ ion-item.in-progress{
+    --ion-background-color:rgb(255, 255, 128);
+ }
+
+ .item-separator.completed{
+    background-color: rgb(128, 255, 128);
+ }

@@ -7,9 +7,15 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Schedule
     {
         public Guid Id { get; set; }
 
-        public DateTime ActionStartedDateTime { get; set; }
+        public DateTime? ActionStartedDateTime { get; set; }
 
-        public DateTime ActionFinishedDateTime { get; set; }
+        public DateTime? ActionFinishedDateTime { get; set; }
+
+        public DateTime PlannedStartDateTime { get; set; }
+
+        public DayOfWeek Day { get; set; }
+
+        public int EstimatedDurationMinutes { get; set; }
 
         public ActionDTO Action { get; set; }
 

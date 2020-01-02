@@ -66,6 +66,13 @@ export class ClientsCacheService {
         return client;
     }
 
+    public async getClientById(id: string): Promise<Client> {
+        await this.loaded;
+
+        let client = this.clients.find(c => c.id === id);
+        return client;
+    }
+
     private loadDistancesFromClients() {
         // TODO Use google map api on each client and find their distance
     }

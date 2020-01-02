@@ -33,13 +33,13 @@ namespace DaycareSolutionSystem.Database.Entities.Entities
         public bool IsCanceled { get; set; }
 
         [DataMember]
-        public DateTime ActionStartedDateTime { get; set; }
+        public DateTime? ActionStartedDateTime { get; set; }
 
         [DataMember]
-        public DateTime ActionFinishedDateTime { get; set; }
+        public DateTime? ActionFinishedDateTime { get; set; }
 
         [DataMember]
-        public TimeSpan PlannedStartTime { get; set; }
+        public DateTime PlannedStartDateTime { get; set; }
 
         [DataMember]
         [MaxLength(StringMaxLengthConstants.StringLengthContent)]

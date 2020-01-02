@@ -16,13 +16,13 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
         public Dictionary<DateTime, List<RegisteredActionDO>> GetRegisteredActionsPerDay(int count, Guid? lastActionDisplayedId)
         {
             var startDate = lastActionDisplayedId.HasValue
-                ? (DataContext.RegisteredClientActions.Find(lastActionDisplayedId)).ActionStartedDateTime
+                ? (DataContext.RegisteredClientActions.Find(lastActionDisplayedId)).PlannedStartDateTime
                 : DateTime.Today;
 
             var registeredActions = DataContext.RegisteredClientActions
                 .Where(rca => rca.EmployeeId == GetCurrentUser().EmployeeId
-                              && rca.ActionStartedDateTime > startDate)
-                .OrderBy(rca => rca.ActionStartedDateTime)
+                              && rca.PlannedStartDateTime > startDate)
+                .OrderBy(rca => rca.PlannedStartDateTime)
                 .Take(count)
                 .ToList();
 
@@ -30,9 +30,9 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
 
             foreach (var registeredAction in registeredActions)
             {
-                if (registeredActionsPerDay.ContainsKey(registeredAction.ActionStartedDateTime.Date) == false)
+                if (registeredActionsPerDay.ContainsKey(registeredAction.PlannedStartDateTime.Date) == false)
                 {
-                    registeredActionsPerDay.Add(registeredAction.ActionStartedDateTime.Date, new List<RegisteredActionDO>());
+                    registeredActionsPerDay.Add(registeredAction.PlannedStartDateTime.Date, new List<RegisteredActionDO>());
                 }
 
                 var actionDo = new RegisteredActionDO();
@@ -41,7 +41,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
                 actionDo.RegisteredClientAction = registeredAction;
                 actionDo.IsLast = false;
 
-                registeredActionsPerDay[registeredAction.ActionStartedDateTime.Date].Add(actionDo);
+                registeredActionsPerDay[registeredAction.PlannedStartDateTime.Date].Add(actionDo);
             }
 
             EnsureLastIsMarked(registeredActionsPerDay);

@@ -443,12 +443,15 @@ namespace DaycareSolutionSystem.Database.Migrator
                 clientAction.EmployeeId = agreedClientAction.EmployeeId;
                 clientAction.ClientId = agreedClientAction.IndividualPlan.ClientId;
                 clientAction.AgreedClientAction = agreedClientAction;
-                clientAction.PlannedStartTime = agreedClientAction.PlannedStartTime;
+                clientAction.PlannedStartDateTime = startDate.Add(agreedClientAction.PlannedStartTime);
                 clientAction.IsCanceled = random.Next(1, 10) == 1;
                 clientAction.IsCompleted = clientAction.IsCanceled == false && startDate < DateTime.Today;
-                clientAction.ActionStartedDateTime = startDate.Add(agreedClientAction.PlannedStartTime);
-                clientAction.ActionFinishedDateTime =
-                    clientAction.ActionStartedDateTime.AddMinutes(agreedClientAction.EstimatedDurationMinutes);
+                if (clientAction.IsCompleted)
+                {
+                    clientAction.ActionStartedDateTime = startDate.Add(agreedClientAction.PlannedStartTime);
+                    clientAction.ActionFinishedDateTime = clientAction.ActionStartedDateTime
+                        ?.AddMinutes(agreedClientAction.EstimatedDurationMinutes);
+                }
 
                 registeredClientActions.Add(clientAction);
 

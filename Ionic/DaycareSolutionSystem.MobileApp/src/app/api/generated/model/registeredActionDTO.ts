@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { ActionDTO } from './actionDTO';
+import { DayOfWeek } from './dayOfWeek';
 import { PictureDTO } from './pictureDTO';
 
 
@@ -17,6 +18,9 @@ export interface RegisteredActionDTO {
     id?: string;
     actionStartedDateTime?: Date;
     actionFinishedDateTime?: Date;
+    plannedStartDateTime?: Date;
+    day?: DayOfWeek;
+    estimatedDurationMinutes?: number;
     action?: ActionDTO;
     clientActionSpecificDescription?: string;
     comment?: string;

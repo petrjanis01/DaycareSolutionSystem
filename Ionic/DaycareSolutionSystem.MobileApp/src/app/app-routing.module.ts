@@ -9,7 +9,8 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },
-  { path: 'setup', loadChildren: './pages/setup/setup.module#SetupPageModule' }
+  { path: 'setup', loadChildren: './pages/setup/setup.module#SetupPageModule' },
+  { path: 'client-action-detail', loadChildren: './pages/schedule/client-action-detail/client-action-detail.module#ClientActionDetailPageModule' }
 ];
 @NgModule({
   imports: [

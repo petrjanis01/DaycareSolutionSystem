@@ -21,6 +21,7 @@ import { ToastService } from 'src/app/services/toast.service';
 
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
+import { RegisteredActionDTO } from '../model/registeredActionDTO';
 import { RegisteredActionsForDayDTO } from '../model/registeredActionsForDayDTO';
 
 import { Configuration } from '../configuration';
@@ -56,7 +57,46 @@ export class RegisteredActionsService extends ApiBase{
         return false;
     }
 
-    public async apiRegisteredActionsGetRegisteredActionsDetailsGet(count?: number, lastActionDisplayedId?: string, ): Promise<Array<RegisteredActionsForDayDTO>> {
+    public async apiRegisteredActionsRegisteredActionPut(RegisteredActionDTO?: RegisteredActionDTO, ): Promise<RegisteredActionDTO> {
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+
+        let result = this.httpClient.put<RegisteredActionDTO>(`${this.basePath}/api/RegisteredActions/registered-action`,
+            RegisteredActionDTO,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: this.checkUserAndCreateAuthHeaders(headers),
+            }
+        ).toPromise();
+
+        return this.processResponse(result);
+    }
+
+    public async apiRegisteredActionsRegisteredActionsGet(count?: number, lastActionDisplayedId?: string, ): Promise<Array<RegisteredActionsForDayDTO>> {
 
 
 
@@ -86,7 +126,7 @@ export class RegisteredActionsService extends ApiBase{
         ];
 
 
-        let result = this.httpClient.get<Array<RegisteredActionsForDayDTO>>(`${this.basePath}/api/RegisteredActions/get-registered-actions-details`,
+        let result = this.httpClient.get<Array<RegisteredActionsForDayDTO>>(`${this.basePath}/api/RegisteredActions/registered-actions`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,

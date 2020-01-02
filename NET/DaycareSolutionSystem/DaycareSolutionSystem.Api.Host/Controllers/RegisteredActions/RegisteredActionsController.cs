@@ -6,6 +6,7 @@ using DaycareSolutionSystem.Api.Host.Controllers.Schedule;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DaycareSolutionSystem.Api.Host.Services.RegisteredActions;
+using DaycareSolutionSystem.Database.DataContext;
 using DaycareSolutionSystem.Database.Entities.Entities;
 using Microsoft.EntityFrameworkCore.Internal;
 using Action = DaycareSolutionSystem.Database.Entities.Entities.Action;
@@ -18,15 +19,55 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
     public class RegisteredActionsController : DssBaseController
     {
         private readonly IRegisteredActionsApiService _registeredActionsApiService;
+        private readonly DssDataContext _dataContext;
 
-        public RegisteredActionsController(IRegisteredActionsApiService registeredActionsApiService)
+        public RegisteredActionsController(DssDataContext dbContext, IRegisteredActionsApiService registeredActionsApiService)
         {
             _registeredActionsApiService = registeredActionsApiService;
+            _dataContext = dbContext;
+        }
+
+        [HttpPut]
+        [Route("registered-action")]
+        public RegisteredActionDTO UpdateRegisteredAction(RegisteredActionDTO dto)
+        {
+            var registeredAction = _dataContext.RegisteredClientActions.Find(dto.Id);
+
+            registeredAction.Comment = dto.Comment;
+            registeredAction.ActionStartedDateTime = dto.ActionStartedDateTime;
+
+            if (dto.ActionFinishedDateTime.HasValue)
+            {
+                registeredAction.ActionFinishedDateTime = dto.ActionFinishedDateTime;
+                registeredAction.IsCompleted = true;
+                dto.IsCompleted = true;
+            }
+
+            if (dto.Photo != null && string.IsNullOrEmpty(dto.Photo.PictureUri) == false)
+            {
+                var picture = CreatePictureFromUri(dto.Photo.PictureUri);
+                if (registeredAction.Photo != null)
+                {
+                    registeredAction.Photo.MimeType = picture.MimeType;
+                    registeredAction.Photo.BinaryData = picture.BinaryData;
+                }
+                else
+                {
+                    registeredAction.Photo = picture;
+                    _dataContext.Pictures.Add(picture);
+                }
+            }
+
+            registeredAction.IsCanceled = dto.IsCanceled;
+
+            _dataContext.SaveChanges();
+
+            return dto;
         }
 
         [HttpGet]
-        [Route("get-registered-actions-details")]
-        public RegisteredActionsForDayDTO[] GetRegisteredActionsDetails(int count, Guid? lastActionDisplayedId = null)
+        [Route("registered-actions")]
+        public RegisteredActionsForDayDTO[] GetRegisteredActions(int count, Guid? lastActionDisplayedId = null)
         {
             var actionsPerDay = _registeredActionsApiService.GetRegisteredActionsPerDay(count, lastActionDisplayedId);
 
@@ -88,6 +129,11 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
             dto.IsCanceled = registeredClientAction.IsCanceled;
             dto.IsCompleted = registeredClientAction.IsCompleted;
             dto.Comment = registeredClientAction.Comment;
+            dto.PlannedStartDateTime = registeredClientAction.PlannedStartDateTime;
+            dto.EstimatedDurationMinutes = registeredClientAction.AgreedClientAction.EstimatedDurationMinutes;
+            dto.ClientActionSpecificDescription =
+                registeredClientAction.AgreedClientAction.ClientActionSpecificDescription;
+            dto.Day = registeredClientAction.AgreedClientAction.Day;
             dto.Photo = new PictureDTO { PictureUri = FormatPictureToBase64(registeredClientAction.Photo) };
 
             return dto;

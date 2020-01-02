@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientActionComponent } from './client-action.component';
+import { ClientActionDetailPage } from './client-action-detail.page';
 
-describe('ClientActionComponent', () => {
-  let component: ClientActionComponent;
-  let fixture: ComponentFixture<ClientActionComponent>;
+describe('ClientActionDetailPage', () => {
+  let component: ClientActionDetailPage;
+  let fixture: ComponentFixture<ClientActionDetailPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ClientActionComponent ],
+      declarations: [ ClientActionDetailPage ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ClientActionComponent);
+    fixture = TestBed.createComponent(ClientActionDetailPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

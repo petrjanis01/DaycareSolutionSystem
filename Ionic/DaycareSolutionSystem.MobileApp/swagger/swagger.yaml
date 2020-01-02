@@ -98,7 +98,35 @@ paths:
       responses:
         '200':
           description: Success
-  "/api/RegisteredActions/get-registered-actions-details":
+  "/api/RegisteredActions/registered-action":
+    put:
+      tags:
+      - RegisteredActions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/RegisteredActionDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/RegisteredActionDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/RegisteredActionDTO"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/RegisteredActionDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/RegisteredActionDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/RegisteredActionDTO"
+  "/api/RegisteredActions/registered-actions":
     get:
       tags:
       - RegisteredActions
@@ -269,9 +297,19 @@ components:
         actionStartedDateTime:
           type: string
           format: date-time
+          nullable: true
         actionFinishedDateTime:
           type: string
           format: date-time
+          nullable: true
+        plannedStartDateTime:
+          type: string
+          format: date-time
+        day:
+          "$ref": "#/components/schemas/DayOfWeek"
+        estimatedDurationMinutes:
+          type: integer
+          format: int32
         action:
           "$ref": "#/components/schemas/ActionDTO"
         clientActionSpecificDescription:

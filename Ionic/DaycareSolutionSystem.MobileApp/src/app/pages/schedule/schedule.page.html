@@ -6,7 +6,7 @@
 
 <ion-content>
   <ng-container *ngFor="let registeredAction of registeredActions">
-    <ion-item-divider>
+    <ion-item-divider class="item-separator">
       <ion-label>
         {{registeredAction.date | date}}
         <ng-container *ngIf="isToday(registeredAction.date)">
@@ -15,7 +15,12 @@
       </ion-label>
     </ion-item-divider>
 
-    <dss-client-action *ngFor="let clientActions of registeredAction.registeredActionsClient"
-      [clientActions]="clientActions"></dss-client-action>
+    <client-actions-overview *ngFor="let clientActions of registeredAction.registeredActionsClient"
+      [clientActions]="clientActions" (detailModalClosed)="reloadData()"></client-actions-overview>
   </ng-container>
+
+  <ion-infinite-scroll *ngIf="registeredActions" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
