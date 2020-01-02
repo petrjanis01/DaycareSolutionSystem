@@ -5,28 +5,17 @@
 </ion-header>
 
 <ion-content>
-  <ion-item-divider *ngIf="registeredActions">
-    <ion-label>
-      {{registeredActions[0].date | date}}
-      <ng-container *ngIf="isToday(registeredActions[0].date)">
-        (today)
-      </ng-container>
-    </ion-label>
-  </ion-item-divider>
+  <ng-container *ngFor="let registeredAction of registeredActions">
+    <ion-item-divider>
+      <ion-label>
+        {{registeredAction.date | date}}
+        <ng-container *ngIf="isToday(registeredAction.date)">
+          (today)
+        </ng-container>
+      </ion-label>
+    </ion-item-divider>
 
-  <ion-card *ngIf="registeredActions">
-    <div style="display: flex; flex-direction: row;">
-      <ion-avatar slot="start" style="margin: 10px;">
-        <img
-          [src]="getDafaultImageIfNotExists(registeredActions[0].registeredActionDetails[0].clientBasicInfo.profilePictureUri)">
-      </ion-avatar>
-      <h3 style="margin-left: 10px; padding-top: 10px;">
-        {{registeredActions[0].registeredActionDetails[0].clientBasicInfo.clientFullName}}
-      </h3>
-    </div>
-
-    <ion-item>
-      
-    </ion-item>
-  </ion-card>
+    <dss-client-action *ngFor="let clientActions of registeredAction.registeredActionsClient"
+      [clientActions]="clientActions"></dss-client-action>
+  </ng-container>
 </ion-content>

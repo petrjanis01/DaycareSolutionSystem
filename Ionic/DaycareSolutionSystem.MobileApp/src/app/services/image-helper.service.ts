@@ -6,13 +6,13 @@ import { ToastService } from './toast.service';
 @Injectable({
     providedIn: 'root'
 })
-export class ImageSelectorService {
+export class ImageHelperService {
     constructor(
         private actionSheetController: ActionSheetController,
         private toasterService: ToastService) { }
 
-    public async getImageAsBase64(): Promise<string> {
-        let image = await this.getImage();
+    public async getImageAsBase64FromDevice(): Promise<string> {
+        let image = await this.presentSelectorModal();
 
         if (image == null) {
             return null;
@@ -29,7 +29,7 @@ export class ImageSelectorService {
     }
 
     // https://blog.shovonhasan.com/using-promises-with-filereader/
-    private async fileToBase64(webPath: string): Promise<string> {
+    public async fileToBase64(webPath: string): Promise<string> {
         let blob = await (await fetch(webPath)).blob();
         const reader = new FileReader();
 
@@ -46,7 +46,7 @@ export class ImageSelectorService {
         });
     }
 
-    private async getImage(): Promise<CameraPhoto> {
+    private async presentSelectorModal(): Promise<CameraPhoto> {
         let image = null;
 
         let actionSheet = await this.actionSheetController.create({
@@ -54,7 +54,7 @@ export class ImageSelectorService {
                 text: 'Gallery',
                 icon: 'image',
                 handler: async () => {
-                    this.getImageNative(CameraSource.Photos).then(img => {
+                    this.getImageFromDevice(CameraSource.Photos).then(img => {
                         image = img;
                         actionSheet.dismiss();
                     });
@@ -65,7 +65,7 @@ export class ImageSelectorService {
                 text: 'Camera',
                 icon: 'camera',
                 handler: () => {
-                    this.getImageNative(CameraSource.Camera).then(img => {
+                    this.getImageFromDevice(CameraSource.Camera).then(img => {
                         image = img;
                         actionSheet.dismiss();
                     });
@@ -80,7 +80,7 @@ export class ImageSelectorService {
         return image;
     }
 
-    private async getImageNative(source: CameraSource): Promise<CameraPhoto> {
+    private async getImageFromDevice(source: CameraSource): Promise<CameraPhoto> {
         try {
             let image = await Plugins.Camera.getPhoto({
                 quality: 90,

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ImageSelectorService } from 'src/app/services/image-selector.service';
+import { ImageHelperService } from 'src/app/services/image-helper.service';
 import { EmployeeService, EmployeeDetailDTO, PictureDTO } from 'src/app/api/generated';
 import { ToastService } from 'src/app/services/toast.service';
 
@@ -12,7 +12,7 @@ export class ProfilePage implements OnInit {
   public employeeDetail: EmployeeDetailDTO;
 
   constructor(
-    private imageSelectorService: ImageSelectorService,
+    private imageHelper: ImageHelperService,
     private employeeService: EmployeeService,
     private toasterService: ToastService) { }
 
@@ -29,7 +29,7 @@ export class ProfilePage implements OnInit {
   }
 
   public async changePhoto() {
-    let image = await this.imageSelectorService.getImageAsBase64();
+    let image = await this.imageHelper.getImageAsBase64FromDevice();
 
     if (image != null) {
       let dto: PictureDTO = {

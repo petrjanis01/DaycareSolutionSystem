@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ClientsCacheService } from 'src/app/services/clients/clients-cache.service';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss']
 })
-export class TabsPage {
+export class TabsPage implements OnInit {
 
-  constructor() {}
+  constructor(private clientsCache: ClientsCacheService) { }
 
+  ngOnInit() {
+    this.clientsCache.loadClientsCache();
+  }
 }

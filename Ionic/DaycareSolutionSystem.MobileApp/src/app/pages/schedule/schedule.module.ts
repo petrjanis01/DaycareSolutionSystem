@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { SchedulePage } from './schedule.page';
+import { ClientActionComponent } from './client-action/client-action.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,9 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [SchedulePage]
+  declarations: [
+    SchedulePage,
+    ClientActionComponent
+  ]
 })
-export class SchedulePageModule {}
+export class SchedulePageModule { }

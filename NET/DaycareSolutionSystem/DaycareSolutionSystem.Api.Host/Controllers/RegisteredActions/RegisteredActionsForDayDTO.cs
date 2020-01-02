@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions;
 
 namespace DaycareSolutionSystem.Api.Host.Controllers.Schedule
 {
@@ -11,7 +12,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Schedule
 
         public DayOfWeek Day { get; set; }
 
-        public RegisteredActionDetailDTO[] RegisteredActionDetails { get; set; }
+        public RegisteredActionsClientDTO[] RegisteredActionsClient { get; set; }
 
         public bool ContainsLast { get; set; }
     }

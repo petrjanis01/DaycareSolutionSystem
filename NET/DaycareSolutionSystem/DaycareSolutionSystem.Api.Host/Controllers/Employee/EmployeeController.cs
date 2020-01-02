@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using DaycareSolutionSystem.Api.Host.Services;
+using DaycareSolutionSystem.Api.Host.Controllers.DTO;
 using DaycareSolutionSystem.Database.DataContext;
 using DaycareSolutionSystem.Database.Entities.Entities;
 using Microsoft.AspNetCore.Authorization;

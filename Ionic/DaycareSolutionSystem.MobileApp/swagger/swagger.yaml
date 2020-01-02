@@ -22,6 +22,35 @@ paths:
       responses:
         '200':
           description: Success
+  "/api/Clients":
+    get:
+      tags:
+      - Clients
+      parameters:
+      - name: employeeId
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ClientDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ClientDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ClientDTO"
   "/api/Employee/get-employee-detail":
     get:
       tags:
@@ -130,6 +159,63 @@ components:
         password:
           type: string
           nullable: true
+    Gender:
+      enum:
+      - 1
+      - 2
+      type: integer
+      format: int32
+    PictureDTO:
+      type: object
+      properties:
+        pictureUri:
+          type: string
+          nullable: true
+    AddressDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        postCode:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        street:
+          type: string
+          nullable: true
+        buildingNumber:
+          type: string
+          nullable: true
+        gpsCoordinates:
+          type: string
+          nullable: true
+    ClientDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+          nullable: true
+        surname:
+          type: string
+          nullable: true
+        fullName:
+          type: string
+          nullable: true
+        birthDate:
+          type: string
+          format: date-time
+        gender:
+          "$ref": "#/components/schemas/Gender"
+        profilePicture:
+          "$ref": "#/components/schemas/PictureDTO"
+        address:
+          "$ref": "#/components/schemas/AddressDTO"
     EmployeePosition:
       enum:
       - 0
@@ -151,12 +237,6 @@ components:
           nullable: true
         employeePosition:
           "$ref": "#/components/schemas/EmployeePosition"
-    PictureDTO:
-      type: object
-      properties:
-        pictureUri:
-          type: string
-          nullable: true
     DayOfWeek:
       enum:
       - 0
@@ -168,18 +248,6 @@ components:
       - 6
       type: integer
       format: int32
-    ClientBasicInfoDTO:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        clientFullName:
-          type: string
-          nullable: true
-        profilePictureUri:
-          type: string
-          nullable: true
     ActionDTO:
       type: object
       properties:
@@ -192,21 +260,19 @@ components:
         description:
           type: string
           nullable: true
-    RegisteredActionDetailDTO:
+    RegisteredActionDTO:
       type: object
       properties:
         id:
           type: string
           format: uuid
-        clientBasicInfo:
-          "$ref": "#/components/schemas/ClientBasicInfoDTO"
         actionStartedDateTime:
           type: string
           format: date-time
         actionFinishedDateTime:
           type: string
           format: date-time
-        actionInfo:
+        action:
           "$ref": "#/components/schemas/ActionDTO"
         clientActionSpecificDescription:
           type: string
@@ -218,8 +284,18 @@ components:
           type: boolean
         isCanceled:
           type: boolean
-        photoUri:
+        photo:
+          "$ref": "#/components/schemas/PictureDTO"
+    RegisteredActionsClientDTO:
+      type: object
+      properties:
+        clientId:
           type: string
+          format: uuid
+        registeredActions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/RegisteredActionDTO"
           nullable: true
     RegisteredActionsForDayDTO:
       type: object
@@ -229,10 +305,10 @@ components:
           format: date-time
         day:
           "$ref": "#/components/schemas/DayOfWeek"
-        registeredActionDetails:
+        registeredActionsClient:
           type: array
           items:
-            "$ref": "#/components/schemas/RegisteredActionDetailDTO"
+            "$ref": "#/components/schemas/RegisteredActionsClientDTO"
           nullable: true
         containsLast:
           type: boolean

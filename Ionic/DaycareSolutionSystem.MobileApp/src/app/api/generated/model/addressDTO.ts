@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DayOfWeek } from './dayOfWeek';
-import { RegisteredActionsClientDTO } from './registeredActionsClientDTO';
 
 
-export interface RegisteredActionsForDayDTO { 
-    date?: Date;
-    day?: DayOfWeek;
-    registeredActionsClient?: Array<RegisteredActionsClientDTO>;
-    containsLast?: boolean;
+export interface AddressDTO { 
+    id?: string;
+    postCode?: string;
+    city?: string;
+    street?: string;
+    buildingNumber?: string;
+    gpsCoordinates?: string;
 }

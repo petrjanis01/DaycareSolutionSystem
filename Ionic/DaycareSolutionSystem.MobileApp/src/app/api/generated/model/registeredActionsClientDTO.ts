@@ -9,13 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DayOfWeek } from './dayOfWeek';
-import { RegisteredActionsClientDTO } from './registeredActionsClientDTO';
+import { RegisteredActionDTO } from './registeredActionDTO';
 
 
-export interface RegisteredActionsForDayDTO { 
-    date?: Date;
-    day?: DayOfWeek;
-    registeredActionsClient?: Array<RegisteredActionsClientDTO>;
-    containsLast?: boolean;
+export interface RegisteredActionsClientDTO { 
+    clientId?: string;
+    registeredActions?: Array<RegisteredActionDTO>;
 }

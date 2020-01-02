@@ -1,4 +1,4 @@
-﻿namespace DaycareSolutionSystem.Api.Host.Controllers
+﻿namespace DaycareSolutionSystem.Api.Host.Controllers.DTO
 {
     public class PictureDTO
     {

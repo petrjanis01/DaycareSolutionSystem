@@ -9,13 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DayOfWeek } from './dayOfWeek';
-import { RegisteredActionsClientDTO } from './registeredActionsClientDTO';
 
 
-export interface RegisteredActionsForDayDTO { 
-    date?: Date;
-    day?: DayOfWeek;
-    registeredActionsClient?: Array<RegisteredActionsClientDTO>;
-    containsLast?: boolean;
-}
+export type Gender = 1 | 2;
+
+export const Gender = {
+    NUMBER_1: 1 as Gender,
+    NUMBER_2: 2 as Gender
+};

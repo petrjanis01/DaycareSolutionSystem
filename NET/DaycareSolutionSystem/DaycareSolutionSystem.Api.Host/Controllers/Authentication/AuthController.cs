@@ -1,5 +1,4 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Threading.Tasks;
 using DaycareSolutionSystem.Api.Host.Services.Authentication;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using DaycareSolutionSystem.Api.Host.Controllers.DTO;
 using DaycareSolutionSystem.Api.Host.Controllers.Schedule;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DaycareSolutionSystem.Api.Host.Services.RegisteredActions;
 using DaycareSolutionSystem.Database.Entities.Entities;
+using Microsoft.EntityFrameworkCore.Internal;
 using Action = DaycareSolutionSystem.Database.Entities.Entities.Action;
 
 namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
@@ -38,36 +41,54 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
                 dto.Day = dto.Date.DayOfWeek;
                 dto.ContainsLast = actions[^1].IsLast;
 
-                var registeredActions = new List<RegisteredActionDetailDTO>();
+                var actionsClient = new List<RegisteredActionsClientDTO>();
+                var actionDetails = new List<RegisteredActionDTO>();
 
                 foreach (var action in actions)
                 {
-                    var actionDetail = MapRegisteredActionToDto(action.RegisteredClientAction);
+                    if (actionsClient.Any() == false || actionsClient[^1].ClientId != action.Client.Id)
+                    {
+                        var actionClient = new RegisteredActionsClientDTO();
+                        actionClient.ClientId = action.Client.Id;
 
-                    actionDetail.ActionInfo = MapActionToDto(action.Action);
+                        if (actionsClient.Any())
+                        {
+                            actionsClient[^1].RegisteredActions = actionDetails.ToArray();
+                        }
 
-                    actionDetail.ClientBasicInfo = MapClientBasicsToDto(action.Client);
+                        actionsClient.Add(actionClient);
 
-                    registeredActions.Add(actionDetail);
+                        actionDetails = new List<RegisteredActionDTO>();
+                    }
+
+                    var registeredAction = MapRegisteredActionToDto(action.RegisteredClientAction);
+                    registeredAction.Action = MapActionToDto(action.Action);
+                    actionDetails.Add(registeredAction);
                 }
 
-                dto.RegisteredActionDetails = registeredActions.ToArray();
+                if (actionsClient.Any())
+                {
+                    actionsClient[^1].RegisteredActions = actionDetails.ToArray();
+                }
+
+                dto.RegisteredActionsClient = actionsClient.ToArray();
                 registeredActionsForDays.Add(dto);
             }
 
             return registeredActionsForDays.ToArray();
         }
 
-        private RegisteredActionDetailDTO MapRegisteredActionToDto(RegisteredClientAction registeredClientAction)
+        private RegisteredActionDTO MapRegisteredActionToDto(RegisteredClientAction registeredClientAction)
         {
-            var dto = new RegisteredActionDetailDTO();
+            var dto = new RegisteredActionDTO();
             dto.Id = registeredClientAction.Id;
             dto.ActionFinishedDateTime = registeredClientAction.ActionFinishedDateTime;
             dto.ActionStartedDateTime = registeredClientAction.ActionStartedDateTime;
             dto.ClientActionSpecificDescription = registeredClientAction.Comment;
             dto.IsCanceled = registeredClientAction.IsCanceled;
             dto.IsCompleted = registeredClientAction.IsCompleted;
-            dto.PhotoUri = FormatPictureToBase64(registeredClientAction.Photo);
+            dto.Comment = registeredClientAction.Comment;
+            dto.Photo = new PictureDTO { PictureUri = FormatPictureToBase64(registeredClientAction.Photo) };
 
             return dto;
         }
@@ -78,17 +99,6 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
             dto.Id = action.Id;
             dto.Name = action.Name;
             dto.Description = action.GeneralDescription;
-
-            return dto;
-        }
-
-        private ClientBasicInfoDTO MapClientBasicsToDto(Client client)
-        {
-            var dto = new ClientBasicInfoDTO();
-            dto.Id = client.Id;
-            dto.ClientFullName = client.FullName;
-
-            dto.ProfilePictureUri = FormatPictureToBase64(client.ProfilePicture);
 
             return dto;
         }
