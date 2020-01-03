@@ -1,7 +1,7 @@
 ﻿using System;
 using DaycareSolutionSystem.Entities.Enums;
 
-namespace DaycareSolutionSystem.Api.Host.Controllers.Employee
+namespace DaycareSolutionSystem.Api.Host.Controllers.Employees
 {
     public class EmployeeDetailDTO
     {

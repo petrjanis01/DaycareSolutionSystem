@@ -1,9 +1,9 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>clients</ion-title>
+    <ion-title>Clients</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <client-card [client]="client" *ngFor="let client of clients" ></client-card>
 </ion-content>

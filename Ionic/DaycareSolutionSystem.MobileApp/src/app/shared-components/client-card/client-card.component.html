@@ -1,0 +1,11 @@
+<ion-card *ngIf="client" class="flex-row" (click)="navigateToDetail()">
+
+  <ion-avatar slot="start" style="margin: 10px;">
+    <img [src]="client.profilePicture">
+  </ion-avatar>
+
+  <h3 class="client-name-header">
+    {{client.fullName}}
+  </h3>
+  
+</ion-card>

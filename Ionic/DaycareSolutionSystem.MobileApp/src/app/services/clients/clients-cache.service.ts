@@ -45,6 +45,16 @@ export class ClientsCacheService {
         this.loadDistancesFromClients();
     }
 
+    public async reloadSingleClient(id: string): Promise<Client> {
+        let dto = await this.clientsService.apiClientsSingleClientGet(id);
+        let client = await this.mapDtoToClient(dto);
+
+        let index = this.clients.findIndex(cl => cl.id === client.id);
+        this.clients[index] = client;
+
+        return client;
+    }
+
     private async loadDefaulProfilePicture() {
         let img = await this.imageHelper.fileToBase64('./../../../../assets/img/user-anonymous.png');
 

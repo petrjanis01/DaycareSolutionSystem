@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -26,22 +26,32 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 .item-separator {
-    background-color: #bfbfbf;
-     color: black;
+  background-color: #bfbfbf;
+  color: black;
 }
 
-ion-item.canceled{
-    --ion-background-color:rgb(255, 128, 128);
- }
+ion-item.canceled {
+  --ion-background-color: rgb(255, 128, 128);
+}
 
- ion-item.completed{
-    --ion-background-color:rgb(128, 255, 128);
- }
+ion-item.completed {
+  --ion-background-color: rgb(128, 255, 128);
+}
 
- ion-item.in-progress{
-    --ion-background-color:rgb(255, 255, 128);
- }
+ion-item.in-progress {
+  --ion-background-color: rgb(255, 255, 128);
+}
 
- .item-separator.completed{
-    background-color: rgb(128, 255, 128);
- }
+.item-separator.completed {
+  background-color: rgb(128, 255, 128);
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-center {  
+  display: flex;
+  justify-content: center;
+}

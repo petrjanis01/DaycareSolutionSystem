@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="client">{{client.fullName}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="client">
+    <div class="flex-center">
+      <ion-avatar class="avatar-big">
+        <img [src]="client.profilePicture">
+      </ion-avatar>
+    </div>
+    <div class="flex-center">
+      <ion-button ion-button fill="clear" size="small" (click)="changeClientProfilePicture()">
+        <ion-icon name="camera" slot="icon-only"></ion-icon>
+        Change photo
+      </ion-button>
+    </div>
+
+    <ion-item lines="full" mode="md">
+      <ion-label>Birthdate</ion-label>
+      {{client.birthDate | date}}
+    </ion-item>
+
+    <ion-item lines="full" mode="md">
+      <ion-label>Gender</ion-label>
+      {{generalHelper.getGenderString(client.gender)}}
+    </ion-item>
+
+    <ion-item-divider class="item-separator">
+      <h5>Address</h5>
+    </ion-item-divider>
+
+    <ion-item lines="full" mode="md" *ngIf="client.address.city">
+      <ion-label>City</ion-label>
+      {{client.address.city}}
+    </ion-item>
+
+    <ion-item lines="full" mode="md" *ngIf="client.address.street">
+      <ion-label>Street</ion-label>
+      {{client.address.street}}
+    </ion-item>
+
+    <ion-item lines="full" mode="md" *ngIf="client.address.buildingNumber">
+      <ion-label>Building number</ion-label>
+      {{client.address.buildingNumber}}
+    </ion-item>
+
+    <ion-item lines="full" mode="md" *ngIf="client.address.postCode">
+      <ion-label>Zip</ion-label>
+      {{client.address.postCode}}
+    </ion-item>
+  </ng-container>
+</ion-content>

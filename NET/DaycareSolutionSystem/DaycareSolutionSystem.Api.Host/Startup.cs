@@ -1,6 +1,7 @@
 using System.Text;
 using DaycareSolutionSystem.Api.Host.Services.Authentication;
 using DaycareSolutionSystem.Api.Host.Services.Clients;
+using DaycareSolutionSystem.Api.Host.Services.Employees;
 using DaycareSolutionSystem.Api.Host.Services.RegisteredActions;
 using DaycareSolutionSystem.Database.DataContext;
 using DaycareSolutionSystem.Services;
@@ -38,6 +39,7 @@ namespace DaycareSolutionSystem.Api.Host
             services.AddScoped<IJwtAuthenticationApiService, JwtAuthenticationApiService>();
             services.AddScoped<IRegisteredActionsApiService, RegisteredActionsApiService>();
             services.AddScoped<IClientApiService, ClientApiService>();
+            services.AddScoped<IEmployeeApiService, EmployeeApiService>();
 
             // Configure authentication
             services.AddAuthentication(options =>

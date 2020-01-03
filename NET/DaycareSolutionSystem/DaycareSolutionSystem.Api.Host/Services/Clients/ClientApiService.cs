@@ -21,9 +21,22 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
             var clients = DataContext.AgreedClientActions
                 .Where(ca => ca.EmployeeId == employeeId)
                 .Select(ca => ca.IndividualPlan)
-                .Select(ip => ip.Client);
+                .Select(ip => ip.Client)
+                .Distinct();
 
             return clients.ToList();
+        }
+
+        public Client GetClient(Guid clientId)
+        {
+            var client = DataContext.Clients.Find(clientId);
+
+            return client;
+        }
+
+        public Client ChangeClientProfilePicture(Guid clientId, string pictureUri)
+        {
+            return ChangeProfilePicture<Client>(clientId, pictureUri);
         }
     }
 }

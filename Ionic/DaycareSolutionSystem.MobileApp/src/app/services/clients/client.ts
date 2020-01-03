@@ -1,4 +1,4 @@
-import { Gender, PictureDTO, AddressDTO } from 'src/app/api/generated';
+import { Gender, AddressDTO } from 'src/app/api/generated';
 
 export class Client {
     public id: string;

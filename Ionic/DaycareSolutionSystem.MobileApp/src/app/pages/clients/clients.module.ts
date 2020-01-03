@@ -6,21 +6,30 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { ClientsPage } from './clients.page';
+import { SharedComponentsModule } from 'src/app/shared-components/share-components.module';
+import { ClientDetailPage } from './client-detail/client-detail.page';
+import { ClientDetailPageModule } from './client-detail/client-detail.module';
 
 const routes: Routes = [
   {
     path: '',
     component: ClientsPage
+  },
+  {
+    path: 'client-detail/:id',
+    component: ClientDetailPage
   }
 ];
 
 @NgModule({
   imports: [
     CommonModule,
+    ClientDetailPageModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SharedComponentsModule
   ],
   declarations: [ClientsPage]
 })
-export class ClientsPageModule {}
+export class ClientsPageModule { }

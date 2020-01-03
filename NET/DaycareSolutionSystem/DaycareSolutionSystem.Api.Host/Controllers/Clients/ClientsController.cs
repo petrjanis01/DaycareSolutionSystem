@@ -20,6 +20,23 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
             _clientApiService = clientApiService;
         }
 
+        [HttpPost]
+        [Route("change-profile-picture")]
+        public IActionResult ChangeProfilePicture(Guid clientId, PictureDTO dto)
+        {
+            if (dto != null)
+            {
+                var client = _clientApiService.ChangeClientProfilePicture(clientId, dto.PictureUri);
+
+                if (client != null)
+                {
+                    return Ok();
+                }
+            }
+
+            return BadRequest();
+        }
+
         [HttpGet]
         public ClientDTO[] GetAgreedActionsLinkedClients(Guid? employeeId = null)
         {
@@ -33,6 +50,16 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
             }
 
             return clientDtos.ToArray();
+        }
+
+        [HttpGet]
+        [Route("single-client")]
+        public ClientDTO GetClient(Guid clientId)
+        {
+            var client = _clientApiService.GetClient(clientId);
+            var dto = MapClientToDto(client);
+
+            return dto;
         }
 
         private ClientDTO MapClientToDto(Client client)

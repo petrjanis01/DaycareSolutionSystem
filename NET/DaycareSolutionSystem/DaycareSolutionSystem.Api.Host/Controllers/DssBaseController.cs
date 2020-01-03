@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using DaycareSolutionSystem.Database.Entities;
 using DaycareSolutionSystem.Database.Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,6 @@ namespace DaycareSolutionSystem.Api.Host.Controllers
             return base64Picture;
         }
 
-        // https://stackoverflow.com/questions/5714281/regex-to-parse-image-data-uri/5714347
         protected Picture CreatePictureFromUri(string pictureUri)
         {
             var regex = new Regex(@"data:(?<mime>[\w/\-\.]+);(?<encoding>\w+),(?<data>.*)", RegexOptions.Compiled);

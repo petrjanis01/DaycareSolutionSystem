@@ -22,6 +22,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
 import { ClientDTO } from '../model/clientDTO';
+import { PictureDTO } from '../model/pictureDTO';
 
 import { Configuration } from '../configuration';
 
@@ -56,6 +57,49 @@ export class ClientsService extends ApiBase{
         return false;
     }
 
+    public async apiClientsChangeProfilePicturePost(clientId?: string, PictureDTO?: PictureDTO, ): Promise<any> {
+
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (clientId !== undefined && clientId !== null) {
+            queryParameters = queryParameters.set('clientId', <any>clientId);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/_*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+
+        let result = this.httpClient.post<any>(`${this.basePath}/api/Clients/change-profile-picture`,
+            PictureDTO,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: this.checkUserAndCreateAuthHeaders(headers),
+            }
+        ).toPromise();
+
+        return this.processResponse(result);
+    }
+
     public async apiClientsGet(employeeId?: string, ): Promise<Array<ClientDTO>> {
 
 
@@ -83,6 +127,43 @@ export class ClientsService extends ApiBase{
 
 
         let result = this.httpClient.get<Array<ClientDTO>>(`${this.basePath}/api/Clients`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: this.checkUserAndCreateAuthHeaders(headers),
+            }
+        ).toPromise();
+
+        return this.processResponse(result);
+    }
+
+    public async apiClientsSingleClientGet(clientId?: string, ): Promise<ClientDTO> {
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (clientId !== undefined && clientId !== null) {
+            queryParameters = queryParameters.set('clientId', <any>clientId);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+
+        let result = this.httpClient.get<ClientDTO>(`${this.basePath}/api/Clients/single-client`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,

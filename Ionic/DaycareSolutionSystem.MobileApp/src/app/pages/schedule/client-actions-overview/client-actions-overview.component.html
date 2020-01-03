@@ -1,13 +1,6 @@
 <ion-card *ngIf="clientActions && client">
 
-  <div style="display: flex; flex-direction: row;">
-    <ion-avatar slot="start" style="margin: 10px;">
-      <img [src]="client.profilePicture">
-    </ion-avatar>
-    <h3 style="margin-left: 10px; padding-top: 10px;">
-      {{client.fullName}}
-    </h3>
-  </div>
+  <client-card [client]="client"></client-card>
 
   <ng-container *ngFor="let action of clientActions.registeredActions">
     <ion-item lines="full" (click)="openDetailModal(action.id)"

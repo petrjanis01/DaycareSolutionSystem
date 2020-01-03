@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
-import { ApiOperationButtonComponent } from './api-operation-button/api-operation-button.component';
+import { ClientCardComponent } from './client-card/client-card.component';
+import { IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-    declarations: [ApiOperationButtonComponent],
-    imports: [],
-    exports: []
+    declarations: [ClientCardComponent],
+    imports: [IonicModule, CommonModule, FormsModule],
+    exports: [ClientCardComponent]
 })
 export class SharedComponentsModule { }
