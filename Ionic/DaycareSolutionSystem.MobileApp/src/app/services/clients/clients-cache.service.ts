@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
-import { ClientsService, ClientDTO } from 'src/app/api/generated';
+import { ClientsService, ClientDTO, AddressDTO } from 'src/app/api/generated';
 import { Client } from './client';
 import { ImageHelperService } from '../image-helper.service';
+import { GeolocationHelperService } from '../geolocation/geolocation-helper-service';
+import { Address } from '../geolocation/address';
 
 @Injectable({ providedIn: 'root' })
 export class ClientsCacheService {
@@ -17,7 +19,9 @@ export class ClientsCacheService {
     constructor(
         private clientsService: ClientsService,
         private loadingController: LoadingController,
-        private imageHelper: ImageHelperService) { }
+        private imageHelper: ImageHelperService,
+        private geolocationHelper: GeolocationHelperService
+    ) { }
 
     public async loadClientsCache() {
         this.loaded = new Promise<any>(async (x) => {

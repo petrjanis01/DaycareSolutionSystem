@@ -54,5 +54,9 @@
       <ion-label>Zip</ion-label>
       {{client.address.postCode}}
     </ion-item>
+
+    <agm-map *ngIf="lat && lng" [latitude]="lat" [longitude]="lng" [zoom]="15">
+      <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+    </agm-map>
   </ng-container>
 </ion-content>
