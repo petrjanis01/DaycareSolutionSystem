@@ -27,40 +27,18 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
             _dataContext = dbContext;
         }
 
+        [HttpPost]
+        [Route("generate-next-month-actions")]
+        public void GenerateNextMonthRegisteredActions()
+        {
+            _registeredActionsApiService.GenerateNextMonthRegisteredActions();
+        }
+
         [HttpPut]
         [Route("registered-action")]
         public RegisteredActionDTO UpdateRegisteredAction(RegisteredActionDTO dto)
         {
-            var registeredAction = _dataContext.RegisteredClientActions.Find(dto.Id);
-
-            registeredAction.Comment = dto.Comment;
-            registeredAction.ActionStartedDateTime = dto.ActionStartedDateTime;
-
-            if (dto.ActionFinishedDateTime.HasValue)
-            {
-                registeredAction.ActionFinishedDateTime = dto.ActionFinishedDateTime;
-                registeredAction.IsCompleted = true;
-                dto.IsCompleted = true;
-            }
-
-            if (dto.Photo != null && string.IsNullOrEmpty(dto.Photo.PictureUri) == false)
-            {
-                var picture = CreatePictureFromUri(dto.Photo.PictureUri);
-                if (registeredAction.Photo != null)
-                {
-                    registeredAction.Photo.MimeType = picture.MimeType;
-                    registeredAction.Photo.BinaryData = picture.BinaryData;
-                }
-                else
-                {
-                    registeredAction.Photo = picture;
-                    _dataContext.Pictures.Add(picture);
-                }
-            }
-
-            registeredAction.IsCanceled = dto.IsCanceled;
-
-            _dataContext.SaveChanges();
+            dto = _registeredActionsApiService.UpdateRegisteredAction(dto);
 
             return dto;
         }

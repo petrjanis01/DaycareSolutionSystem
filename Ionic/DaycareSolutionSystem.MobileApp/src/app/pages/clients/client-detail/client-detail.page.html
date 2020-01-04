@@ -58,5 +58,14 @@
     <agm-map *ngIf="lat && lng" [latitude]="lat" [longitude]="lng" [zoom]="15">
       <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
     </agm-map>
+
+    <ion-item-divider  class="item-separator">
+      <h5>Individual plans</h5>
+    </ion-item-divider>
+    <ion-card *ngFor="let individualPlan of individualPlans">
+      <ion-card-title style="text-align: center;">{{individualPlan.validFrom | date}} - {{individualPlan.validUntil | date}}</ion-card-title>
+      <agreed-actions-overview [actionsForDay]="actions" *ngFor="let actions of individualPlan.actionsForDay">
+      </agreed-actions-overview>
+    </ion-card>
   </ng-container>
 </ion-content>

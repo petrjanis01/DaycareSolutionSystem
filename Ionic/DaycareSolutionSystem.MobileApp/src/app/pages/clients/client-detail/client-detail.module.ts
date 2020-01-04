@@ -9,6 +9,7 @@ import { ClientDetailPage } from './client-detail.page';
 import { SharedComponentsModule } from 'src/app/shared-components/share-components.module';
 
 import { AgmCoreModule } from '@agm/core';
+import { AgreedActionsOverviewComponent } from './agreed-actions-overview/agreed-actions-overview.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,6 @@ const routes: Routes = [
       apiKey: 'AIzaSyCQsd5nCdDeiSvHmgbcSt8Fbk7AOLqPmZw'
     })
   ],
-  declarations: [ClientDetailPage]
+  declarations: [ClientDetailPage, AgreedActionsOverviewComponent]
 })
 export class ClientDetailPageModule { }

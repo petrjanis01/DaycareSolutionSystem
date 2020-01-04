@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{F734007D-BFC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaycareSolutionSystem.Api.Host", "DaycareSolutionSystem.Api.Host\DaycareSolutionSystem.Api.Host.csproj", "{12B90E14-4C7D-48A4-B26C-AA9DB0A35112}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaycareSolutionSystem.Services", "DaycareSolutionSystem.Services\DaycareSolutionSystem.Services.csproj", "{EB86AC7D-424E-4935-8436-0BCF4F4A0B8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaycareSolutionSystem.Helpers", "DaycareSolutionSystem.Services\DaycareSolutionSystem.Helpers.csproj", "{EB86AC7D-424E-4935-8436-0BCF4F4A0B8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

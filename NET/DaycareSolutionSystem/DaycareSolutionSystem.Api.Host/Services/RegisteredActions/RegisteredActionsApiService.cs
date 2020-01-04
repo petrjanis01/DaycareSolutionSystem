@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DaycareSolutionSystem.Api.Host.Controllers.Schedule;
 using DaycareSolutionSystem.Database.DataContext;
 using Microsoft.AspNetCore.Http;
 
@@ -11,6 +12,26 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
         public RegisteredActionsApiService(DssDataContext dataContext, IHttpContextAccessor httpContextAccessor) :
             base(dataContext, httpContextAccessor)
         {
+        }
+
+        public void GenerateNextMonthRegisteredActions()
+        {
+            var lastGeneratedAction = DataContext.RegisteredClientActions
+                .OrderByDescending(ca => ca.PlannedStartDateTime)
+                .First();
+
+            var agreedActions = DataContext.AgreedClientActions
+                .Where(ac => ac.IndividualPlan.ValidUntilDate > DateTime.Today)
+                .ToList();
+
+            var startDate = lastGeneratedAction.ActionStartedDateTime.Value;
+            var endDate = startDate.AddMonths(1).AddDays(-1);
+
+            while (startDate <= endDate)
+            {
+
+                startDate = startDate.AddDays(1).Date;
+            }
         }
 
         public Dictionary<DateTime, List<RegisteredActionDO>> GetRegisteredActionsPerDay(int count, Guid? lastActionDisplayedId)
@@ -49,6 +70,42 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
             return registeredActionsPerDay;
         }
 
+        public RegisteredActionDTO UpdateRegisteredAction(RegisteredActionDTO dto)
+        {
+            var registeredAction = DataContext.RegisteredClientActions.Find(dto.Id);
+
+            registeredAction.Comment = dto.Comment;
+            registeredAction.ActionStartedDateTime = dto.ActionStartedDateTime;
+
+            if (dto.ActionFinishedDateTime.HasValue)
+            {
+                registeredAction.ActionFinishedDateTime = dto.ActionFinishedDateTime;
+                registeredAction.IsCompleted = true;
+                dto.IsCompleted = true;
+            }
+
+            if (dto.Photo != null && string.IsNullOrEmpty(dto.Photo.PictureUri) == false)
+            {
+                var picture = CreatePictureFromUri(dto.Photo.PictureUri);
+                if (registeredAction.Photo != null)
+                {
+                    registeredAction.Photo.MimeType = picture.MimeType;
+                    registeredAction.Photo.BinaryData = picture.BinaryData;
+                }
+                else
+                {
+                    registeredAction.Photo = picture;
+                    DataContext.Pictures.Add(picture);
+                }
+            }
+
+            registeredAction.IsCanceled = dto.IsCanceled;
+
+            DataContext.SaveChanges();
+
+            return dto;
+        }
+
         private void EnsureLastIsMarked(Dictionary<DateTime, List<RegisteredActionDO>> registeredActionsPerDay)
         {
             if (registeredActionsPerDay.Any() == false)
@@ -62,7 +119,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
             var lastAction = actionsForLastDay[^1];
 
             var nextExist = DataContext.RegisteredClientActions.Any(rca =>
-                rca.ActionStartedDateTime > lastAction.RegisteredClientAction.ActionStartedDateTime);
+                rca.PlannedStartDateTime > lastAction.RegisteredClientAction.PlannedStartDateTime);
 
             lastAction.IsLast = nextExist == false;
         }

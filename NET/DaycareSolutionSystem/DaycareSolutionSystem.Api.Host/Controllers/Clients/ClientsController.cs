@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DaycareSolutionSystem.Api.Host.Controllers.DTO;
 using DaycareSolutionSystem.Api.Host.Services.Clients;
 using DaycareSolutionSystem.Database.Entities.Entities;
@@ -18,6 +19,23 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
         public ClientsController(IClientApiService clientApiService)
         {
             _clientApiService = clientApiService;
+        }
+
+        [HttpGet]
+        [Route("agreed-actions-by-plans")]
+        public IndividualPlanDTO[] GetClientAgreedActionsByPlans(Guid clientId)
+        {
+            var actionsByPlans = _clientApiService.GetClientAgreedActionsByPlans(clientId);
+
+            var individualPlans = new List<IndividualPlanDTO>();
+            foreach (var entry in actionsByPlans)
+            {
+                var dto = MapIndividualPlanWithActionsToDto(entry.Key, entry.Value);
+                individualPlans.Add(dto);
+
+            }
+
+            return individualPlans.ToArray();
         }
 
         [HttpPost]
@@ -88,6 +106,50 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
             dto.Street = address.Street;
 
             return dto;
+        }
+
+        private IndividualPlanDTO MapIndividualPlanWithActionsToDto(IndividualPlan plan, List<AgreedClientAction> actions)
+        {
+            var actionsForDays = new List<AgreedActionsForDayDTO>();
+
+            var actionsGrouped = actions.GroupBy(a => a.Day);
+
+            foreach (var group in actionsGrouped)
+            {
+                var day = group.Key;
+                var actionsForDay = new AgreedActionsForDayDTO();
+                actionsForDay.Day = day;
+
+                var actionsDtos = new List<AgreedActionDTO>();
+                foreach (var action in group)
+                {
+                    var agreedActionDto = new AgreedActionDTO();
+                    agreedActionDto.Id = action.Id;
+                    agreedActionDto.EstimatedDurationMinutes = action.EstimatedDurationMinutes;
+                    agreedActionDto.ClientActionSpecificDescription = action.ClientActionSpecificDescription;
+                    agreedActionDto.PlannedStartTime = action.PlannedStartTime;
+                    agreedActionDto.PlannedEndTime = action.PlannedStartTime.Add(TimeSpan.FromMinutes(action.EstimatedDurationMinutes));
+
+                    var actionDto = new ActionDTO();
+                    actionDto.Id = action.ActionId;
+                    actionDto.Description = action.Action.GeneralDescription;
+                    actionDto.Name = action.Action.Name;
+
+                    agreedActionDto.Action = actionDto;
+                    actionsDtos.Add(agreedActionDto);
+                }
+
+                actionsForDay.AgreedActions = actionsDtos.ToArray();
+                actionsForDays.Add(actionsForDay);
+            }
+
+            var planDto = new IndividualPlanDTO();
+            planDto.Id = plan.Id;
+            planDto.ValidFrom = plan.ValidFromDate;
+            planDto.ValidUntil = plan.ValidUntilDate;
+            planDto.ActionsForDay = actionsForDays.ToArray();
+
+            return planDto;
         }
     }
 }

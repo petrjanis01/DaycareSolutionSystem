@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { AppConfig } from '../../config/app.config';
 import { map } from 'rxjs/operators';
 import { Address } from './address';
-import { Plugins } from "@capacitor/core";
+import { Plugins } from '@capacitor/core';
 
+// https://medium.com/@shawinshawz/ionic-4-google-maps-geo-location-b49d7f1d1111
 @Injectable({ providedIn: 'root' })
 export class GeolocationHelperService {
     private googleMapApiUrlBase = 'https://maps.googleapis.com/maps/api';

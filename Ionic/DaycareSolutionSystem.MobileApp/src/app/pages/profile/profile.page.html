@@ -1,16 +1,33 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>profile</ion-title>
+    <ion-title *ngIf="employeeDetail">{{employeeDetail.fullName}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <img *ngIf="employeeDetail" [src]="employeeDetail.profilePictureUri">
-  <div>
-    <ion-button fill="clear" size="small" (click)="changePhoto()" margin>
-      <ion-icon name="camera" slot="icon-only">
-      </ion-icon>
-      Change photo
-    </ion-button>
-  </div>
+  <ng-container *ngIf="employeeDetail">
+    <div class="flex-center">
+      <ion-avatar class="avatar-big">
+        <img [src]="employeeDetail.profilePictureUri">
+      </ion-avatar>
+    </div>
+    <div class="flex-center">
+      <ion-button fill="clear" size="small" (click)="changePhoto()">
+        <ion-icon name="camera" slot="icon-only"></ion-icon>
+        Change photo
+      </ion-button>
+    </div>
+    <div class="flex-center">
+      <ion-button color="danger" (click)="logout()">
+        <ion-icon name="log-out" slot="icon-only"></ion-icon>
+        Log out
+      </ion-button>
+    </div>
+    <div class="flex-center">
+      <ion-button color="secondary" (click)="changePassword()">
+        <ion-icon name="refresh" slot="icon-only"></ion-icon>
+        Change password
+      </ion-button>
+    </div>
+  </ng-container>
 </ion-content>

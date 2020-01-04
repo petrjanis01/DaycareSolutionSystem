@@ -49,6 +49,7 @@ export class SchedulePage implements OnInit {
 
         let lastAction = this.registeredActions[this.registeredActions.length - 1];
         event.target.disabled = lastAction.containsLast;
+        console.log(this.registeredActions);
 
       }).finally(() => event.target.complete());
   }

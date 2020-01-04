@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using DaycareSolutionSystem.Api.Host.Controllers.Authentication;
 using DaycareSolutionSystem.Database.DataContext;
-using DaycareSolutionSystem.Services;
+using DaycareSolutionSystem.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 
@@ -13,19 +13,18 @@ namespace DaycareSolutionSystem.Api.Host.Services.Authentication
 {
     public class JwtAuthenticationApiService : ApiServiceBase, IJwtAuthenticationApiService
     {
-        private readonly IPasswordHashService _passwordHashService;
+        private readonly PasswordHasher _passwordHasher = new PasswordHasher();
 
-        public JwtAuthenticationApiService(IPasswordHashService passwordHashService, DssDataContext dataContext, IHttpContextAccessor httpContextAccessor)
+        public JwtAuthenticationApiService(DssDataContext dataContext, IHttpContextAccessor httpContextAccessor)
         : base(dataContext, httpContextAccessor)
         {
-            _passwordHashService = passwordHashService;
         }
 
         public JwtSecurityToken AuthenticateUser(LoginDTO dto)
         {
             var user = DataContext.Users.FirstOrDefault(u => u.LoginName == dto.Username);
 
-            if (user != null && _passwordHashService.HashPassword(dto.Password) == user.Password)
+            if (user != null && _passwordHasher.HashPassword(dto.Password) == user.Password)
             {
                 var authClaims = new[]
                 {

@@ -5,7 +5,7 @@ using System.Linq;
 using DaycareSolutionSystem.Database.DataContext;
 using DaycareSolutionSystem.Database.Entities.Entities;
 using DaycareSolutionSystem.Entities.Enums;
-using DaycareSolutionSystem.Services;
+using DaycareSolutionSystem.Helpers;
 using Action = DaycareSolutionSystem.Database.Entities.Entities.Action;
 
 namespace DaycareSolutionSystem.Database.Migrator
@@ -13,7 +13,7 @@ namespace DaycareSolutionSystem.Database.Migrator
     public class DemoDataInitializer
     {
         private DssDataContext dataContext;
-        private static PasswordHashService _passwordHashService;
+        private static readonly PasswordHasher _passwordHasher = new PasswordHasher();
 
         private static readonly string[] _maleNames = new[] { "Liam", "Noah", "William", "James", "Oliver", "Benjamin", "Lucas" };
         private static readonly string[] _femaleNames = new[] { "Emma", "Olivia", "Ava", "Isabella", "Sophia", "Charlotte", "Mia" };
@@ -28,7 +28,6 @@ namespace DaycareSolutionSystem.Database.Migrator
         public DemoDataInitializer(DssDataContext dc)
         {
             dataContext = dc;
-            _passwordHashService = new PasswordHashService();
         }
 
         public void CreateDemoData()
@@ -73,7 +72,7 @@ namespace DaycareSolutionSystem.Database.Migrator
             var user = new User();
             user.EmployeeId = _dcEmployeeId;
             user.LoginName = "dcemp";
-            user.Password = _passwordHashService.HashPassword("1234");
+            user.Password = _passwordHasher.HashPassword("1234");
 
 
             dataContext.Users.AddRange(new[]

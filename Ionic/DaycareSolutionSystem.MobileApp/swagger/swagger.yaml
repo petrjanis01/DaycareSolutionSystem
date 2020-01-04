@@ -22,6 +22,35 @@ paths:
       responses:
         '200':
           description: Success
+  "/api/Clients/agreed-actions-by-plans":
+    get:
+      tags:
+      - Clients
+      parameters:
+      - name: clientId
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/IndividualPlanDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/IndividualPlanDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/IndividualPlanDTO"
   "/api/Clients/change-profile-picture":
     post:
       tags:
@@ -234,6 +263,76 @@ components:
         password:
           type: string
           nullable: true
+    DayOfWeek:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      type: integer
+      format: int32
+    ActionDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+    AgreedActionDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        clientActionSpecificDescription:
+          type: string
+          nullable: true
+        estimatedDurationMinutes:
+          type: integer
+          format: int32
+        plannedStartTime:
+          type: string
+          format: date-span
+        plannedEndTime:
+          type: string
+          format: date-span
+        action:
+          "$ref": "#/components/schemas/ActionDTO"
+    AgreedActionsForDayDTO:
+      type: object
+      properties:
+        day:
+          "$ref": "#/components/schemas/DayOfWeek"
+        agreedActions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AgreedActionDTO"
+          nullable: true
+    IndividualPlanDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        validFrom:
+          type: string
+          format: date-time
+        validUntil:
+          type: string
+          format: date-time
+        actionsForDay:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AgreedActionsForDayDTO"
+          nullable: true
     PictureDTO:
       type: object
       properties:
@@ -312,29 +411,6 @@ components:
           nullable: true
         employeePosition:
           "$ref": "#/components/schemas/EmployeePosition"
-    DayOfWeek:
-      enum:
-      - 0
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      type: integer
-      format: int32
-    ActionDTO:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
     RegisteredActionDTO:
       type: object
       properties:

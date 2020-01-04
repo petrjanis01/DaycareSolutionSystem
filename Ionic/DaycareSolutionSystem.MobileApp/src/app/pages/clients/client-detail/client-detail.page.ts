@@ -8,6 +8,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { GeneralHelperService } from 'src/app/services/general-helper.service';
 import { GeolocationHelperService } from 'src/app/services/geolocation/geolocation-helper-service';
 import { Address } from 'src/app/services/geolocation/address';
+import { IndividualPlanDTO } from 'src/app/api/generated/model/individualPlanDTO';
 
 @Component({
   selector: 'app-client-detail',
@@ -18,6 +19,7 @@ export class ClientDetailPage implements OnInit {
   public client: Client;
   public lat: number;
   public lng: number;
+  public individualPlans: IndividualPlanDTO[];
 
   constructor(
     private clientCache: ClientsCacheService,
@@ -33,6 +35,18 @@ export class ClientDetailPage implements OnInit {
     let id = this.activatedRoute.snapshot.paramMap.get('id');
     this.client = await this.clientCache.getClientById(id);
 
+    this.getCoordinatesForMapIfNeeded();
+    this.getIndividualPlans();
+  }
+
+  private async getIndividualPlans() {
+    let plans = await this.clientsService.apiClientsAgreedActionsByPlansGet(this.client.id);
+
+    console.log(plans);
+    this.individualPlans = plans;
+  }
+
+  private async getCoordinatesForMapIfNeeded() {
     let address = new Address(this.client.address);
     if (address.gpsCoordinates == null) {
       let coordinates = await (await this.geolocationHelper.getGpsCoordinatesFromAddress(address)).split(',');

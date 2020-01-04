@@ -11,5 +11,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
         Client ChangeClientProfilePicture(Guid clientId, string pictureUri);
 
         Client GetClient(Guid clientId);
+
+        Dictionary<IndividualPlan, List<AgreedClientAction>> GetClientAgreedActionsByPlans(Guid clientId);
     }
 }

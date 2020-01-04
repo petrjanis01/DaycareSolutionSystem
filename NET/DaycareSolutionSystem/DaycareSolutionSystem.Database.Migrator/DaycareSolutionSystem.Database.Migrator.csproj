@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DaycareSolutionSystem.DataContext\DaycareSolutionSystem.Database.DataContext.csproj" />
-    <ProjectReference Include="..\DaycareSolutionSystem.Services\DaycareSolutionSystem.Services.csproj" />
+    <ProjectReference Include="..\DaycareSolutionSystem.Services\DaycareSolutionSystem.Helpers.csproj" />
   </ItemGroup>
 
 </Project>

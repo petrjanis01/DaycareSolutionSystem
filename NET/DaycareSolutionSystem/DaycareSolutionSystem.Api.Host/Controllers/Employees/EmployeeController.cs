@@ -19,6 +19,13 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Employees
             _employeeApiService = employeeApiService;
         }
 
+        [HttpPut]
+        [Route("change-password")]
+        public void ChangePassword(string newPassword)
+        {
+            _employeeApiService.ChangePassword(newPassword);
+        }
+
         [HttpGet]
         [Route("get-employee-detail")]
         public EmployeeDetailDTO GetEmployeeDetail(Guid? employeeId = null)

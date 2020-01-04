@@ -1,6 +1,7 @@
 ﻿using System;
 using DaycareSolutionSystem.Database.DataContext;
 using DaycareSolutionSystem.Database.Entities.Entities;
+using DaycareSolutionSystem.Helpers;
 using Microsoft.AspNetCore.Http;
 
 namespace DaycareSolutionSystem.Api.Host.Services.Employees
@@ -24,6 +25,12 @@ namespace DaycareSolutionSystem.Api.Host.Services.Employees
             var employee = employeeId.HasValue ? DataContext.Employees.Find(employeeId) : GetCurrentUser()?.Employee;
 
             return employee;
+        }
+
+        public void ChangePassword(string newPassword)
+        {
+            var user = GetCurrentUser();
+            user.Password = new PasswordHasher().HashPassword(newPassword);
         }
     }
 }

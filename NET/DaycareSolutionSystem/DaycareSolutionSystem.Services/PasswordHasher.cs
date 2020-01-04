@@ -2,9 +2,9 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DaycareSolutionSystem.Services
+namespace DaycareSolutionSystem.Helpers
 {
-    public class PasswordHashService : IPasswordHashService
+    public class PasswordHasher
     {
         public string HashPassword(string password)
         {

@@ -4,7 +4,6 @@ using DaycareSolutionSystem.Api.Host.Services.Clients;
 using DaycareSolutionSystem.Api.Host.Services.Employees;
 using DaycareSolutionSystem.Api.Host.Services.RegisteredActions;
 using DaycareSolutionSystem.Database.DataContext;
-using DaycareSolutionSystem.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,7 +34,6 @@ namespace DaycareSolutionSystem.Api.Host
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddScoped<IPasswordHashService, PasswordHashService>();
             services.AddScoped<IJwtAuthenticationApiService, JwtAuthenticationApiService>();
             services.AddScoped<IRegisteredActionsApiService, RegisteredActionsApiService>();
             services.AddScoped<IClientApiService, ClientApiService>();

@@ -8,5 +8,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Employees
         Employee ChangeEmployeeProfilePicture(string pictureUri, Guid? employeeId);
 
         Employee GetEmployee(Guid? employeeId);
+
+        void ChangePassword(string newPassword);
     }
 }
