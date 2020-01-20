@@ -5,20 +5,14 @@ namespace DaycareSolutionSystem.Database.DataContext
 {
     public class DssDataContext : DbContext
     {
+        public DssDataContext(DbContextOptions<DssDataContext> options) : base(options)
+        { }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // No need to disable initializer as in previous versions of EF. EF core does not create/alter db schema automatically.
-
             // Use lazy loading by default. Handled by using proxies on entity class level
             optionsBuilder.UseLazyLoadingProxies();
-
-            // TODO move connection string to config
-            // Problem: class library itself does not have/cannot have config file but it uses config of application that uses library
-            // and so it is not possible to read connection string if its not part of config of an app that uses data context.
-            // Possible solution is to pass connection string when creating context.
-            var connectionString = "Host=localhost;Port=5432;Database=local-db;Username=postgres;Password=postgres";
-
-            optionsBuilder.UseNpgsql(connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -6,28 +6,35 @@ using DaycareSolutionSystem.Database.DataContext;
 using DaycareSolutionSystem.Database.Entities.Entities;
 using DaycareSolutionSystem.Entities.Enums;
 using DaycareSolutionSystem.Helpers;
+using Microsoft.EntityFrameworkCore;
 using Action = DaycareSolutionSystem.Database.Entities.Entities.Action;
 
 namespace DaycareSolutionSystem.Database.Migrator
 {
-    public class DemoDataInitializer
+    public class DemoDataInitializer : IDemoDataInitializer
     {
-        private DssDataContext dataContext;
-        private static readonly PasswordHasher _passwordHasher = new PasswordHasher();
+        private readonly DssDataContext _dataContext;
+        private readonly IImageFetcherService _imageFetcher;
+        private static readonly PasswordHasher PasswordHasher = new PasswordHasher();
 
-        private static readonly string[] _maleNames = new[] { "Liam", "Noah", "William", "James", "Oliver", "Benjamin", "Lucas" };
-        private static readonly string[] _femaleNames = new[] { "Emma", "Olivia", "Ava", "Isabella", "Sophia", "Charlotte", "Mia" };
-        private static readonly string[] _lastNames = new[] { "Smith", " Johnson", "Williams", "Jones", "Brown", "Davis", "Miller" };
-        // TODO change to relative
-        private static readonly string _demoDataPicturesFolderPath = "D:\\School\\DaycareSolutionSystem\\DemoDataPictures";
+        private static readonly string[] MaleNames = new[] { "Liam", "Noah", "William", "James", "Oliver", "Benjamin", "Lucas" };
+        private static readonly string[] FemaleNames = new[] { "Emma", "Olivia", "Ava", "Isabella", "Sophia", "Charlotte", "Mia" };
+        private static readonly string[] LastNames = new[] { "Smith", " Johnson", "Williams", "Jones", "Brown", "Davis", "Miller" };
 
         private Guid _dcEmployeeId;
-        private List<Guid> _clientIds = new List<Guid>();
-        private List<Guid> _actionIds = new List<Guid>();
+        private readonly List<Guid> _clientIds = new List<Guid>();
+        private readonly List<Guid> _actionIds = new List<Guid>();
 
-        public DemoDataInitializer(DssDataContext dc)
+        public DemoDataInitializer(DssDataContext dataContext, IImageFetcherService imageFetcher)
         {
-            dataContext = dc;
+            _dataContext = dataContext;
+            _imageFetcher = imageFetcher;
+        }
+
+        public void DatabaseInit()
+        {
+            _dataContext.Database.EnsureDeleted();
+            _dataContext.Database.Migrate();
         }
 
         public void CreateDemoData()
@@ -58,13 +65,13 @@ namespace DaycareSolutionSystem.Database.Migrator
 
             _dcEmployeeId = dcEmployee.Id;
 
-            dataContext.Employees.AddRange(new[]
+            _dataContext.Employees.AddRange(new[]
             {
                 dcEmployee,
                 emp
             });
 
-            dataContext.SaveChanges();
+            _dataContext.SaveChanges();
         }
 
         private void CreateUserAccounts()
@@ -72,15 +79,15 @@ namespace DaycareSolutionSystem.Database.Migrator
             var user = new User();
             user.EmployeeId = _dcEmployeeId;
             user.LoginName = "dcemp";
-            user.Password = _passwordHasher.HashPassword("1234");
+            user.Password = PasswordHasher.HashPassword("1234");
 
 
-            dataContext.Users.AddRange(new[]
+            _dataContext.Users.AddRange(new[]
             {
                 user,
             });
 
-            dataContext.SaveChanges();
+            _dataContext.SaveChanges();
         }
 
         private void CreateClientsWithAddress()
@@ -91,8 +98,8 @@ namespace DaycareSolutionSystem.Database.Migrator
             {
                 var client = new Client();
                 client.Gender = i < 5 ? Gender.Male : Gender.Female;
-                client.FirstName = i < 5 ? _maleNames[i] : _femaleNames[i - 4];
-                client.Surname = i < 6 ? _lastNames[i] : _lastNames[i - 6];
+                client.FirstName = i < 5 ? MaleNames[i] : FemaleNames[i - 4];
+                client.Surname = i < 6 ? LastNames[i] : LastNames[i - 6];
                 client.Birthdate = new DateTime(1945 + i, 1 + i, 1 + i);
 
                 clients.Add(client);
@@ -170,38 +177,28 @@ namespace DaycareSolutionSystem.Database.Migrator
             clients[9].AddressId = address9.Id;
 
             // Profile pictures
-            clients[0].ProfilePicture = CreateProfilePicture("male1.jpg", "image/jpeg");
-            clients[1].ProfilePicture = CreateProfilePicture("male2.jpg", "image/jpeg");
-            clients[5].ProfilePicture = CreateProfilePicture("female1.jpg", "image/jpeg");
-            clients[6].ProfilePicture = CreateProfilePicture("female2.jpg", "image/jpeg");
+            AssignProfilePictureToClientSafe(clients[0], DemoDataImagesUris.MaleImgUris[0]);
+            AssignProfilePictureToClientSafe(clients[1], DemoDataImagesUris.MaleImgUris[1]);
+            AssignProfilePictureToClientSafe(clients[2], DemoDataImagesUris.MaleImgUris[2]);
+            AssignProfilePictureToClientSafe(clients[3], DemoDataImagesUris.MaleImgUris[3]);
+            AssignProfilePictureToClientSafe(clients[5], DemoDataImagesUris.FemaleImgUris[0]);
+            AssignProfilePictureToClientSafe(clients[6], DemoDataImagesUris.FemaleImgUris[1]);
+            AssignProfilePictureToClientSafe(clients[7], DemoDataImagesUris.FemaleImgUris[2]);
+            AssignProfilePictureToClientSafe(clients[8], DemoDataImagesUris.FemaleImgUris[3]);
 
-            dataContext.Addresses.AddRange(addresses);
-            dataContext.Clients.AddRange(clients);
-            dataContext.SaveChanges();
+            _dataContext.Addresses.AddRange(addresses);
+            _dataContext.Clients.AddRange(clients);
+            _dataContext.SaveChanges();
         }
 
-        private Picture CreateProfilePicture(string fileName, string mimeType)
+        private void AssignProfilePictureToClientSafe(Client client, string pictureUri)
         {
-            var profilePicture = new Picture();
-            profilePicture.MimeType = mimeType;
+            var picture = _imageFetcher.DownloadImageFromUrl(pictureUri);
 
-            var picturePath = Path.Combine(_demoDataPicturesFolderPath, "ProfilePictures", fileName);
-
-            using (var fileStream = new FileStream(picturePath, FileMode.Open))
-            using (var binaryReader = new BinaryReader(fileStream))
-            using (var memoryStream = new MemoryStream())
+            if (picture != null)
             {
-                var buffer = new byte[2048];
-                int byteCount;
-                while ((byteCount = binaryReader.Read(buffer, 0, buffer.Length)) != 0)
-                {
-                    memoryStream.Write(buffer, 0, byteCount);
-                }
-
-                profilePicture.BinaryData = memoryStream.ToArray();
+                client.ProfilePicture = picture;
             }
-
-            return profilePicture;
         }
 
         private void CreateActions()
@@ -240,8 +237,8 @@ namespace DaycareSolutionSystem.Database.Migrator
 
             actions.ForEach(a => _actionIds.Add(a.Id));
 
-            dataContext.AddRange(actions);
-            dataContext.SaveChanges();
+            _dataContext.AddRange(actions);
+            _dataContext.SaveChanges();
         }
 
         private void CreateIndividualPlansWithAgreedClientActions()
@@ -391,14 +388,14 @@ namespace DaycareSolutionSystem.Database.Migrator
                 agreedClientAction.EmployeeId = _dcEmployeeId;
             }
 
-            dataContext.IndividualPlans.AddRange(individualPlans);
-            dataContext.AgreedClientActions.AddRange(agreedClientActions);
-            dataContext.SaveChanges();
+            _dataContext.IndividualPlans.AddRange(individualPlans);
+            _dataContext.AgreedClientActions.AddRange(agreedClientActions);
+            _dataContext.SaveChanges();
         }
 
         private void CreateRegisteredClientActionsFromAgreedClientActions()
         {
-            var agreedClientActions = dataContext.AgreedClientActions.ToList();
+            var agreedClientActions = _dataContext.AgreedClientActions.ToList();
             var registeredClientActions = new List<RegisteredClientAction>();
 
             foreach (var agreedClientAction in agreedClientActions)
@@ -408,8 +405,8 @@ namespace DaycareSolutionSystem.Database.Migrator
                 registeredClientActions.AddRange(GenerateRegisteredClientActionsForAgreedClientAction(agreedClientAction));
             }
 
-            dataContext.RegisteredClientActions.AddRange(registeredClientActions);
-            dataContext.SaveChanges();
+            _dataContext.RegisteredClientActions.AddRange(registeredClientActions);
+            _dataContext.SaveChanges();
         }
 
         // materialize all past and max 30 days into future agreed client actions to registered client actions

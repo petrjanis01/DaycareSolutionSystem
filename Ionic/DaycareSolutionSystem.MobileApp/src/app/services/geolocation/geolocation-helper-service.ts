@@ -20,59 +20,60 @@ export class GeolocationHelperService {
     }
 
     public async getGpsCoordinatesFromAddress(address: Address): Promise<string> {
-        let result = await this.http.get<any>(`${this.googleMapApiUrlBase}/geocode/json?address=${address.toString()}&key=${this.apiKey}`)
-            .pipe(
-                map(geoData => {
-                    if (!geoData || !geoData.results || geoData.results === 0) {
-                        return null;
-                    }
-                    return geoData.results[0].geometry.location;
-                })
-            ).toPromise();
+        // let result = await this.http.get<any>(`${this.googleMapApiUrlBase}/geocode/json?address=${address.toString()}&key=${this.apiKey}`)
+        //     .pipe(
+        //         map(geoData => {
+        //             if (!geoData || !geoData.results || geoData.results === 0) {
+        //                 return null;
+        //             }
+        //             return geoData.results[0].geometry.location;
+        //         })
+        //     ).toPromise();
 
-        if (result != null) {
-            return `${result.lat},${result.lng}`;
-        }
+        // if (result != null) {
+        //     return `${result.lat},${result.lng}`;
+        // }
+        return '';
     }
 
     public async getAddressFromgGpsCoordinates(gpsCoordinates: string): Promise<Address> {
-        let addressComponents = await
-            this.http.get<any>(`${this.googleMapApiUrlBase}/geocode/json?latlng=${gpsCoordinates}&key=${this.apiKey}`)
-                .pipe(
-                    map(geoData => {
-                        if (!geoData || !geoData.results || geoData.results === 0) {
-                            return null;
-                        }
-                        return geoData.results[0].address_components;
-                    })
-                ).toPromise();
+        // let addressComponents = await
+        //     this.http.get<any>(`${this.googleMapApiUrlBase}/geocode/json?latlng=${gpsCoordinates}&key=${this.apiKey}`)
+        //         .pipe(
+        //             map(geoData => {
+        //                 if (!geoData || !geoData.results || geoData.results === 0) {
+        //                     return null;
+        //                 }
+        //                 return geoData.results[0].address_components;
+        //             })
+        //         ).toPromise();
 
-        if (addressComponents == null) {
-            return null;
-        }
+        // if (addressComponents == null) {
+        //     return null;
+        // }
 
-        let address = this.mapAddressComponentsToAdress(addressComponents);
-        return address;
+        // let address = this.mapAddressComponentsToAdress(addressComponents);
+        return null;
     }
 
     private mapAddressComponentsToAdress(
         addressComponents: Array<{ long_name: string, short_name: string, types: Array<string> }>): Address {
         let address = new Address();
 
-        let premise = addressComponents.find(a => a.types.find(t => t === 'premise')).long_name;
-        let streetNumber = addressComponents.find(a => a.types.find(t => t === 'street_number'));
-        address.buildingNumber = streetNumber != null ? `${premise}/${streetNumber.long_name}` : premise;
+        // let premise = addressComponents.find(a => a.types.find(t => t === 'premise')).long_name;
+        // let streetNumber = addressComponents.find(a => a.types.find(t => t === 'street_number'));
+        // address.buildingNumber = streetNumber != null ? `${premise}/${streetNumber.long_name}` : premise;
 
-        let postCode = addressComponents.find(a => a.types.find(t => t === 'postal_code')).long_name;
-        address.postCode = postCode;
+        // let postCode = addressComponents.find(a => a.types.find(t => t === 'postal_code')).long_name;
+        // address.postCode = postCode;
 
-        let city = addressComponents.find(a => a.types.find(t => t === 'locality')).long_name;
-        address.city = city;
+        // let city = addressComponents.find(a => a.types.find(t => t === 'locality')).long_name;
+        // address.city = city;
 
-        let street = addressComponents.find(a => a.types.find(t => t === 'route'));
-        if (street != null) {
-            address.street = street.long_name;
-        }
+        // let street = addressComponents.find(a => a.types.find(t => t === 'route'));
+        // if (street != null) {
+        //     address.street = street.long_name;
+        // }
 
         return address;
     }

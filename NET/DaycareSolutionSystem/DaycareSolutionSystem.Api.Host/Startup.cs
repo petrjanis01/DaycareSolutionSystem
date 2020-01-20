@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text;
 using DaycareSolutionSystem.Api.Host.Services.Authentication;
 using DaycareSolutionSystem.Api.Host.Services.Clients;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DaycareSolutionSystem.Api.Host
 {
@@ -30,7 +32,8 @@ namespace DaycareSolutionSystem.Api.Host
         {
             services.Configure<IConfiguration>(Configuration.GetSection("AppConfiguration"));
 
-            services.AddDbContext<DssDataContext>();
+            services.AddDbContext<DssDataContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("DssConnectionString")));
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -56,15 +59,13 @@ namespace DaycareSolutionSystem.Api.Host
                     ValidAudience = "DayCareSolutionSystemMobileApp",
                     ValidIssuer = "DayCareSolutionSystem",
                     // TODO Get from config
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("eyJzdWIiOiJkY2VtcCIsImp0aSI6IjI2YTIwNWM1LTRhYzEtNDVmYS1hZDQxLTk2MjNiY2UzMTBiNiIsImV4cCI6"))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                        "eyJzdWIiOiJkY2VtcCIsImp0aSI6IjI2YTIwNWM1LTRhYzEtNDVmYS1hZDQxLTk2MjNiY2UzMTBiNiIsImV4cCI6"))
                 };
             });
 
             // Swagger
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-            });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" }); });
 
             services.AddControllers();
         }
@@ -95,10 +96,7 @@ namespace DaycareSolutionSystem.Api.Host
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

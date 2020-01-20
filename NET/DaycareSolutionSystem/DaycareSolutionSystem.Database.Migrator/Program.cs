@@ -1,7 +1,10 @@
 ﻿using System;
-using System.Linq;
+using System.IO;
 using DaycareSolutionSystem.Database.DataContext;
+using DaycareSolutionSystem.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DaycareSolutionSystem.Database.Migrator
 {
@@ -9,30 +12,26 @@ namespace DaycareSolutionSystem.Database.Migrator
     {
         static void Main(string[] args)
         {
-            var ans = "";
-            while (ans.ToUpper().Equals("Y") == false && ans.ToUpper().Equals("N") == false)
-            {
-                Console.WriteLine("Operation will delete whole database (if exists) and create/migrate new database structure and populate it with demo data." +
-                                  "Do you want to proceed? (Y/N)");
+            var configuration = SetupConfiguration();
 
-                ans = Console.ReadLine();
-            }
+            var serviceProvider = new ServiceCollection()
+                .AddDbContext<DssDataContext>(options => options.UseNpgsql(configuration.GetConnectionString("DssConnectionString")))
+                .AddSingleton<IDemoDataInitializer, DemoDataInitializer>()
+                .AddSingleton<IImageFetcherService, ImageFetcherService>()
+                .BuildServiceProvider();
 
+            var initializer = serviceProvider.GetService<IDemoDataInitializer>();
+            initializer.DatabaseInit();
+            initializer.CreateDemoData();
+        }
 
-            if (ans.ToUpper().Equals("N"))
-            {
-                return;
-            }
+        private static IConfigurationRoot SetupConfiguration()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
-            var dc = new DssDataContext();
-
-            // delete db structure
-            dc.Database.EnsureDeleted();
-
-            // create/migrate db structure
-            dc.Database.Migrate();
-
-            new DemoDataInitializer(dc).CreateDemoData();
+            return builder.Build();
         }
     }
 }

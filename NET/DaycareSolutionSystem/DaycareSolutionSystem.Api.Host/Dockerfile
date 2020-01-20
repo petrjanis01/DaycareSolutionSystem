@@ -1,13 +1,13 @@
-#Depending on the operating system of the host machines(s) that will build or run the containers, the image specified in the FROM statement may need to be changed.
-#For more information, please see https://aka.ms/containercompat
-
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-nanoserver-1903 AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0-nanoserver-1903 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /src
 COPY ["DaycareSolutionSystem.Api.Host/DaycareSolutionSystem.Api.Host.csproj", "DaycareSolutionSystem.Api.Host/"]
+COPY ["DaycareSolutionSystem.Services/DaycareSolutionSystem.Helpers.csproj", "DaycareSolutionSystem.Services/"]
+COPY ["DaycareSolutionSystem.DataContext/DaycareSolutionSystem.Database.DataContext.csproj", "DaycareSolutionSystem.DataContext/"]
+COPY ["DaycareSolutionSystem.Entities/DaycareSolutionSystem.Database.Entities.csproj", "DaycareSolutionSystem.Entities/"]
 RUN dotnet restore "DaycareSolutionSystem.Api.Host/DaycareSolutionSystem.Api.Host.csproj"
 COPY . .
 WORKDIR "/src/DaycareSolutionSystem.Api.Host"

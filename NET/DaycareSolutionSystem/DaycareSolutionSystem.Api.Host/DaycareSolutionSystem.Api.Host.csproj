@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <UserSecretsId>fc4a7163-e4ac-4dd1-bd1c-00072ce56181</UserSecretsId>
   </PropertyGroup>
 
@@ -17,11 +17,11 @@
     <PackageReference Include="Microsoft.OpenApi" Version="1.1.4" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.5" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DaycareSolutionSystem.DataContext\DaycareSolutionSystem.Database.DataContext.csproj" />
     <ProjectReference Include="..\DaycareSolutionSystem.Services\DaycareSolutionSystem.Helpers.csproj" />
   </ItemGroup>
 
