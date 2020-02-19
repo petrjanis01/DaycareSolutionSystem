@@ -42,6 +42,8 @@ namespace DaycareSolutionSystem.Api.Host
             services.AddScoped<IClientApiService, ClientApiService>();
             services.AddScoped<IEmployeeApiService, EmployeeApiService>();
 
+            var securityKey = Configuration.GetSection("AppConfiguration")?.GetValue<string>("SecurityKey");
+
             // Configure authentication
             services.AddAuthentication(options =>
             {
@@ -58,9 +60,7 @@ namespace DaycareSolutionSystem.Api.Host
                     ValidateAudience = true,
                     ValidAudience = "DayCareSolutionSystemMobileApp",
                     ValidIssuer = "DayCareSolutionSystem",
-                    // TODO Get from config
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                        "eyJzdWIiOiJkY2VtcCIsImp0aSI6IjI2YTIwNWM1LTRhYzEtNDVmYS1hZDQxLTk2MjNiY2UzMTBiNiIsImV4cCI6"))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey))
                 };
             });
 

@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService } from './services/auth-guard.service';
+import { SideMenuComponent } from './shared-components/side-menu/side-menu.component';
 
 const routes: Routes = [
   {
-    path: '',
-    loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule),
-    canActivate: [AuthGuardService]
+    path: '', component: SideMenuComponent, canActivate: [AuthGuardService],
+    children: [
+      { path: '', loadChildren: './pages/tabs/tabs.module#TabsPageModule' }
+    ]
   },
   { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },
   { path: 'setup', loadChildren: './pages/setup/setup.module#SetupPageModule' },
@@ -17,4 +19,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

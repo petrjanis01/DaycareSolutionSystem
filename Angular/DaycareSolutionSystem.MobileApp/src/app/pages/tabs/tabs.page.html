@@ -1,6 +1,6 @@
 <ion-tabs>
 
-  <ion-tab-bar slot="bottom">
+  <ion-tab-bar slot="bottom" [hidden]="visualHelper.isSideMenuVisibe">
     <ion-tab-button tab="schedule">
       <ion-icon name="clock"></ion-icon>
       <ion-label>Schedule</ion-label>

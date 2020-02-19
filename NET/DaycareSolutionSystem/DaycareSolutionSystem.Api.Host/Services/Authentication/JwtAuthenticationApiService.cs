@@ -3,21 +3,25 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using Castle.Core.Configuration;
 using DaycareSolutionSystem.Api.Host.Controllers.Authentication;
 using DaycareSolutionSystem.Database.DataContext;
 using DaycareSolutionSystem.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
 
 namespace DaycareSolutionSystem.Api.Host.Services.Authentication
 {
     public class JwtAuthenticationApiService : ApiServiceBase, IJwtAuthenticationApiService
     {
         private readonly PasswordHasher _passwordHasher = new PasswordHasher();
+        private readonly Microsoft.Extensions.Configuration.IConfiguration _config;
 
-        public JwtAuthenticationApiService(DssDataContext dataContext, IHttpContextAccessor httpContextAccessor)
+        public JwtAuthenticationApiService(DssDataContext dataContext, IHttpContextAccessor httpContextAccessor, Microsoft.Extensions.Configuration.IConfiguration config)
         : base(dataContext, httpContextAccessor)
         {
+            _config = config;
         }
 
         public JwtSecurityToken AuthenticateUser(LoginDTO dto)
@@ -32,8 +36,8 @@ namespace DaycareSolutionSystem.Api.Host.Services.Authentication
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 };
 
-                // TODO: move to config
-                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("eyJzdWIiOiJkY2VtcCIsImp0aSI6IjI2YTIwNWM1LTRhYzEtNDVmYS1hZDQxLTk2MjNiY2UzMTBiNiIsImV4cCI6"));
+                var securityKey = _config.GetSection("AppConfiguration")?.GetValue<string>("SecurityKey");
+                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
 
                 var token = new JwtSecurityToken(
                     issuer: "DayCareSolutionSystem",
