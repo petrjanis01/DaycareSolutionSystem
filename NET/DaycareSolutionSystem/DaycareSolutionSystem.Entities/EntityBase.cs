@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
 
 namespace DaycareSolutionSystem.Database.Entities
 {
@@ -11,7 +10,6 @@ namespace DaycareSolutionSystem.Database.Entities
             Id = Guid.NewGuid();
         }
 
-        [DataMember]
         [Key]
         public Guid Id { get; set; }
     }
