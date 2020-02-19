@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>map</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- <agm-map *ngIf="client">
+    <agm-marker [latitude]="49.595875" [longitude]="17.249870"></agm-marker>
+  </agm-map> -->
+  <agm-map *ngIf="clients" [latitude]="49.595875" [longitude]="17.249870" [zoom]="15">
+    <agm-overlay [latitude]="49.595875" [longitude]="17.249870">
+      <div>
+        <ion-avatar>
+          <img [src]="clients[0].profilePicture">
+        </ion-avatar>
+      </div>
+    </agm-overlay>
+    <agm-overlay [latitude]="49.594566" [longitude]="17.248407">
+      <div>
+        <ion-avatar>
+          <img [src]="clients[2].profilePicture">
+        </ion-avatar>
+      </div>
+    </agm-overlay>
+  </agm-map>
+</ion-content>
+
+<!-- PULSE -->
+<!-- https://stackoverflow.com/questions/58788309/add-pulse-animation-effect-to-map-marker-angular-agm -->
