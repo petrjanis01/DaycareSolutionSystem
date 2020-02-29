@@ -46,6 +46,22 @@ ion-item.in-progress {
   background-color: rgb(128, 255, 128);
 }
 
+.bg-completed {
+  background-color: rgb(128, 255, 128);
+}
+
+.bg-in-progress {
+  background-color: rgb(255, 255, 128);
+}
+
+.bg-canceled {
+  background-color: rgb(255, 128, 128);
+}
+
+.bg-default {
+  background-color: rgb(77, 219, 255);
+}
+
 .flex-row {
   display: flex;
   flex-direction: row;
@@ -54,6 +70,11 @@ ion-item.in-progress {
 .flex-center {
   display: flex;
   justify-content: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
 }
 
 .avatar-big {

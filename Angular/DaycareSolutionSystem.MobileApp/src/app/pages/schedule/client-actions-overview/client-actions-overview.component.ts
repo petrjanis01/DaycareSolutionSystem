@@ -4,6 +4,7 @@ import { ClientsCacheService } from 'src/app/services/clients/clients-cache.serv
 import { Client } from 'src/app/services/clients/client';
 import { ModalController } from '@ionic/angular';
 import { ClientActionDetailPage } from '../client-action-detail/client-action-detail.page';
+import { VisualHelperService } from 'src/app/services/visual-helper.service';
 
 @Component({
   selector: 'client-actions-overview',
@@ -16,11 +17,16 @@ export class ClientActionsOverviewComponent implements OnInit {
 
   public client: Client;
 
-  constructor(private clientCache: ClientsCacheService, private modalController: ModalController) { }
+  constructor(
+    private clientCache: ClientsCacheService,
+    private modalController: ModalController,
+    public visualHelper: VisualHelperService) { }
 
   async ngOnInit() {
+    await this.clientCache.loaded;
+
     let clientId = this.clientActions.clientId;
-    this.client = await this.clientCache.getClientById(clientId);
+    this.client = this.clientCache.getClientById(clientId);
   }
 
   public calculateEstimatedEndTime(date: Date, minutes: number): Date {

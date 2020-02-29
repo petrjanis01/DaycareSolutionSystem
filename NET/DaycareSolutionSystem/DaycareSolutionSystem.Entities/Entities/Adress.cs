@@ -1,7 +1,5 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
 
 namespace DaycareSolutionSystem.Database.Entities.Entities
 {
@@ -16,6 +14,8 @@ namespace DaycareSolutionSystem.Database.Entities.Entities
 
         public string BuildingNumber { get; set; }
 
-        public string GpsCoordinates { get; set; }
+        public Guid? CoordinatesId { get; set; }
+
+        public virtual Coordinates Coordinates { get; set; }
     }
 }

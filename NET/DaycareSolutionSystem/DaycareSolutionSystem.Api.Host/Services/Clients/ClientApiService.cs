@@ -60,5 +60,29 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
         {
             return ChangeProfilePicture<Client>(clientId, pictureUri);
         }
+
+        // TODO check this method (probably not returning correct data)
+        public List<RegisteredClientAction> GetClientsScheduledToday(Guid? employeeId = null)
+        {
+            employeeId ??= GetCurrentUser()?.Employee.Id;
+
+            var clients = DataContext.RegisteredClientActions
+                .Where(ca => ca.PlannedStartDateTime.Date == DateTime.Today)
+                .Where(ca => ca.EmployeeId == employeeId)
+                .Select(ca => ca.Client).ToList();
+
+            var clientActions = new List<RegisteredClientAction>();
+            foreach (var client in clients)
+            {
+                var futureClientActions =
+                    DataContext.RegisteredClientActions.Where(ca => ca.ClientId == client.Id)
+                        .Where(ca => ca.PlannedStartDateTime > DateTime.Now);
+
+                var nextClientAction = futureClientActions.OrderBy(ca => ca.PlannedStartDateTime).First();
+                clientActions.Add(nextClientAction);
+            }
+
+            return clientActions;
+        }
     }
 }

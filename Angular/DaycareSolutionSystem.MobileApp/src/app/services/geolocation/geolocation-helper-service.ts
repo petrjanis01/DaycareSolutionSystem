@@ -4,6 +4,9 @@ import { AppConfig } from '../../config/app.config';
 import { map } from 'rxjs/operators';
 import { Address } from './address';
 import { Plugins } from '@capacitor/core';
+import { CoordinatesDTO } from 'src/app/api/generated';
+import { Platform } from '@ionic/angular';
+import { ToastService } from '../toast.service';
 
 // https://medium.com/@shawinshawz/ionic-4-google-maps-geo-location-b49d7f1d1111
 @Injectable({ providedIn: 'root' })
@@ -11,15 +14,37 @@ export class GeolocationHelperService {
     private googleMapApiUrlBase = 'https://maps.googleapis.com/maps/api';
     private apiKey = AppConfig.settings.googleMaps.apiKey;
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private platform: Platform, private toast: ToastService) { }
 
-    public async getCurrentLocation(): Promise<string> {
-        let result = await Plugins.Geolocation.getCurrentPosition();
+    public async getCurrentLocation(): Promise<CoordinatesDTO> {
+        if (this.platform.is('capacitor')) {
+            let result = await Plugins.Geolocation.getCurrentPosition();
 
-        return `${result.coords.latitude},${result.coords.longitude}`;
+            let coordinates: CoordinatesDTO = {
+                latitude: result.coords.latitude.toString(),
+                longitude: result.coords.longitude.toString()
+            };
+            return coordinates;
+        } else {
+            // tslint:disable-next-line:no-shadowed-variable
+            let cords = await new Promise<CoordinatesDTO>((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resp => {
+                    resolve({ latitude: resp.coords.latitude.toString(), longitude: resp.coords.longitude.toString() });
+                },
+                    err => {
+                        reject(err);
+                    });
+            }).catch(err => {
+                this.toast.showErrorToast('Unable to get device location');
+            });
+
+            if (cords != null) {
+                return cords as CoordinatesDTO;
+            }
+        }
     }
 
-    public async getGpsCoordinatesFromAddress(address: Address): Promise<string> {
+    public async getGpsCoordinatesFromAddress(address: Address): Promise<CoordinatesDTO> {
         let result = await this.http.get<any>(`${this.googleMapApiUrlBase}/geocode/json?address=${address.toString()}&key=${this.apiKey}`)
             .pipe(
                 map(geoData => {
@@ -31,13 +56,18 @@ export class GeolocationHelperService {
             ).toPromise();
 
         if (result != null) {
-            return `${result.lat},${result.lng}`;
+            let coordinates: CoordinatesDTO = {
+                latitude: result.lat.toString(),
+                longitude: result.lng.toString()
+            };
+            return coordinates;
         }
     }
 
-    public async getAddressFromgGpsCoordinates(gpsCoordinates: string): Promise<Address> {
+    public async getAddressFromgGpsCoordinates(coordinates: CoordinatesDTO): Promise<Address> {
         let addressComponents = await
-            this.http.get<any>(`${this.googleMapApiUrlBase}/geocode/json?latlng=${gpsCoordinates}&key=${this.apiKey}`)
+            this.http.get<any>(`${this.googleMapApiUrlBase}/geocode/json?latlng=${coordinates.latitude},${coordinates.longitude}
+            &key=${this.apiKey}`)
                 .pipe(
                     map(geoData => {
                         if (!geoData || !geoData.results || geoData.results === 0) {
@@ -52,6 +82,8 @@ export class GeolocationHelperService {
         }
 
         let address = this.mapAddressComponentsToAdress(addressComponents);
+        address.coordinates = coordinates;
+
         return address;
     }
 

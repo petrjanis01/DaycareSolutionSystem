@@ -9,14 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CoordinatesDTO } from './coordinatesDTO';
 
 
-export interface AddressDTO { 
-    id?: string;
-    postCode?: string;
-    city?: string;
-    street?: string;
-    buildingNumber?: string;
-    coordinates?: CoordinatesDTO;
+export interface CoordinatesDTO { 
+    latitude?: string;
+    longitude?: string;
 }

@@ -22,6 +22,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
 import { ClientDTO } from '../model/clientDTO';
+import { ClientWithNextActionDTO } from '../model/clientWithNextActionDTO';
 import { IndividualPlanDTO } from '../model/individualPlanDTO';
 import { PictureDTO } from '../model/pictureDTO';
 
@@ -202,6 +203,43 @@ export class ClientsService extends ApiBase{
 
 
         let result = this.httpClient.get<ClientDTO>(`${this.basePath}/api/Clients/single-client`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: this.createAuthHeaders(headers),
+            }
+        ).toPromise();
+
+        return this.processErrors(result);
+    }
+
+    public async apiClientsTodayScheduledClientsGet(employeeId?: string, ): Promise<Array<ClientWithNextActionDTO>> {
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (employeeId !== undefined && employeeId !== null) {
+            queryParameters = queryParameters.set('employeeId', <any>employeeId);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+
+        let result = this.httpClient.get<Array<ClientWithNextActionDTO>>(`${this.basePath}/api/Clients/today-scheduled-clients`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,

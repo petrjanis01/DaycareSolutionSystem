@@ -80,6 +80,26 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
             return dto;
         }
 
+        [HttpGet]
+        [Route("today-scheduled-clients")]
+        public ClientWithNextActionDTO[] GetClientsScheduledToday(Guid? employeeId = null)
+        {
+            var clientActions = _clientApiService.GetClientsScheduledToday(employeeId);
+
+            var clientsWithNextAction = new List<ClientWithNextActionDTO>();
+            foreach (var clientAction in clientActions)
+            {
+                var dto = new ClientWithNextActionDTO();
+                dto.ClientId = clientAction.ClientId;
+                dto.NextAction = MapRegisteredActionToBasicDto(clientAction);
+
+                clientsWithNextAction.Add(dto);
+            }
+
+            return clientsWithNextAction.ToArray();
+        }
+
+        // mappers
         private ClientDTO MapClientToDto(Client client)
         {
             var dto = new ClientDTO();
@@ -101,7 +121,14 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
             dto.Id = address.Id;
             dto.BuildingNumber = address.BuildingNumber;
             dto.City = address.City;
-            dto.GpsCoordinates = address.GpsCoordinates;
+
+            if (address.CoordinatesId.HasValue)
+            {
+                dto.Coordinates = new CoordinatesDTO();
+                dto.Coordinates.Latitude = address.Coordinates.Latitude;
+                dto.Coordinates.Longitude = address.Coordinates.Longitude;
+            }
+
             dto.PostCode = address.PostCode;
             dto.Street = address.Street;
 
@@ -150,6 +177,17 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
             planDto.ActionsForDay = actionsForDays.ToArray();
 
             return planDto;
+        }
+
+        private RegisteredActionBasicDTO MapRegisteredActionToBasicDto(RegisteredClientAction action)
+        {
+            var dto = new RegisteredActionBasicDTO();
+            dto.Id = action.Id;
+            dto.Name = action.AgreedClientAction.Action.Name;
+            dto.Date = action.PlannedStartDateTime;
+            dto.Time = action.PlannedStartDateTime;
+
+            return dto;
         }
     }
 }

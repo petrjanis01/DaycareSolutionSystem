@@ -13,5 +13,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
         Client GetClient(Guid clientId);
 
         Dictionary<IndividualPlan, List<AgreedClientAction>> GetClientAgreedActionsByPlans(Guid clientId);
+
+        List<RegisteredClientAction> GetClientsScheduledToday(Guid? employeeId = null);
     }
 }

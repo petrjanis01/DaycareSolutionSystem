@@ -1,0 +1,17 @@
+<div class="item-container" [ngClass]="bgCss">
+    <span class="header-text">{{headerText}}</span>
+
+    <div class="flex-row">
+        <span *ngIf="date != null" style="margin-left: 10px">
+            <ion-icon name="calendar">
+            </ion-icon>
+            <span class="secondary-text">{{date|date}}</span>
+        </span>
+
+        <span [ngStyle]="{'margin-left': date !=null ? '8%' : '5px'}">
+            <ion-icon name="time">
+            </ion-icon>
+            <span class="secondary-text">{{time|date:'shortTime'}}</span>
+        </span>
+    </div>
+</div>

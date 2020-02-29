@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DaycareSolutionSystem.Database.DataContext;
+using DaycareSolutionSystem.Database.Entities;
 using DaycareSolutionSystem.Database.Entities.Entities;
 using DaycareSolutionSystem.Entities.Enums;
 using DaycareSolutionSystem.Helpers;
@@ -157,22 +158,30 @@ namespace DaycareSolutionSystem.Database.Migrator
             clients[5].AddressId = address5.Id;
 
             var address6 = new Address();
-            address6.GpsCoordinates = "49.594566,17.248407";
+            address6.Coordinates = new Coordinates();
+            address6.Coordinates.Latitude = "49.594566";
+            address6.Coordinates.Longitude = "17.248407";
             addresses.Add(address6);
             clients[6].AddressId = address6.Id;
 
             var address7 = new Address();
-            address7.GpsCoordinates = "49.599403,17.254586";
+            address7.Coordinates = new Coordinates();
+            address7.Coordinates.Latitude = "49.599403";
+            address7.Coordinates.Longitude = "17.254586";
             addresses.Add(address7);
             clients[7].AddressId = address7.Id;
 
             var address8 = new Address();
-            address8.GpsCoordinates = "49.595875,17.249870";
+            address8.Coordinates = new Coordinates();
+            address8.Coordinates.Latitude = "49.595875";
+            address8.Coordinates.Longitude = "17.249870";
             addresses.Add(address8);
             clients[8].AddressId = address8.Id;
 
             var address9 = new Address();
-            address9.GpsCoordinates = "49.592909,17.229890";
+            address9.Coordinates = new Coordinates();
+            address9.Coordinates.Latitude = "49.592909";
+            address9.Coordinates.Longitude = "17.229890";
             addresses.Add(address9);
             clients[9].AddressId = address9.Id;
 

@@ -1,4 +1,5 @@
 import { Gender, AddressDTO } from 'src/app/api/generated';
+import { Address } from '../geolocation/address';
 
 export class Client {
     public id: string;
@@ -8,6 +9,6 @@ export class Client {
     public birthDate: Date;
     public gender: Gender;
     public profilePicture: string;
-    public address: AddressDTO;
+    public address: Address;
     public distanceFromDevice: number;
 }

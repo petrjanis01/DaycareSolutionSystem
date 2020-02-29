@@ -14,6 +14,6 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.DTO
 
         public string BuildingNumber { get; set; }
 
-        public string GpsCoordinates { get; set; }
+        public CoordinatesDTO Coordinates { get; set; }
     }
 }

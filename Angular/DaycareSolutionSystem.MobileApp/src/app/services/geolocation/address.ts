@@ -1,15 +1,15 @@
-import { AddressDTO } from 'src/app/api/generated';
+import { AddressDTO, CoordinatesDTO } from 'src/app/api/generated';
 
 export class Address {
     postCode: string;
     city: string;
     street?: string;
     buildingNumber: string;
-    gpsCoordinates: string;
+    coordinates: CoordinatesDTO;
 
     constructor(dto?: AddressDTO) {
         if (dto != null) {
-            this.gpsCoordinates = dto.gpsCoordinates;
+            this.coordinates = dto.coordinates;
             this.city = dto.city;
             this.buildingNumber = dto.buildingNumber;
             this.postCode = dto.postCode;

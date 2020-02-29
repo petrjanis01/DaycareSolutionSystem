@@ -4,27 +4,59 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <!-- <agm-map *ngIf="client">
-    <agm-marker [latitude]="49.595875" [longitude]="17.249870"></agm-marker>
-  </agm-map> -->
-  <agm-map *ngIf="clients" [latitude]="49.595875" [longitude]="17.249870" [zoom]="15">
-    <agm-overlay [latitude]="49.595875" [longitude]="17.249870">
-      <div>
-        <ion-avatar>
-          <img [src]="clients[0].profilePicture">
-        </ion-avatar>
-      </div>
-    </agm-overlay>
-    <agm-overlay [latitude]="49.594566" [longitude]="17.248407">
-      <div>
-        <ion-avatar>
-          <img [src]="clients[2].profilePicture">
-        </ion-avatar>
-      </div>
-    </agm-overlay>
-  </agm-map>
-</ion-content>
 
-<!-- PULSE -->
-<!-- https://stackoverflow.com/questions/58788309/add-pulse-animation-effect-to-map-marker-angular-agm -->
+<!-- fix ovetlays - when scrolling out they are getting missplaced -->
+<ion-content>
+  <agm-map *ngIf="clients && mapStartLat && mapStartLng" [latitude]="mapStartLat" [longitude]="mapStartLng" [zoom]="15">
+    <!-- Device postion marker -->
+    <agm-overlay *ngIf="displaySelfMarker" [latitude]="mapStartLat" [longitude]="mapStartLng">
+      <div class="marker">
+        <div class="pin"></div>
+        <div class="pin-effect"></div>
+      </div>
+    </agm-overlay>
+
+    <!-- Clients markers -->
+    <agm-overlay *ngFor="let client of clients" [latitude]="client.address.coordinates.latitude"
+      [longitude]="client.address.coordinates.longitude">
+      <div class="custom-marker" (click)="clientOnMapClicked(client.id)">
+        <ion-avatar>
+          <img [src]="client.profilePicture">
+        </ion-avatar>
+      </div>
+    </agm-overlay>
+
+  </agm-map>
+
+  <div class="detail" *ngIf="displayedClient && displayedClientAction">
+
+    <!-- close button -->
+    <div class="close-detail" (click)="closeDetail()">
+      <ion-icon name="close"></ion-icon>
+    </div>
+
+    <!-- navigate button -->
+    <ion-button class="navigate" fill="clear" color="white" size="small" (click)="navigateInExternalApp()">
+      <ion-icon name="navigate" slot="icon-only"></ion-icon>
+      Navigate
+    </ion-button>
+
+    <!-- header section -->
+    <div class="flex-row">
+      <ion-avatar class="client-avatar">
+        <img [src]="displayedClient.profilePicture">
+      </ion-avatar>
+      <div>
+        <h2>{{displayedClient.fullName}}</h2>
+        <span class="client-address">{{displayedClient.address.toString()}}</span>
+      </div>
+    </div>
+
+    <!-- next action -->
+    <h5>Next action:</h5>
+    <div>
+      <action-item-card [headerText]="displayedClientAction.name" [time]="displayedClientAction.time" [date]="displayedClientAction.date" [bgCss]="'bg-default'">
+      </action-item-card>
+    </div>
+  </div>
+</ion-content>

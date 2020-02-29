@@ -57,6 +57,34 @@ export class RegisteredActionsService extends ApiBase{
         return false;
     }
 
+    public async apiRegisteredActionsGenerateNextMonthActionsPost(): Promise<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+
+        let result = this.httpClient.post<any>(`${this.basePath}/api/RegisteredActions/generate-next-month-actions`,
+            null,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: this.createAuthHeaders(headers),
+            }
+        ).toPromise();
+
+        return this.processErrors(result);
+    }
+
     public async apiRegisteredActionsRegisteredActionPut(RegisteredActionDTO?: RegisteredActionDTO, ): Promise<RegisteredActionDTO> {
 
 

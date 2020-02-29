@@ -5,12 +5,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SideMenuComponent } from './side-menu/side-menu.component';
 import { RouterModule } from '@angular/router';
+import { ActionItemCardComponent } from './action-item-card/action-item-card.component';
 
 
 @NgModule({
     declarations: [
         ClientCardComponent,
-        SideMenuComponent
+        SideMenuComponent,
+        ActionItemCardComponent
     ],
     imports: [
         IonicModule,
@@ -20,7 +22,8 @@ import { RouterModule } from '@angular/router';
     ],
     exports: [
         ClientCardComponent,
-        SideMenuComponent
+        SideMenuComponent,
+        ActionItemCardComponent
     ]
 })
 export class SharedComponentsModule { }

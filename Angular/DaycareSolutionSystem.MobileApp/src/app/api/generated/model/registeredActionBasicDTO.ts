@@ -9,14 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CoordinatesDTO } from './coordinatesDTO';
 
 
-export interface AddressDTO { 
+export interface RegisteredActionBasicDTO { 
     id?: string;
-    postCode?: string;
-    city?: string;
-    street?: string;
-    buildingNumber?: string;
-    coordinates?: CoordinatesDTO;
+    date?: Date;
+    time?: Date;
+    name?: string;
 }

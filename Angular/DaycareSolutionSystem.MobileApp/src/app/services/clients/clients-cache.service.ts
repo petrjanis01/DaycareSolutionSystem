@@ -74,15 +74,13 @@ export class ClientsCacheService {
         client.birthDate = dto.birthDate;
         client.gender = dto.gender;
         client.profilePicture = dto.profilePicture.pictureUri != null ? dto.profilePicture.pictureUri : this.defaultProfilePicture;
-        client.address = dto.address;
+        client.address = new Address(dto.address);
         client.distanceFromDevice = null;
 
         return client;
     }
 
-    public async getClientById(id: string): Promise<Client> {
-        await this.loaded;
-
+    public getClientById(id: string): Client {
         let client = this.clients.find(c => c.id === id);
         return client;
     }

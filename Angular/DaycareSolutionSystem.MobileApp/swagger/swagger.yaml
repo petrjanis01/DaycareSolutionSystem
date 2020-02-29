@@ -127,6 +127,47 @@ paths:
             text/json:
               schema:
                 "$ref": "#/components/schemas/ClientDTO"
+  "/api/Clients/today-scheduled-clients":
+    get:
+      tags:
+      - Clients
+      parameters:
+      - name: employeeId
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ClientWithNextActionDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ClientWithNextActionDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ClientWithNextActionDTO"
+  "/api/Employee/change-password":
+    put:
+      tags:
+      - Employee
+      parameters:
+      - name: newPassword
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
   "/api/Employee/get-employee-detail":
     get:
       tags:
@@ -171,6 +212,13 @@ paths:
           application/*+json:
             schema:
               "$ref": "#/components/schemas/PictureDTO"
+      responses:
+        '200':
+          description: Success
+  "/api/RegisteredActions/generate-next-month-actions":
+    post:
+      tags:
+      - RegisteredActions
       responses:
         '200':
           description: Success
@@ -345,6 +393,15 @@ components:
       - 2
       type: integer
       format: int32
+    CoordinatesDTO:
+      type: object
+      properties:
+        latitude:
+          type: string
+          nullable: true
+        longitude:
+          type: string
+          nullable: true
     AddressDTO:
       type: object
       properties:
@@ -363,9 +420,8 @@ components:
         buildingNumber:
           type: string
           nullable: true
-        gpsCoordinates:
-          type: string
-          nullable: true
+        coordinates:
+          "$ref": "#/components/schemas/CoordinatesDTO"
     ClientDTO:
       type: object
       properties:
@@ -390,6 +446,29 @@ components:
           "$ref": "#/components/schemas/PictureDTO"
         address:
           "$ref": "#/components/schemas/AddressDTO"
+    RegisteredActionBasicDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date-time
+        time:
+          type: string
+          format: date-time
+        name:
+          type: string
+          nullable: true
+    ClientWithNextActionDTO:
+      type: object
+      properties:
+        clientId:
+          type: string
+          format: uuid
+        nextAction:
+          "$ref": "#/components/schemas/RegisteredActionBasicDTO"
     EmployeePosition:
       enum:
       - 0
