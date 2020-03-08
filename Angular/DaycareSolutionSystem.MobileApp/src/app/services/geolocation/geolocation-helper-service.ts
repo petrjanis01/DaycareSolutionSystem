@@ -87,6 +87,27 @@ export class GeolocationHelperService {
         return address;
     }
 
+    // https://stackoverflow.com/questions/1502590/calculate-distance-between-two-points-in-google-maps-v3
+    public getDistnaceBetween2Coordinates(cord1: CoordinatesDTO, cord2: CoordinatesDTO): number {
+        // Earth’s mean radius in meter
+        const R = 6378137;
+
+        let dLat = this.getRads(+cord2.latitude - +cord1.latitude);
+        let dLong = this.getRads(+cord2.longitude - +cord1.longitude);
+
+        let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(this.getRads(+cord1.latitude)) * Math.cos(this.getRads(+cord2.latitude)) *
+            Math.sin(dLong / 2) * Math.sin(dLong / 2);
+        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        let d = R * c;
+
+        return d;
+    }
+
+    private getRads(x: number): number {
+        return x * Math.PI / 180;
+    }
+
     private mapAddressComponentsToAdress(
         addressComponents: Array<{ long_name: string, short_name: string, types: Array<string> }>
     ): Address {

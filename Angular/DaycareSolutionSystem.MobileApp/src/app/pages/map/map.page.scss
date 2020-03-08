@@ -45,11 +45,11 @@ agm-map {
   color: white;
   overflow-y: scroll;
 
-  .close-detail {
+  .navigate {
     position: absolute;
     right: 0px;
-    width: 30px;
-    height: 30px;
+    width: 45px;
+    height: 45px;
 
     ion-icon {
       color: white;
@@ -58,22 +58,16 @@ agm-map {
     }
   }
 
-  .navigate {
-    position: absolute;
-    right: 20px;
-    top: -3px;
-  }
-
   .client-avatar {
-    height: 45px;
-    width: 45px;
+    max-width: 80px;
+    max-height: 80px;
     margin-top: 5px;
     margin-left: 5px;
   }
 
   h2 {
     margin-left: 10px;
-    margin-top: 2px;
+    margin-top: 10px;
     max-width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -85,14 +79,19 @@ agm-map {
     margin-top: -10px;
     position: absolute;
     margin-left: 10px;
-    max-width: 80%;
+    max-width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
   }
 
   h5 {
-    margin-top: 2px;
+    margin-top: 10px;
+    margin-left: 3%;
+  }
+
+  .no-data {
+    margin-top: 10px;
     margin-left: 3%;
   }
 }

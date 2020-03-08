@@ -1,0 +1,17 @@
+<ion-item>
+    <ion-label>Show all clients</ion-label>
+    <ion-toggle (ionChange)="onAllClientsChange($event)" [(ngModel)]="allClientsOnMap"></ion-toggle>
+</ion-item>
+
+<ion-item *ngIf="hasDeviceLocation == false || nearbyClients.length === 0">
+    <ion-label *ngIf="hasDeviceLocation == false; else elseBlock">No device gps data</ion-label>
+    <ng-template #elseBlock>
+        <ion-label>No nearby clients</ion-label>
+    </ng-template>
+</ion-item>
+
+<ng-container *ngIf="hasDeviceLocation && nearbyClients.length > 0">
+    <ion-item *ngFor="let client of nearbyClients">
+        {{client.fullName}} ({{client.distanceFromDevice}}m)
+    </ion-item>
+</ng-container>

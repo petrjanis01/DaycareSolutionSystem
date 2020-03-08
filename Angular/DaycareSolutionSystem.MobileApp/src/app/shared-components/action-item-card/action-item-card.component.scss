@@ -4,20 +4,22 @@
   max-width: 450px;
   margin-left: 2.5%;
   border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 
   .header-text {
     margin-left: 10px;
-    margin-top: 5px;
     font-size: 1.2em;
   }
 
-  .secondary-text{
-    display: inline-block;
-    vertical-align: middle;
-  }
+  // .secondary-text {
+  //   display: inline-block;
+  //   vertical-align: middle;
+  // }
 
-  ion-icon {
-    display: inline-block;
-    vertical-align: middle;
-   }
+  // ion-icon {
+  //   display: inline-block;
+  //   vertical-align: middle;
+  // }
 }

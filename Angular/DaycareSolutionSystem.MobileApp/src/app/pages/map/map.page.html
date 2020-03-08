@@ -1,13 +1,21 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>map</ion-title>
+    <ion-title>Map</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="presentPopover($event)">
+        <ion-badge color="primary" *ngIf="displaySelfMarker">{{nearbyClientsCount}}</ion-badge>
+        <ion-icon name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 
-<!-- fix ovetlays - when scrolling out they are getting missplaced -->
+<!-- TODO fix ovetlays - when scrolling out they are getting missplaced -->
 <ion-content>
-  <agm-map *ngIf="clients && mapStartLat && mapStartLng" [latitude]="mapStartLat" [longitude]="mapStartLng" [zoom]="15">
+  <agm-map *ngIf="clients && mapStartLat && mapStartLng" [latitude]="mapStartLat" [longitude]="mapStartLng" [zoom]="13"
+    (click)="closeDetail()">
+
     <!-- Device postion marker -->
     <agm-overlay *ngIf="displaySelfMarker" [latitude]="mapStartLat" [longitude]="mapStartLng">
       <div class="marker">
@@ -30,32 +38,35 @@
 
   <div class="detail" *ngIf="displayedClient && displayedClientAction">
 
-    <!-- close button -->
-    <div class="close-detail" (click)="closeDetail()">
-      <ion-icon name="close"></ion-icon>
-    </div>
-
-    <!-- navigate button -->
-    <ion-button class="navigate" fill="clear" color="white" size="small" (click)="navigateInExternalApp()">
-      <ion-icon name="navigate" slot="icon-only"></ion-icon>
-      Navigate
-    </ion-button>
-
-    <!-- header section -->
-    <div class="flex-row">
-      <ion-avatar class="client-avatar">
-        <img [src]="displayedClient.profilePicture">
-      </ion-avatar>
-      <div>
-        <h2>{{displayedClient.fullName}}</h2>
-        <span class="client-address">{{displayedClient.address.toString()}}</span>
-      </div>
-    </div>
+    <!-- header -->
+    <!-- TODO fix on desktop -->
+    <ion-grid>
+      <ion-row>
+        <ion-col size="2">
+          <ion-avatar class="client-avatar">
+            <img [src]="displayedClient.profilePicture">
+          </ion-avatar>
+        </ion-col>
+        <ion-col size="8">
+          <div>
+            <h2>{{displayedClient.fullName}}</h2>
+            <span class="client-address">{{displayedClient.address.toString()}}</span>
+          </div>
+        </ion-col>
+        <ion-col size="2">
+          <div class="navigate" (click)="navigateInExternalApp()">
+            <ion-icon name="navigate"></ion-icon>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
     <!-- next action -->
     <h5>Next action:</h5>
-    <div>
-      <action-item-card [headerText]="displayedClientAction.name" [time]="displayedClientAction.time" [date]="displayedClientAction.date" [bgCss]="'bg-default'">
+    <span *ngIf="displayedClientAction == null" class="no-data">No data</span>
+    <div *ngIf="displayedClientAction != null">
+      <action-item-card [headerText]="displayedClientAction.name" [time]="displayedClientAction.time"
+        [date]="displayedClientAction.date" [bgCss]="'bg-default'">
       </action-item-card>
     </div>
   </div>

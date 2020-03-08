@@ -96,6 +96,43 @@ export class ClientsService extends ApiBase{
         return this.processErrors(result);
     }
 
+    public async apiClientsAllClientsNextActionsGet(employeeId?: string, ): Promise<Array<ClientWithNextActionDTO>> {
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (employeeId !== undefined && employeeId !== null) {
+            queryParameters = queryParameters.set('employeeId', <any>employeeId);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+
+        let result = this.httpClient.get<Array<ClientWithNextActionDTO>>(`${this.basePath}/api/Clients/all-clients-next-actions`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: this.createAuthHeaders(headers),
+            }
+        ).toPromise();
+
+        return this.processErrors(result);
+    }
+
     public async apiClientsChangeProfilePicturePost(clientId?: string, PictureDTO?: PictureDTO, ): Promise<any> {
 
 

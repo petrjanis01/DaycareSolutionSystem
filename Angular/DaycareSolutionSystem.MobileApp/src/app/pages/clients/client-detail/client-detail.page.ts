@@ -36,43 +36,16 @@ export class ClientDetailPage implements OnInit {
     let id = this.activatedRoute.snapshot.paramMap.get('id');
     this.client = this.clientCache.getClientById(id);
 
-    this.getCoordinatesForMapIfNeeded();
     this.getIndividualPlans();
-    this.getAddressIfNeeded();
+
+    this.lat = +this.client.address.coordinates.latitude;
+    this.lng = +this.client.address.coordinates.longitude;
   }
 
   private async getIndividualPlans() {
     let plans = await this.clientsService.apiClientsAgreedActionsByPlansGet(this.client.id);
 
     this.individualPlans = plans;
-  }
-
-  private async getAddressIfNeeded() {
-    let address = new Address(this.client.address);
-
-    if ((address.buildingNumber == null || address.city == null || address.postCode == null)
-      && address.coordinates != null) {
-      let coordinates = address.coordinates;
-      let addressCalculated = await this.geolocationHelper.getAddressFromgGpsCoordinates(coordinates);
-
-      this.client.address = addressCalculated;
-      this.client.address.coordinates = coordinates;
-    }
-  }
-
-  private async getCoordinatesForMapIfNeeded() {
-    let address = new Address(this.client.address);
-    let cords: CoordinatesDTO;
-
-    if (address.coordinates == null) {
-      let coordinates = await (await this.geolocationHelper.getGpsCoordinatesFromAddress(address));
-      cords = coordinates;
-    } else {
-      cords = address.coordinates;
-    }
-
-    this.lat = +cords.latitude;
-    this.lng = +cords.longitude;
   }
 
   public async changeClientProfilePicture() {

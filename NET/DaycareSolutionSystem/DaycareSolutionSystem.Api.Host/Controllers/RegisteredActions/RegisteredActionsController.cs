@@ -45,9 +45,9 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
 
         [HttpGet]
         [Route("registered-actions")]
-        public RegisteredActionsForDayDTO[] GetRegisteredActions(int count, Guid? lastActionDisplayedId = null)
+        public RegisteredActionsForDayDTO[] GetRegisteredActions(int count, DateTime date, Guid? lastActionDisplayedId = null)
         {
-            var actionsPerDay = _registeredActionsApiService.GetRegisteredActionsPerDay(count, lastActionDisplayedId);
+            var actionsPerDay = _registeredActionsApiService.GetRegisteredActionsPerDay(count, date, lastActionDisplayedId);
 
             var registeredActionsForDays = new List<RegisteredActionsForDayDTO>();
 

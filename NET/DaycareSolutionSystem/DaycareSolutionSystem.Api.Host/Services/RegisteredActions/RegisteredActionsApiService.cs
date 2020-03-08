@@ -34,11 +34,11 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
             }
         }
 
-        public Dictionary<DateTime, List<RegisteredActionDO>> GetRegisteredActionsPerDay(int count, Guid? lastActionDisplayedId)
+        public Dictionary<DateTime, List<RegisteredActionDO>> GetRegisteredActionsPerDay(int count, DateTime date, Guid? lastActionDisplayedId)
         {
             var startDate = lastActionDisplayedId.HasValue
                 ? (DataContext.RegisteredClientActions.Find(lastActionDisplayedId)).PlannedStartDateTime
-                : DateTime.Today;
+                : date.Date;
 
             var registeredActions = DataContext.RegisteredClientActions
                 .Where(rca => rca.EmployeeId == GetCurrentUser().EmployeeId

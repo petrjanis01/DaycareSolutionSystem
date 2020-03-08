@@ -10,5 +10,6 @@ export class Client {
     public gender: Gender;
     public profilePicture: string;
     public address: Address;
+    // in meters
     public distanceFromDevice: number;
 }

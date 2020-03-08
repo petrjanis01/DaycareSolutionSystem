@@ -156,6 +156,35 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/ClientWithNextActionDTO"
+  "/api/Clients/all-clients-next-actions":
+    get:
+      tags:
+      - Clients
+      parameters:
+      - name: employeeId
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ClientWithNextActionDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ClientWithNextActionDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ClientWithNextActionDTO"
   "/api/Employee/change-password":
     put:
       tags:

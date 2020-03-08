@@ -9,6 +9,7 @@ import { MapPage } from './map.page';
 import { AgmCoreModule } from '@agm/core';
 import { AgmOverlays } from 'agm-overlays';
 import { SharedComponentsModule } from 'src/app/shared-components/share-components.module';
+import { MapMenuComponent } from './map-menu/map-menu.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,10 @@ const routes: Routes = [
     }),
     AgmOverlays
   ],
-  declarations: [MapPage]
+  declarations: [
+    MapPage,
+    MapMenuComponent
+  ],
+  entryComponents: [MapMenuComponent]
 })
 export class MapPageModule { }

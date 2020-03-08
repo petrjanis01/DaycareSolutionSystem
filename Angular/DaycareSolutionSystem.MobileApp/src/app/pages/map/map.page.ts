@@ -6,6 +6,8 @@ import { GeolocationHelperService } from 'src/app/services/geolocation/geolocati
 import { Address } from 'src/app/services/geolocation/address';
 import { RegisteredActionBasicDTO } from 'src/app/api/generated/model/registeredActionBasicDTO';
 import { ClientWithNextActionDTO } from 'src/app/api/generated/model/clientWithNextActionDTO';
+import { PopoverController } from '@ionic/angular';
+import { MapMenuComponent } from './map-menu/map-menu.component';
 
 @Component({
   selector: 'app-map',
@@ -20,16 +22,21 @@ export class MapPage implements OnInit {
   public displaySelfMarker: boolean;
   public displayedClient: Client;
   public displayedClientAction: RegisteredActionBasicDTO;
+  public allClientsOnMap: boolean;
+  public nearbyClientsCount: number;
 
   constructor(
     private cache: ClientsCacheService,
     private clientsService: ClientsService,
-    private geolocationHelper: GeolocationHelperService) { }
+    private geolocationHelper: GeolocationHelperService,
+    private popoverController: PopoverController) { }
 
   async ngOnInit() {
     this.displaySelfMarker = true;
+    this.allClientsOnMap = false;
+
     await this.cache.loaded;
-    await this.loadClientsForToday();
+    await this.loadCLientsWithNextActions();
     this.getMapStartingPostion();
   }
 
@@ -44,43 +51,29 @@ export class MapPage implements OnInit {
     this.mapStartLng = +cords.longitude;
   }
 
-  private async loadClientsForToday() {
-    let clientsWithNextAction = await this.clientsService.apiClientsTodayScheduledClientsGet();
+  private async loadCLientsWithNextActions() {
+    let clientsWithNextAction;
 
+    if (this.allClientsOnMap === false) {
+      clientsWithNextAction = await this.clientsService.apiClientsTodayScheduledClientsGet();
+    } else {
+      clientsWithNextAction = await this.clientsService.apiClientsAllClientsNextActionsGet();
+    }
+
+    this.processClients(clientsWithNextAction);
+  }
+
+  private async processClients(clientsWithNextAction: ClientWithNextActionDTO[]) {
     let clients = new Array<Client>();
 
-    for (let clientWithNextAction of clientsWithNextAction) {
+    clientsWithNextAction.forEach(clientWithNextAction => {
       let client = this.cache.getClientById(clientWithNextAction.clientId);
-      await this.getCoordinatesIfNeeded(client);
-      await this.getAddressIfNeeded(client);
-
       clients.push(client);
-    }
+    });
 
     this.clients = clients;
     this.nextClientActions = clientsWithNextAction;
-  }
-
-  private async getAddressIfNeeded(client: Client) {
-    let address = new Address(client.address);
-
-    let isAddressComplete = address.city == null || address.buildingNumber == null || address.postCode == null;
-    if (isAddressComplete) {
-      let addressCalculated = await (await this.geolocationHelper.getAddressFromgGpsCoordinates(address.coordinates));
-      client.address.buildingNumber = addressCalculated.buildingNumber;
-      client.address.street = addressCalculated.street;
-      client.address.postCode = addressCalculated.postCode;
-      client.address.city = addressCalculated.city;
-    }
-  }
-
-  private async getCoordinatesIfNeeded(client: Client) {
-    let address = new Address(client.address);
-
-    if (address.coordinates == null) {
-      let coordinates = await (await this.geolocationHelper.getGpsCoordinatesFromAddress(address));
-      client.address.coordinates = coordinates;
-    }
+    this.nearbyClientsCount = this.getNearbyClients().length;
   }
 
   clientOnMapClicked(id: string) {
@@ -102,5 +95,44 @@ export class MapPage implements OnInit {
   closeDetail() {
     this.displayedClient = null;
     this.displayedClientAction = null;
+  }
+
+  public navigateInExternalApp() {
+    console.log('open external app');
+  }
+
+  public async presentPopover(ev: any) {
+    let nearbyClients = this.getNearbyClients();
+
+    let popover = await this.popoverController.create({
+      component: MapMenuComponent,
+      componentProps: {
+        allClientsOnMap: this.allClientsOnMap,
+        hasDeviceLocation: this.displaySelfMarker,
+        nearbyClients
+      },
+      event: ev,
+      translucent: true,
+    });
+    popover.present();
+
+    popover.onDidDismiss().then(
+      (data: any) => {
+        if (data && data.data) {
+          this.allClientsOnMap = data.data.allClientsOnMap;
+          this.loadCLientsWithNextActions();
+        }
+      });
+  }
+
+  private getNearbyClients(): Client[] {
+    let nearbyClients = new Array<Client>();
+    this.clients.forEach(client => {
+      if (client.distanceFromDevice < 1000) {
+        nearbyClients.push(client);
+      }
+    });
+
+    return nearbyClients;
   }
 }

@@ -6,7 +6,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
 {
     public interface IRegisteredActionsApiService
     {
-        Dictionary<DateTime, List<RegisteredActionDO>> GetRegisteredActionsPerDay(int count, Guid? lastActionDisplayedId);
+        Dictionary<DateTime, List<RegisteredActionDO>> GetRegisteredActionsPerDay(int count, DateTime date, Guid? lastActionDisplayedId);
 
         RegisteredActionDTO UpdateRegisteredAction(RegisteredActionDTO dto);
 

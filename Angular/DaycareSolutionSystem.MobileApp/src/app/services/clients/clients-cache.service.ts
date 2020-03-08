@@ -34,19 +34,26 @@ export class ClientsCacheService {
         await loading.present();
 
         await this.loadDefaulProfilePicture();
+        let deviceCords = await this.geolocationHelper.getCurrentLocation();
 
-        await this.clientsService.apiClientsGet(null).then(dtos => {
+        this.clientsService.apiClientsGet(null).then(async dtos => {
             this.clients = new Array<Client>();
             dtos.forEach(async dto => {
                 let client = await this.mapDtoToClient(dto);
+                await this.getCoordinatesIfNeeded(client);
+                await this.getAddressIfNeeded(client);
+
+                if (deviceCords != null) {
+                    let distance = this.geolocationHelper.getDistnaceBetween2Coordinates(deviceCords, client.address.coordinates);
+                    client.distanceFromDevice = Math.round(distance);
+                }
+
                 this.clients.push(client);
             });
         }).finally(() => {
             loading.dismiss();
             this.alreadyLoaded();
         });
-
-        this.loadDistancesFromClients();
     }
 
     public async reloadSingleClient(id: string): Promise<Client> {
@@ -85,7 +92,25 @@ export class ClientsCacheService {
         return client;
     }
 
-    private loadDistancesFromClients() {
-        // TODO Use google map api on each client and find their distance
+    private async getAddressIfNeeded(client: Client) {
+        let address = new Address(client.address);
+
+        let isAddressComplete = address.city == null || address.buildingNumber == null || address.postCode == null;
+        if (isAddressComplete) {
+            let addressCalculated = await (await this.geolocationHelper.getAddressFromgGpsCoordinates(address.coordinates));
+            client.address.buildingNumber = addressCalculated.buildingNumber;
+            client.address.street = addressCalculated.street;
+            client.address.postCode = addressCalculated.postCode;
+            client.address.city = addressCalculated.city;
+        }
+    }
+
+    private async getCoordinatesIfNeeded(client: Client) {
+        let address = new Address(client.address);
+
+        if (address.coordinates == null) {
+            let coordinates = await (await this.geolocationHelper.getGpsCoordinatesFromAddress(address));
+            client.address.coordinates = coordinates;
+        }
     }
 }

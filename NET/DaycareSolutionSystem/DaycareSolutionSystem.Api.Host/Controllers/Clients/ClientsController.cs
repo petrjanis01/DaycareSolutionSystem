@@ -84,7 +84,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
         [Route("today-scheduled-clients")]
         public ClientWithNextActionDTO[] GetClientsScheduledToday(Guid? employeeId = null)
         {
-            var clientActions = _clientApiService.GetClientsScheduledToday(employeeId);
+            var clientActions = _clientApiService.GetNextRegisteredActionsToday(employeeId);
 
             var clientsWithNextAction = new List<ClientWithNextActionDTO>();
             foreach (var clientAction in clientActions)
@@ -92,6 +92,27 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
                 var dto = new ClientWithNextActionDTO();
                 dto.ClientId = clientAction.ClientId;
                 dto.NextAction = MapRegisteredActionToBasicDto(clientAction);
+
+                clientsWithNextAction.Add(dto);
+            }
+
+            return clientsWithNextAction.ToArray();
+        }
+
+        [HttpGet]
+        [Route("all-clients-next-actions")]
+        public ClientWithNextActionDTO[] GetAllClientsWithNextAction(Guid? employeeId = null)
+        {
+            var clientActions = _clientApiService.GetAllNextRegisteredActions(employeeId);
+            var clients = _clientApiService.GetAgreedActionsLinkedClients(employeeId);
+
+            var clientsWithNextAction = new List<ClientWithNextActionDTO>();
+            foreach (var client in clients)
+            {
+                var nextClientAction = clientActions.SingleOrDefault(ca => ca.ClientId == client.Id);
+                var dto = new ClientWithNextActionDTO();
+                dto.ClientId = client.Id;
+                dto.NextAction = nextClientAction != null ? MapRegisteredActionToBasicDto(nextClientAction) : null;
 
                 clientsWithNextAction.Add(dto);
             }
