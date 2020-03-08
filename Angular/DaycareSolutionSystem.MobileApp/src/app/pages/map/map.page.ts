@@ -8,6 +8,7 @@ import { RegisteredActionBasicDTO } from 'src/app/api/generated/model/registered
 import { ClientWithNextActionDTO } from 'src/app/api/generated/model/clientWithNextActionDTO';
 import { PopoverController } from '@ionic/angular';
 import { MapMenuComponent } from './map-menu/map-menu.component';
+import { VisualHelperService } from 'src/app/services/visual-helper.service';
 
 @Component({
   selector: 'app-map',
@@ -29,7 +30,8 @@ export class MapPage implements OnInit {
     private cache: ClientsCacheService,
     private clientsService: ClientsService,
     private geolocationHelper: GeolocationHelperService,
-    private popoverController: PopoverController) { }
+    private popoverController: PopoverController,
+    public visualHelper: VisualHelperService) { }
 
   async ngOnInit() {
     this.displaySelfMarker = true;
@@ -131,6 +133,17 @@ export class MapPage implements OnInit {
       if (client.distanceFromDevice < 1000) {
         nearbyClients.push(client);
       }
+    });
+
+    this.clients.sort((a, b) => {
+      if (a.distanceFromDevice > b.distanceFromDevice) {
+        return -1;
+      }
+      if (b.distanceFromDevice > a.distanceFromDevice) {
+        return 1;
+      }
+
+      return 0;
     });
 
     return nearbyClients;

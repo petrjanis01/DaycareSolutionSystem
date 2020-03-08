@@ -292,7 +292,7 @@ namespace DaycareSolutionSystem.Database.Migrator
             client0Cleaning1.ActionId = _actionIds[1];
             client0Cleaning1.EstimatedDurationMinutes = 30;
             client0Cleaning1.IndividualPlanId = individualPlanClient.Id;
-            client0Cleaning1.Day = DayOfWeek.Monday;
+            client0Cleaning1.Day = DayOfWeek.Thursday;
             client0Cleaning1.PlannedStartTime = TimeSpan.FromHours(9);
             agreedClientActions.Add(client0Cleaning1);
 
@@ -418,7 +418,7 @@ namespace DaycareSolutionSystem.Database.Migrator
             _dataContext.SaveChanges();
         }
 
-        // materialize all past and max 30 days into future agreed client actions to registered client actions
+        // create registered client actions from agreed client actions - all past and max 30 days into future
         private List<RegisteredClientAction> GenerateRegisteredClientActionsForAgreedClientAction(
             AgreedClientAction agreedClientAction)
         {

@@ -21,15 +21,15 @@ export class GeolocationHelperService {
             let result = await Plugins.Geolocation.getCurrentPosition();
 
             let coordinates: CoordinatesDTO = {
-                latitude: result.coords.latitude.toString(),
-                longitude: result.coords.longitude.toString()
+                latitude: result.coords.latitude,
+                longitude: result.coords.longitude
             };
             return coordinates;
         } else {
             // tslint:disable-next-line:no-shadowed-variable
             let cords = await new Promise<CoordinatesDTO>((resolve, reject) => {
                 navigator.geolocation.getCurrentPosition(resp => {
-                    resolve({ latitude: resp.coords.latitude.toString(), longitude: resp.coords.longitude.toString() });
+                    resolve({ latitude: resp.coords.latitude, longitude: resp.coords.longitude });
                 },
                     err => {
                         reject(err);

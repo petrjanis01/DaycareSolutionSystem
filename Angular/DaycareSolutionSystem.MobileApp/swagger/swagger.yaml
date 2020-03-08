@@ -382,10 +382,10 @@ components:
           format: int32
         plannedStartTime:
           type: string
-          format: date-span
+          format: date-time
         plannedEndTime:
           type: string
-          format: date-span
+          format: date-time
         action:
           "$ref": "#/components/schemas/ActionDTO"
     AgreedActionsForDayDTO:
@@ -431,11 +431,11 @@ components:
       type: object
       properties:
         latitude:
-          type: string
-          nullable: true
+          type: number
+          format: double
         longitude:
-          type: string
-          nullable: true
+          type: number
+          format: double
     AddressDTO:
       type: object
       properties:

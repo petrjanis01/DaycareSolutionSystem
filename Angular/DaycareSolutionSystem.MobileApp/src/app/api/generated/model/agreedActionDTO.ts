@@ -16,7 +16,7 @@ export interface AgreedActionDTO {
     id?: string;
     clientActionSpecificDescription?: string;
     estimatedDurationMinutes?: number;
-    plannedStartTime?: string;
-    plannedEndTime?: string;
+    plannedStartTime?: Date;
+    plannedEndTime?: Date;
     action?: ActionDTO;
 }

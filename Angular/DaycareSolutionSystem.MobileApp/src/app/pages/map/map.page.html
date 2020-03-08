@@ -39,15 +39,14 @@
   <div class="detail" *ngIf="displayedClient && displayedClientAction">
 
     <!-- header -->
-    <!-- TODO fix on desktop -->
     <ion-grid>
       <ion-row>
-        <ion-col size="2">
+        <ion-col [size]="visualHelper.getMapDetailAvatarGridSize()">
           <ion-avatar class="client-avatar">
             <img [src]="displayedClient.profilePicture">
           </ion-avatar>
         </ion-col>
-        <ion-col size="8">
+        <ion-col [size]="visualHelper.getMapDetailNameGridSize()">
           <div>
             <h2>{{displayedClient.fullName}}</h2>
             <span class="client-address">{{displayedClient.address.toString()}}</span>
@@ -64,8 +63,8 @@
     <!-- next action -->
     <h5>Next action:</h5>
     <span *ngIf="displayedClientAction == null" class="no-data">No data</span>
-    <div *ngIf="displayedClientAction != null">
-      <action-item-card [headerText]="displayedClientAction.name" [time]="displayedClientAction.time"
+    <div *ngIf="displayedClientAction != null" style="margin-bottom: 10px;">
+      <action-item-card [headerText]="displayedClientAction.name" [fromTime]="displayedClientAction.time"
         [date]="displayedClientAction.date" [bgCss]="'bg-default'">
       </action-item-card>
     </div>

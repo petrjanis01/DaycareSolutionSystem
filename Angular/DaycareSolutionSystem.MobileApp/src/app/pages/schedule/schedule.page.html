@@ -32,8 +32,15 @@
       </ion-label>
     </ion-item-divider>
 
-    <client-actions-overview *ngFor="let clientActions of registeredAction.registeredActionsClient"
-      [clientActions]="clientActions" (detailModalClosed)="reloadData()"></client-actions-overview>
+    <ion-grid>
+      <ion-row>
+        <ion-col [size]="visualHelper.getBasicDataGridSize()"
+          *ngFor="let clientActions of registeredAction.registeredActionsClient">
+          <client-actions-overview [clientActions]="clientActions" (detailModalClosed)="reloadData()">
+          </client-actions-overview>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ng-container>
 
   <ion-infinite-scroll *ngIf="registeredActions" (ionInfinite)="loadMoreData($event)">

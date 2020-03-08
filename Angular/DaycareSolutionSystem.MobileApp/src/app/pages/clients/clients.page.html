@@ -5,5 +5,11 @@
 </ion-header>
 
 <ion-content>
-    <client-card [client]="client" *ngFor="let client of clients" ></client-card>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let client of clients" [size]="visualHelper.getClientCardGridSize()">
+        <client-card [client]="client"></client-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

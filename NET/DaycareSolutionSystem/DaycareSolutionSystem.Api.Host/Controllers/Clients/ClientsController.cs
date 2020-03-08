@@ -146,8 +146,8 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
             if (address.CoordinatesId.HasValue)
             {
                 dto.Coordinates = new CoordinatesDTO();
-                dto.Coordinates.Latitude = address.Coordinates.Latitude;
-                dto.Coordinates.Longitude = address.Coordinates.Longitude;
+                dto.Coordinates.Latitude = Convert.ToDecimal(address.Coordinates.Latitude);
+                dto.Coordinates.Longitude = Convert.ToDecimal(address.Coordinates.Longitude);
             }
 
             dto.PostCode = address.PostCode;
@@ -175,8 +175,8 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
                     agreedActionDto.Id = action.Id;
                     agreedActionDto.EstimatedDurationMinutes = action.EstimatedDurationMinutes;
                     agreedActionDto.ClientActionSpecificDescription = action.ClientActionSpecificDescription;
-                    agreedActionDto.PlannedStartTime = action.PlannedStartTime;
-                    agreedActionDto.PlannedEndTime = action.PlannedStartTime.Add(TimeSpan.FromMinutes(action.EstimatedDurationMinutes));
+                    agreedActionDto.PlannedStartTime = DateTime.Today.Add(action.PlannedStartTime);
+                    agreedActionDto.PlannedEndTime = DateTime.Today.Add(action.PlannedStartTime.Add(TimeSpan.FromMinutes(action.EstimatedDurationMinutes)));
 
                     var actionDto = new ActionDTO();
                     actionDto.Id = action.ActionId;
@@ -187,6 +187,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
                     actionsDtos.Add(agreedActionDto);
                 }
 
+                actionsDtos = actionsDtos.OrderBy(a => a.PlannedStartTime).ToList();
                 actionsForDay.AgreedActions = actionsDtos.ToArray();
                 actionsForDays.Add(actionsForDay);
             }

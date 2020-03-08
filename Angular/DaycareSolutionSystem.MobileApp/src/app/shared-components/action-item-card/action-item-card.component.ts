@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
-import { EventEmitter } from 'events';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'action-item-card',
@@ -8,7 +7,8 @@ import { EventEmitter } from 'events';
 })
 export class ActionItemCardComponent {
   @Input() headerText: string;
-  @Input() time: Date;
+  @Input() fromTime: Date;
+  @Input() untilTime: Date;
   @Input() date: Date;
   @Input() bgCss: string;
 

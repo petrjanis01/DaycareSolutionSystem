@@ -9,6 +9,7 @@ import { GeneralHelperService } from 'src/app/services/general-helper.service';
 import { GeolocationHelperService } from 'src/app/services/geolocation/geolocation-helper-service';
 import { Address } from 'src/app/services/geolocation/address';
 import { IndividualPlanDTO } from 'src/app/api/generated/model/individualPlanDTO';
+import { VisualHelperService } from 'src/app/services/visual-helper.service';
 
 @Component({
   selector: 'app-client-detail',
@@ -28,7 +29,7 @@ export class ClientDetailPage implements OnInit {
     private clientsService: ClientsService,
     private toaster: ToastService,
     public generalHelper: GeneralHelperService,
-    private geolocationHelper: GeolocationHelperService
+    public visualHelper: VisualHelperService
   ) { }
 
   async ngOnInit() {

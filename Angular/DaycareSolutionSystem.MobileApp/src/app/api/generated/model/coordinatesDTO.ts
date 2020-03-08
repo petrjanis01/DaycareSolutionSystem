@@ -12,6 +12,6 @@
 
 
 export interface CoordinatesDTO { 
-    latitude?: string;
-    longitude?: string;
+    latitude?: number;
+    longitude?: number;
 }

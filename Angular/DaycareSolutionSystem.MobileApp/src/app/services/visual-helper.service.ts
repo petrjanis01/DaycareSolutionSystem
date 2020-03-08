@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { IonTabs } from '@ionic/angular';
+import { IonTabs, Platform } from '@ionic/angular';
 import { RegisteredActionDTO, AgreedActionDTO } from '../api/generated';
 
 @Injectable({ providedIn: 'root' })
 export class VisualHelperService {
     public isSideMenuVisibe: boolean;
     public tabs: IonTabs;
+
+    constructor(private platform: Platform) { }
 
     public getBgCssColorForRegisteredAction(action: RegisteredActionDTO): string {
         if (action.isCanceled) {
@@ -19,8 +21,20 @@ export class VisualHelperService {
         return 'bg-default';
     }
 
-    // public getBgCssColorForAgreedAction(action: AgreedActionDTO): string {
+    public getBasicDataGridSize() {
+        return this.isSideMenuVisibe ? 6 : 12;
+    }
 
-    //     return css;
-    // }
+    public getMapDetailAvatarGridSize() {
+        return this.isSideMenuVisibe ? 1 : 2;
+    }
+
+    public getMapDetailNameGridSize() {
+        return this.isSideMenuVisibe ? 9 : 8;
+
+    }
+
+    public getClientCardGridSize() {
+        return this.isSideMenuVisibe ? 4 : 12;
+    }
 }

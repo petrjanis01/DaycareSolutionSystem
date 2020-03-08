@@ -11,9 +11,9 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
 
         public int EstimatedDurationMinutes { get; set; }
 
-        public TimeSpan PlannedStartTime { get; set; }
+        public DateTime PlannedStartTime { get; set; }
 
-        public TimeSpan PlannedEndTime { get; set; }
+        public DateTime PlannedEndTime { get; set; }
 
         public ActionDTO Action { get; set; }
     }

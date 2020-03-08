@@ -59,13 +59,33 @@
       <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
     </agm-map>
 
-    <ion-item-divider  class="item-separator">
+    <ion-item-divider class="item-separator">
       <h5>Individual plans</h5>
     </ion-item-divider>
-    <ion-card *ngFor="let individualPlan of individualPlans">
-      <ion-card-title style="text-align: center;">{{individualPlan.validFrom | date}} - {{individualPlan.validUntil | date}}</ion-card-title>
-      <agreed-actions-overview [actionsForDay]="actions" *ngFor="let actions of individualPlan.actionsForDay">
-      </agreed-actions-overview>
-    </ion-card>
+    <ion-grid>
+      <ion-row>
+        <ion-col *ngFor="let individualPlan of individualPlans" [size]="visualHelper.getBasicDataGridSize()">
+          <ion-card>
+            <ion-card-title style="text-align: center;">{{individualPlan.validFrom | date}} -
+              {{individualPlan.validUntil | date}}</ion-card-title>
+
+            <ng-container *ngFor="let actionsForDay of individualPlan.actionsForDay">
+
+              <ion-item-divider class="divider-day">
+                {{generalHelper.getDayNameByIndex(actionsForDay.day)}}
+              </ion-item-divider>
+
+              <div class="flex-column" style="align-items: flex-end; margin-top: 10px;">
+                <div class="action-item-small" *ngFor="let agreedAction of actionsForDay.agreedActions">
+                  <action-item-card [headerText]="agreedAction.action.name" [fromTime]="agreedAction.plannedStartTime"
+                    [untilTime]="agreedAction.plannedEndTime" [bgCss]="'bg-default'">
+                  </action-item-card>
+                </div>
+              </div>
+            </ng-container>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ng-container>
 </ion-content>

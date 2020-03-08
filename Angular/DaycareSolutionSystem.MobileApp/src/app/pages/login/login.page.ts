@@ -16,6 +16,11 @@ export class LoginPage {
   constructor(private auth: AuthenticationService, private nav: NavController, private router: Router) { }
 
   public async login() {
+    if (!this.password && this.username === '#setup#') {
+      this.openSetup();
+      return;
+    }
+
     let loginDto: LoginDTO = {
       username: this.username,
       password: this.password

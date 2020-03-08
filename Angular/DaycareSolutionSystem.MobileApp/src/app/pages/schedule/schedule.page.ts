@@ -3,6 +3,7 @@ import { RegisteredActionsService, RegisteredActionsForDayDTO, RegisteredActionD
 import { ClientsCacheService } from 'src/app/services/clients/clients-cache.service';
 import { IonDatetime } from '@ionic/angular';
 import { GeneralHelperService } from 'src/app/services/general-helper.service';
+import { VisualHelperService } from 'src/app/services/visual-helper.service';
 
 @Component({
   selector: 'app-schedule',
@@ -17,7 +18,8 @@ export class SchedulePage implements OnInit {
   constructor(
     private registeredActionsService: RegisteredActionsService,
     private clientsCache: ClientsCacheService,
-    private generalHelper: GeneralHelperService
+    private generalHelper: GeneralHelperService,
+    public visualHelper: VisualHelperService
   ) {
     this.selectedDate = new Date().toISOString();
   }

@@ -1,11 +1,23 @@
-<ion-card *ngIf="client" class="flex-row" (click)="navigateToDetail()">
+<ng-container *ngIf="client">
 
-  <ion-avatar slot="start" style="margin: 10px;">
-    <img [src]="client.profilePicture">
-  </ion-avatar>
+  <ion-card *ngIf="visualHelper.isSideMenuVisibe == false" class="flex-row" (click)="navigateToDetail()">
+    <ion-avatar slot="start" style="margin: 10px;">
+      <img [src]="client.profilePicture">
+    </ion-avatar>
 
-  <h3 class="client-name-header">
-    {{client.fullName}}
-  </h3>
-  
-</ion-card>
+    <h3 class="client-name-header">
+      {{client.fullName}}
+    </h3>
+  </ion-card>
+
+  <ion-card *ngIf="visualHelper.isSideMenuVisibe" class="flex-column" style="align-items: center;"
+    (click)="navigateToDetail()">
+    <ion-avatar style="margin-top: 10px;">
+      <img [src]="client.profilePicture">
+    </ion-avatar>
+
+    <h3>
+      {{client.fullName}}
+    </h3>
+  </ion-card>
+</ng-container>

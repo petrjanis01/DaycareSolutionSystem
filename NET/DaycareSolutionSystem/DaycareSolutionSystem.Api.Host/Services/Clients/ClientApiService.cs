@@ -46,6 +46,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
                 .Select(ca => ca.IndividualPlan)
                 .Select(ip => ip.Client)
                 .Distinct();
+                //.OrderBy(cl => cl.FullName);
 
             return clients.ToList();
         }

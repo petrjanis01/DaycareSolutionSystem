@@ -83,13 +83,18 @@ ion-item.in-progress {
   margin-top: 10px;
 }
 
-.icon-text-container{
+.icon-text-container {
   display: flex;
   align-items: center;
   flex-direction: row;
 }
 
-.flex-align-center{
+.flex-align-center {
   display: flex;
   align-items: center;
+}
+
+.action-item-small {
+  width: 60%;
+  margin-bottom: 10px;
 }

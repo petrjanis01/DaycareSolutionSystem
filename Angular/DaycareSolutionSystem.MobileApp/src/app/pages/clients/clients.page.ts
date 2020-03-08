@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientsCacheService } from 'src/app/services/clients/clients-cache.service';
 import { Client } from 'src/app/services/clients/client';
+import { VisualHelperService } from 'src/app/services/visual-helper.service';
 
 @Component({
   selector: 'app-clients',
@@ -10,7 +11,7 @@ import { Client } from 'src/app/services/clients/client';
 export class ClientsPage implements OnInit {
   public clients: Client[];
 
-  constructor(private clientCache: ClientsCacheService) { }
+  constructor(private clientCache: ClientsCacheService, public visualHelper: VisualHelperService) { }
 
   async ngOnInit() {
     await this.clientCache.loaded;
