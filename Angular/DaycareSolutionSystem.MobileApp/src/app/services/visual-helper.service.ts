@@ -35,6 +35,6 @@ export class VisualHelperService {
     }
 
     public getClientCardGridSize() {
-        return this.isSideMenuVisibe ? 4 : 12;
+        return this.isSideMenuVisibe ? 3 : 12;
     }
 }

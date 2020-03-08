@@ -21,6 +21,7 @@ import { ToastService } from 'src/app/services/toast.service';
 
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
+import { MinMaxDateDTO } from '../model/minMaxDateDTO';
 import { RegisteredActionDTO } from '../model/registeredActionDTO';
 import { RegisteredActionsForDayDTO } from '../model/registeredActionsForDayDTO';
 
@@ -76,6 +77,36 @@ export class RegisteredActionsService extends ApiBase{
 
         let result = this.httpClient.post<any>(`${this.basePath}/api/RegisteredActions/generate-next-month-actions`,
             null,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: this.createAuthHeaders(headers),
+            }
+        ).toPromise();
+
+        return this.processErrors(result);
+    }
+
+    public async apiRegisteredActionsLastRegisteredActionsMinMaxDateGet(): Promise<MinMaxDateDTO> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+
+        let result = this.httpClient.get<MinMaxDateDTO>(`${this.basePath}/api/RegisteredActions/last-registered-actions-min-max-date`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: this.createAuthHeaders(headers),

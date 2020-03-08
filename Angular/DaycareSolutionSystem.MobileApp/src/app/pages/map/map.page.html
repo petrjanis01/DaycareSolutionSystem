@@ -63,7 +63,7 @@
     <!-- next action -->
     <h5>Next action:</h5>
     <span *ngIf="displayedClientAction == null" class="no-data">No data</span>
-    <div *ngIf="displayedClientAction != null" style="margin-bottom: 10px;">
+    <div *ngIf="displayedClientAction != null" class="next-action">
       <action-item-card [headerText]="displayedClientAction.name" [fromTime]="displayedClientAction.time"
         [date]="displayedClientAction.date" [bgCss]="'bg-default'">
       </action-item-card>

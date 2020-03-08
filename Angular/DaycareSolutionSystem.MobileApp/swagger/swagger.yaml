@@ -279,6 +279,23 @@ paths:
             text/json:
               schema:
                 "$ref": "#/components/schemas/RegisteredActionDTO"
+  "/api/RegisteredActions/last-registered-actions-min-max-date":
+    get:
+      tags:
+      - RegisteredActions
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/MinMaxDateDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MinMaxDateDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/MinMaxDateDTO"
   "/api/RegisteredActions/registered-actions":
     get:
       tags:
@@ -560,6 +577,15 @@ components:
           type: boolean
         photo:
           "$ref": "#/components/schemas/PictureDTO"
+    MinMaxDateDTO:
+      type: object
+      properties:
+        minDate:
+          type: string
+          format: date-time
+        maxDate:
+          type: string
+          format: date-time
     RegisteredActionsClientDTO:
       type: object
       properties:

@@ -14,6 +14,13 @@ export class SchedulePage implements OnInit {
   @ViewChild(IonDatetime, { static: false }) datePicker: IonDatetime;
   public registeredActions: RegisteredActionsForDayDTO[];
   public selectedDate: string;
+  public minDate: Date;
+  public maxDate: Date;
+  public ionDateTimeConsumableMinDate: string;
+  public ionDateTimeConsumableMaxDate: string;
+  public isPreviousBtnEnabled = true;
+  public isNextBtnEnabled = true;
+
 
   constructor(
     private registeredActionsService: RegisteredActionsService,
@@ -29,8 +36,15 @@ export class SchedulePage implements OnInit {
   }
 
   public async reloadData() {
-    await this.clientsCache.loaded;
+    this.registeredActionsService.apiRegisteredActionsLastRegisteredActionsMinMaxDateGet().then(dto => {
+      this.minDate = dto.minDate;
+      this.maxDate = dto.maxDate;
 
+      this.ionDateTimeConsumableMinDate = this.convertDateToIonDateTimeConsumableString(this.minDate);
+      this.ionDateTimeConsumableMaxDate = this.convertDateToIonDateTimeConsumableString(this.maxDate);
+    });
+
+    await this.clientsCache.loaded;
     let itemCount = 10;
     if (this.registeredActions && this.registeredActions.length === 0) {
       itemCount = this.registeredActions.length;
@@ -97,6 +111,9 @@ export class SchedulePage implements OnInit {
     date.setDate(date.getDate() - 1);
     this.selectedDate = date.toISOString();
     this.reloadData();
+
+    let minDateCopy = new Date(this.minDate);
+    this.isPreviousBtnEnabled = date.setDate(date.getDate() - 1) < minDateCopy.setHours(0, 0, 0, 0);
   }
 
   public nextDayClicked() {
@@ -104,17 +121,43 @@ export class SchedulePage implements OnInit {
     date.setDate(date.getDate() + 1);
     this.selectedDate = date.toISOString();
     this.reloadData();
+
+    let maxDateCopy = new Date(this.maxDate);
+    this.isNextBtnEnabled = date.setDate(date.getDate() + 1) > maxDateCopy.setHours(0, 0, 0, 0);
   }
 
   public async openDatePicker() {
     await this.datePicker.open();
   }
 
+  // TODO solve enabling/disabling btns
   public selectedDateChange(event: any) {
     if (event && event.detail && event.detail.value) {
       let date = event.detail.value;
       this.selectedDate = new Date(date).toISOString();
       this.reloadData();
+
+      let minDateCopy = new Date(this.minDate);
+      this.isPreviousBtnEnabled = new Date(date).setDate(date.getDate() - 1) < minDateCopy.setHours(0, 0, 0, 0);
+
+      let maxDateCopy = new Date(this.maxDate);
+      this.isNextBtnEnabled = new Date(date).setDate(date.getDate() + 1) > maxDateCopy.setHours(0, 0, 0, 0);
     }
+  }
+
+  public convertDateToIonDateTimeConsumableString(date: Date) {
+    let year = date.getFullYear().toString();
+    let month = date.getMonth().toString();
+    let day = date.getDate().toString();
+
+    if (date.getMonth() < 10) {
+      month = `0${month}`;
+    }
+
+    if (date.getDate() < 10) {
+      day = `0${day}`;
+    }
+
+    return `${year}-${month}-${day}`;
   }
 }

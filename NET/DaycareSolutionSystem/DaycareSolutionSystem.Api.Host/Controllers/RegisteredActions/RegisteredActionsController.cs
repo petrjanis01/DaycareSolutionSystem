@@ -44,6 +44,21 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
         }
 
         [HttpGet]
+        [Route("last-registered-actions-min-max-date")]
+        public MinMaxDateDTO GetRegisteredActionsMinMaxDate()
+        {
+            var clientActions = _dataContext.RegisteredClientActions;
+            var min = clientActions.OrderBy(ca => ca.PlannedStartDateTime).First().PlannedStartDateTime.Date;
+            var max = clientActions.OrderByDescending(ca => ca.PlannedStartDateTime).First().PlannedStartDateTime.Date;
+
+            var dto = new MinMaxDateDTO();
+            dto.MinDate = min;
+            dto.MaxDate = max;
+
+            return dto;
+        }
+
+        [HttpGet]
         [Route("registered-actions")]
         public RegisteredActionsForDayDTO[] GetRegisteredActions(int count, DateTime date, Guid? lastActionDisplayedId = null)
         {

@@ -98,3 +98,7 @@ ion-item.in-progress {
   width: 60%;
   margin-bottom: 10px;
 }
+
+.split-pane-md.split-pane-visible > .split-pane-side {
+  max-width: 20% !important;
+}

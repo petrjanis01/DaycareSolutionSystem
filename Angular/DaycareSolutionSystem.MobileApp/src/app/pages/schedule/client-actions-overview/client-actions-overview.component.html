@@ -11,10 +11,18 @@
   </div>
 
   <div class="flex-column" style="align-items: flex-end;">
-    <div class="action-item-small " *ngFor="let action of clientActions.registeredActions">
-      <action-item-card (clicked)="openDetailModal(action.id)" [headerText]="action.action.name"
-        [fromTime]="action.plannedStartDateTime" [bgCss]="visualHelper.getBgCssColorForRegisteredAction(action)">
+    <div class="action-item-small " *ngFor="let action of clientActions.registeredActions; let i = index">
+      <action-item-card *ngIf="i < 3 || allItemsVisible" (clicked)="openDetailModal(action.id)"
+        [headerText]="action.action.name" [fromTime]="action.plannedStartDateTime"
+        [bgCss]="visualHelper.getBgCssColorForRegisteredAction(action)">
       </action-item-card>
     </div>
+  </div>
+
+  <div class="flex-center">
+    <ion-button *ngIf="clientActions.registeredActions.length > 3 && allItemsVisible === false" fill="clear"
+      (click)="showMore()">Show more</ion-button>
+    <ion-button *ngIf="clientActions.registeredActions.length > 3 && allItemsVisible" fill="clear" (click)="showLess()">
+      Show less</ion-button>
   </div>
 </ion-card>

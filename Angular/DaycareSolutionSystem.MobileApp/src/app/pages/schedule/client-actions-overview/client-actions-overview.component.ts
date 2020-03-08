@@ -16,6 +16,7 @@ export class ClientActionsOverviewComponent implements OnInit {
   @Output() detailModalClosed = new EventEmitter();
 
   public client: Client;
+  public allItemsVisible = false;
 
   constructor(
     private clientCache: ClientsCacheService,
@@ -45,8 +46,14 @@ export class ClientActionsOverviewComponent implements OnInit {
 
     await modal.present();
 
-    // TODO reloading same ammount of data when going back from modal and croll to same location
-    // for now it work by reseting instance of infinite scroll and going back to top
     modal.onDidDismiss().then(() => this.detailModalClosed.emit());
+  }
+
+  public showMore() {
+    this.allItemsVisible = true;
+  }
+
+  public showLess() {
+    this.allItemsVisible = false;
   }
 }

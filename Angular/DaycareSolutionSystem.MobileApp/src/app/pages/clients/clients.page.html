@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid>
+  <ion-grid *ngIf="clients">
     <ion-row>
       <ion-col *ngFor="let client of clients" [size]="visualHelper.getClientCardGridSize()">
         <client-card [client]="client"></client-card>

@@ -14,7 +14,7 @@ export class TabsPage implements AfterViewInit {
   constructor(private clientsCache: ClientsCacheService, public visualHelper: VisualHelperService) { }
 
   ngAfterViewInit() {
-    this.clientsCache.loadClientsCache();
+      this.clientsCache.loadClientsCache();
     this.visualHelper.tabs = this.tabs;
   }
 

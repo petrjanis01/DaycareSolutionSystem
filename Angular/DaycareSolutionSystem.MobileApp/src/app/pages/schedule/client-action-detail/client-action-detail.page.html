@@ -61,7 +61,8 @@
 
     <ion-item lines="full" mode="md" [ngClass]="{'canceled':actionEditable.isCanceled}">
       <ion-label>Canceled</ion-label>
-      <ion-toggle [(ngModel)]="actionEditable.isCanceled" [disabled]="actionEditable.isCompleted"></ion-toggle>
+      <ion-toggle [(ngModel)]="actionEditable.isCanceled" [disabled]="actionEditable.isCompleted"
+        (ionChange)="cancledChanged($event)"></ion-toggle>
     </ion-item>
 
     <ion-item lines="full" mode="md">
@@ -99,6 +100,11 @@
       *ngIf="actionEditable.actionStartedDateTime && !actionEditable.actionFinishedDateTime" (click)="stopAction()">
       Stop action
     </ion-button>
+    
+    <ng-container *ngIf="isTimerVisible">
+      {{time}}
+    </ng-container>
+
     <ion-button slot="end" color="primary" (click)="updateAction()"
       [disabled]="actionEditable.isCanceled && actionEditable.comment == null">Save
     </ion-button>

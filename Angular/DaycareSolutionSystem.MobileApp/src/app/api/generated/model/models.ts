@@ -11,6 +11,7 @@ export * from './employeePosition';
 export * from './gender';
 export * from './individualPlanDTO';
 export * from './loginDTO';
+export * from './minMaxDateDTO';
 export * from './pictureDTO';
 export * from './registeredActionBasicDTO';
 export * from './registeredActionDTO';

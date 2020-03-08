@@ -14,6 +14,9 @@ export class ClientActionDetailPage implements OnInit {
   @Input() action: RegisteredActionDTO;
 
   public actionEditable: RegisteredActionDTO;
+  public time = '00:00.000';
+  public isTimerVisible: boolean;
+  public started = null;
 
   constructor(
     private modalController: ModalController,
@@ -25,7 +28,6 @@ export class ClientActionDetailPage implements OnInit {
 
   ngOnInit() {
     this.actionEditable = this.mapActionToEditable();
-    console.log(this.actionEditable);
   }
 
   public async updateAction() {
@@ -48,13 +50,14 @@ export class ClientActionDetailPage implements OnInit {
 
   public startAction() {
     this.actionEditable.actionStartedDateTime = new Date();
-
+    this.startTimer();
     this.updateAction();
   }
 
   public stopAction() {
     this.actionEditable.actionFinishedDateTime = new Date();
-
+    this.isTimerVisible = false;
+    clearInterval(this.started);
     this.updateAction();
   }
 
@@ -82,6 +85,46 @@ export class ClientActionDetailPage implements OnInit {
       day: this.action.day
     };
 
+    if (editable.isCompleted === false && editable.isCanceled === false && editable.actionStartedDateTime != null) {
+      this.startTimer();
+    }
+
     return editable;
   }
+
+  public cancledChanged(ev: any) {
+    if (ev && ev.detail && ev.detail.checked) {
+      this.toaster.showInfoToast('Please enter reason why is action cancled to comment section.');
+    }
+  }
+
+  // timer
+  public startTimer() {
+    this.started = setInterval(this.clockRunning.bind(this), 10);
+    this.isTimerVisible = true;
+  }
+
+  private clockRunning() {
+    let timeBegan: any = this.actionEditable.actionStartedDateTime;
+    let currentTime: any = new Date();
+    let timeElapsed: any = new Date(currentTime - timeBegan);
+    let hour = timeElapsed.getUTCHours();
+    let min = timeElapsed.getUTCMinutes();
+    let sec = timeElapsed.getUTCSeconds();
+    let ms = timeElapsed.getUTCMilliseconds();
+    this.time =
+      this.zeroPrefix(hour, 2) + ':' +
+      this.zeroPrefix(min, 2) + ':' +
+      this.zeroPrefix(sec, 2) + '.' +
+      this.zeroPrefix(ms, 3);
+  }
+
+  private zeroPrefix(num, digit) {
+    let zero = '';
+    for (let i = 0; i < digit; i++) {
+      zero += '0';
+    }
+    return (zero + num).slice(-digit);
+  }
+
 }

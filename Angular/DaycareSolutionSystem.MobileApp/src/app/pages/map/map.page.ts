@@ -137,10 +137,10 @@ export class MapPage implements OnInit {
 
     this.clients.sort((a, b) => {
       if (a.distanceFromDevice > b.distanceFromDevice) {
-        return -1;
+        return 1;
       }
       if (b.distanceFromDevice > a.distanceFromDevice) {
-        return 1;
+        return -1;
       }
 
       return 0;
