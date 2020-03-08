@@ -13,4 +13,11 @@ export class GeneralHelperService {
     public getGenderString(index: number): string {
         return this.gender[index - 1];
     }
+
+    public compareDatesWithoutTime(date1: Date, date2: Date): boolean {
+        let dateWithoutTime1 = new Date(date1).setHours(0, 0, 0, 0);
+        let dateWithoutTime2 = new Date(date2).setHours(0, 0, 0, 0);
+
+        return dateWithoutTime1 === dateWithoutTime2;
+    }
 }

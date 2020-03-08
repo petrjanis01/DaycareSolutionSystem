@@ -289,6 +289,11 @@ paths:
         schema:
           type: integer
           format: int32
+      - name: date
+        in: query
+        schema:
+          type: string
+          format: date-time
       - name: lastActionDisplayedId
         in: query
         schema:

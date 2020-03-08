@@ -2,6 +2,23 @@
   <ion-toolbar>
     <ion-title>Schedule</ion-title>
   </ion-toolbar>
+  <ion-toolbar>
+    <div class="flex-center">
+      <ion-button slot="icon-only" fill="clear" (click)="previousDayClicked()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+
+      <div class="flex-align-center" style="font-size: 1.2em;" (click)="openDatePicker()">
+        {{selectedDate|date}}
+        <ion-datetime #datePicker hidden [(ngModel)]="selectedDate" (ionChange)="selectedDateChange($event)">
+        </ion-datetime>
+      </div>
+
+      <ion-button slot="icon-only" fill="clear" (click)="nextDayClicked()">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
@@ -19,7 +36,7 @@
       [clientActions]="clientActions" (detailModalClosed)="reloadData()"></client-actions-overview>
   </ng-container>
 
-  <ion-infinite-scroll *ngIf="registeredActions" (ionInfinite)="loadData($event)">
+  <ion-infinite-scroll *ngIf="registeredActions" (ionInfinite)="loadMoreData($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>

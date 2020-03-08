@@ -124,13 +124,17 @@ export class RegisteredActionsService extends ApiBase{
         return this.processErrors(result);
     }
 
-    public async apiRegisteredActionsRegisteredActionsGet(count?: number, lastActionDisplayedId?: string, ): Promise<Array<RegisteredActionsForDayDTO>> {
+    public async apiRegisteredActionsRegisteredActionsGet(count?: number, date?: Date, lastActionDisplayedId?: string, ): Promise<Array<RegisteredActionsForDayDTO>> {
+
 
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
         if (count !== undefined && count !== null) {
             queryParameters = queryParameters.set('count', <any>count);
+        }
+        if (date !== undefined && date !== null) {
+            queryParameters = queryParameters.set('date', <any>date.toISOString());
         }
         if (lastActionDisplayedId !== undefined && lastActionDisplayedId !== null) {
             queryParameters = queryParameters.set('lastActionDisplayedId', <any>lastActionDisplayedId);

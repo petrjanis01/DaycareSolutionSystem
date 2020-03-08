@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RegisteredActionsService, RegisteredActionsForDayDTO, RegisteredActionDTO } from 'src/app/api/generated';
 import { ClientsCacheService } from 'src/app/services/clients/clients-cache.service';
+import { IonDatetime } from '@ionic/angular';
+import { GeneralHelperService } from 'src/app/services/general-helper.service';
 
 @Component({
   selector: 'app-schedule',
@@ -8,9 +10,17 @@ import { ClientsCacheService } from 'src/app/services/clients/clients-cache.serv
   styleUrls: ['./schedule.page.scss'],
 })
 export class SchedulePage implements OnInit {
+  @ViewChild(IonDatetime, { static: false }) datePicker: IonDatetime;
   public registeredActions: RegisteredActionsForDayDTO[];
+  public selectedDate: string;
 
-  constructor(private registeredActionsService: RegisteredActionsService, private clientsCache: ClientsCacheService) { }
+  constructor(
+    private registeredActionsService: RegisteredActionsService,
+    private clientsCache: ClientsCacheService,
+    private generalHelper: GeneralHelperService
+  ) {
+    this.selectedDate = new Date().toISOString();
+  }
 
   ngOnInit() {
     this.reloadData();
@@ -25,11 +35,10 @@ export class SchedulePage implements OnInit {
     }
 
     this.registeredActions = null;
+    let date = new Date(this.selectedDate);
 
-    let dtos = await this.registeredActionsService.apiRegisteredActionsRegisteredActionsGet(itemCount, null);
+    let dtos = await this.registeredActionsService.apiRegisteredActionsRegisteredActionsGet(itemCount, date, null);
     this.registeredActions = dtos;
-
-    console.log(this.registeredActions);
   }
 
   public isToday(date: Date): boolean {
@@ -40,25 +49,70 @@ export class SchedulePage implements OnInit {
       date.getFullYear() === today.getFullYear();
   }
 
-  public loadData(event) {
-    let lastDisplayedAction = this.getLastDisplayedAction();
+  public loadMoreData(event) {
+    let lastDate = this.registeredActions[this.registeredActions.length - 1].date;
+    let lastActionsClient = this.registeredActions[this.registeredActions.length - 1].registeredActionsClient;
+    let actionsForLastClient = lastActionsClient[lastActionsClient.length - 1].registeredActions;
+    let lastDisplayedAction = actionsForLastClient[actionsForLastClient.length - 1];
 
-    this.registeredActionsService.apiRegisteredActionsRegisteredActionsGet(10, lastDisplayedAction.id)
+    let date = new Date(this.selectedDate);
+    this.registeredActionsService.apiRegisteredActionsRegisteredActionsGet(10, date, lastDisplayedAction.id)
       .then(dtos => {
+
+        if (this.generalHelper.compareDatesWithoutTime(lastDate, dtos[0].date)
+          && lastActionsClient[lastActionsClient.length - 1].clientId === dtos[0].registeredActionsClient[0].clientId) {
+          dtos = this.mergeData(dtos);
+        }
         this.registeredActions = this.registeredActions.concat(dtos);
 
         let lastAction = this.registeredActions[this.registeredActions.length - 1];
         event.target.disabled = lastAction.containsLast;
-        console.log(this.registeredActions);
 
       }).finally(() => event.target.complete());
   }
 
-  private getLastDisplayedAction(): RegisteredActionDTO {
+  private mergeData(dtos: RegisteredActionsForDayDTO[]): RegisteredActionsForDayDTO[] {
+    let actionsClientToMerge = dtos[0].registeredActionsClient[0].registeredActions;
+
     let lastActionsClient = this.registeredActions[this.registeredActions.length - 1].registeredActionsClient;
     let actionsForLastClient = lastActionsClient[lastActionsClient.length - 1].registeredActions;
-    let lastAction = actionsForLastClient[actionsForLastClient.length - 1];
+    this.registeredActions[this.registeredActions.length - 1]
+      .registeredActionsClient[(this.registeredActions[this.registeredActions.length - 1].registeredActionsClient.length) - 1]
+      .registeredActions
+      = actionsForLastClient.concat(actionsClientToMerge);
 
-    return lastAction;
+    dtos[0].registeredActionsClient.splice(0, 1);
+
+    if (dtos[0].registeredActionsClient.length === 0) {
+      dtos.splice(0, 1);
+    }
+
+    return dtos;
+  }
+
+  public previousDayClicked() {
+    let date = new Date(this.selectedDate);
+    date.setDate(date.getDate() - 1);
+    this.selectedDate = date.toISOString();
+    this.reloadData();
+  }
+
+  public nextDayClicked() {
+    let date = new Date(this.selectedDate);
+    date.setDate(date.getDate() + 1);
+    this.selectedDate = date.toISOString();
+    this.reloadData();
+  }
+
+  public async openDatePicker() {
+    await this.datePicker.open();
+  }
+
+  public selectedDateChange(event: any) {
+    if (event && event.detail && event.detail.value) {
+      let date = event.detail.value;
+      this.selectedDate = new Date(date).toISOString();
+      this.reloadData();
+    }
   }
 }
