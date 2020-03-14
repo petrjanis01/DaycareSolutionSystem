@@ -4,6 +4,7 @@
     "codelyzer"
   ],
   "rules": {
+    "prefer-const": false,
     "array-type": false,
     "arrow-parens": false,
     "deprecation": {

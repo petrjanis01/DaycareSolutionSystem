@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using DaycareSolutionSystem.Api.Host.Services.RegisteredActions;
 using DaycareSolutionSystem.Database.DataContext;
 using DaycareSolutionSystem.Database.Entities.Entities;
-using Microsoft.EntityFrameworkCore.Internal;
 using Action = DaycareSolutionSystem.Database.Entities.Entities.Action;
 
 namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
