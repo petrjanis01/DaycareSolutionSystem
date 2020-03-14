@@ -109,8 +109,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     let html = document.getElementsByTagName('html')[0];
 
     if (this.mobileMenuVisible === 1) {
-      // $('html').removeClass('nav-open');
       html.classList.remove('nav-open');
+      let $layer: any = document.getElementsByClassName('close-layer')[0];
       if ($layer) {
         $layer.remove();
       }

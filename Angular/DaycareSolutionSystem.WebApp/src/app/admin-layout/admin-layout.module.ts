@@ -10,6 +10,9 @@ import { DashboardComponent } from '../pages/dashboard/dashboard.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ScheduleComponent } from 'src/app/pages/schedule/schedule.component';
 
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -17,6 +20,7 @@ import { ScheduleComponent } from 'src/app/pages/schedule/schedule.component';
     FormsModule,
     HttpClientModule,
     NgbModule,
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ],
   declarations: [
     DashboardComponent,

@@ -16,7 +16,7 @@ export const ROUTES: RouteInfo[] = [
   {
     path: '/schedule',
     title: 'Schedule',
-    icon: 'icon-atom',
+    icon: 'icon-calendar-60',
     class: ''
   },
 ];
