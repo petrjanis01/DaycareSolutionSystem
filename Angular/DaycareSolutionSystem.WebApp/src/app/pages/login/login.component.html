@@ -1,0 +1,22 @@
+<div class="login-background-img">
+    <div class="login-background-shade flex-center flex-align-center">
+        <div class="login-container flex-align-center flex-column" (keyup.enter)="login()">
+            <img class="logo" src="/assets/img/icon-big.png">
+            <label>LOG IN</label>
+
+            <div #usernameContainer class="form-group login-group-container" style="margin-bottom: 30px;">
+                <i class="tim-icons icon-single-02 form-icon"></i>
+                <input #usernameInput type="text" placeholder="Username" class="login-input" (blur)="onUsernameBlur()"
+                    (focus)="onUsernameFocus()">
+            </div>
+
+            <div #passwordContainer class="form-group login-group-container" style="margin-bottom: 10px;">
+                <i class="tim-icons icon-key-25 form-icon"></i>
+                <input #passwordInput type="password" placeholder="Password" class="login-input"
+                    (blur)="onPasswordBlur()" (focus)="onPasswordFocus()">
+            </div>
+
+            <button class="login-btn" (click)="login()">Login</button>
+        </div>
+    </div>
+</div>

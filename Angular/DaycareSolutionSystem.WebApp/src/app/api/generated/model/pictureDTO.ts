@@ -11,8 +11,6 @@
  */
 
 
-export interface LoginDTO { 
-    username?: string;
-    password?: string;
-    isManagementSite?: boolean;
+export interface PictureDTO { 
+    pictureUri?: string;
 }

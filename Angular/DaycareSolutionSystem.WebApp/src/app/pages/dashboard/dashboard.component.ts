@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TestService } from 'src/app/api/generated';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private testServ: TestService) { }
 
   ngOnInit(): void {
   }
 
+  test() {
+    this.testServ.apiTestTestPost('asdas', 'asdasda').then(x => console.log(x));
+  }
 }

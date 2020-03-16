@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AgreedActionsForDayDTO } from './agreedActionsForDayDTO';
 
 
-export interface LoginDTO { 
-    username?: string;
-    password?: string;
-    isManagementSite?: boolean;
+export interface IndividualPlanDTO { 
+    id?: string;
+    validFrom?: Date;
+    validUntil?: Date;
+    actionsForDay?: Array<AgreedActionsForDayDTO>;
 }

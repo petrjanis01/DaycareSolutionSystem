@@ -23,6 +23,7 @@ namespace DaycareSolutionSystem.Database.Migrator
         private static readonly string[] LastNames = new[] { "Smith", " Johnson", "Williams", "Jones", "Brown", "Davis", "Miller" };
 
         private Guid _dcEmployeeId;
+        private Guid _mngrEmployeeId;
         private readonly List<Guid> _clientIds = new List<Guid>();
         private readonly List<Guid> _actionIds = new List<Guid>();
 
@@ -57,19 +58,20 @@ namespace DaycareSolutionSystem.Database.Migrator
             dcEmployee.Birthdate = new DateTime(1990, 6, 2);
             dcEmployee.EmployeePosition = EmployeePosition.Caregiver;
 
-            var emp = new Employee();
-            emp.Gender = Gender.Female;
-            emp.FirstName = "1";
-            emp.Surname = "aaa";
-            emp.Birthdate = new DateTime(2000, 1, 1);
-            emp.EmployeePosition = EmployeePosition.Manager;
+            var mngrEmployee = new Employee();
+            mngrEmployee.Gender = Gender.Female;
+            mngrEmployee.FirstName = "Manager";
+            mngrEmployee.Surname = "Employee";
+            mngrEmployee.Birthdate = new DateTime(1995, 1, 1);
+            mngrEmployee.EmployeePosition = EmployeePosition.Manager;
 
             _dcEmployeeId = dcEmployee.Id;
+            _mngrEmployeeId = mngrEmployee.Id;
 
             _dataContext.Employees.AddRange(new[]
             {
                 dcEmployee,
-                emp
+                mngrEmployee
             });
 
             _dataContext.SaveChanges();
@@ -82,10 +84,16 @@ namespace DaycareSolutionSystem.Database.Migrator
             user.LoginName = "dcemp";
             user.Password = PasswordHasher.HashPassword("1234");
 
+            var mngr = new User();
+            mngr.EmployeeId = _mngrEmployeeId;
+            mngr.LoginName = "mngr";
+            mngr.Password = PasswordHasher.HashPassword("1234");
+
 
             _dataContext.Users.AddRange(new[]
             {
                 user,
+                mngr
             });
 
             _dataContext.SaveChanges();

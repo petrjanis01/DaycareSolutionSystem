@@ -9,10 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AgreedActionDTO } from './agreedActionDTO';
+import { DayOfWeek } from './dayOfWeek';
 
 
-export interface LoginDTO { 
-    username?: string;
-    password?: string;
-    isManagementSite?: boolean;
+export interface AgreedActionsForDayDTO { 
+    day?: DayOfWeek;
+    agreedActions?: Array<AgreedActionDTO>;
 }

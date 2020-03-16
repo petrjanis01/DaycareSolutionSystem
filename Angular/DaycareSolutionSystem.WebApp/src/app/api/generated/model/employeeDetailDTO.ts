@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EmployeePosition } from './employeePosition';
 
 
-export interface LoginDTO { 
-    username?: string;
-    password?: string;
-    isManagementSite?: boolean;
+export interface EmployeeDetailDTO { 
+    fullName?: string;
+    birthdate?: Date;
+    profilePictureUri?: string;
+    employeePosition?: EmployeePosition;
 }

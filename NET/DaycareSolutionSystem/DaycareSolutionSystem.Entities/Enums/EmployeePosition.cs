@@ -3,7 +3,6 @@
     public enum EmployeePosition
     {
         Caregiver = 0,
-        SocialWorker = 1,
-        Manager = 2,
+        Manager = 1,
     }
 }

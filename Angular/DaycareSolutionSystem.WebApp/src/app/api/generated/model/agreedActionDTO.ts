@@ -9,10 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ActionDTO } from './actionDTO';
 
 
-export interface LoginDTO { 
-    username?: string;
-    password?: string;
-    isManagementSite?: boolean;
+export interface AgreedActionDTO { 
+    id?: string;
+    clientActionSpecificDescription?: string;
+    estimatedDurationMinutes?: number;
+    plannedStartTime?: Date;
+    plannedEndTime?: Date;
+    action?: ActionDTO;
 }

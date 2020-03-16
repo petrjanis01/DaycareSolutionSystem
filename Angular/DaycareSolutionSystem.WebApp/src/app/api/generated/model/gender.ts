@@ -11,8 +11,9 @@
  */
 
 
-export interface LoginDTO { 
-    username?: string;
-    password?: string;
-    isManagementSite?: boolean;
-}
+export type Gender = 1 | 2;
+
+export const Gender = {
+    NUMBER_1: 1 as Gender,
+    NUMBER_2: 2 as Gender
+};

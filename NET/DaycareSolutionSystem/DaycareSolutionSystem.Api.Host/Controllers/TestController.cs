@@ -9,6 +9,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers
     [ApiController]
     public class TestController : ControllerBase
     {
+        [Authorize(Roles = "Manager")]
         [Route("test")]
         [HttpPost]
         public IActionResult GetTestString(string lat, string lon)

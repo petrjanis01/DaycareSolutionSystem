@@ -9,10 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RegisteredActionBasicDTO } from './registeredActionBasicDTO';
 
 
-export interface LoginDTO { 
-    username?: string;
-    password?: string;
-    isManagementSite?: boolean;
+export interface ClientWithNextActionDTO { 
+    clientId?: string;
+    nextAction?: RegisteredActionBasicDTO;
 }

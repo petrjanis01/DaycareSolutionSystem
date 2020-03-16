@@ -1,17 +1,16 @@
 import { HttpHeaders } from '@angular/common/http';
-import { BaseUrlService } from '../services/base-url.service';
-import { NavController } from '@ionic/angular';
-import { ToastService } from '../services/toast.service';
+import { AppConfig } from './../config/app.config';
+import { NotifiactionService } from '../services/notification.service';
+import { Router } from '@angular/router';
 
 export class ApiBase {
 
     constructor(
-        private baseUrlService: BaseUrlService,
-        private nav: NavController,
-        private toast: ToastService) { }
+        private router: Router,
+        private notification: NotifiactionService) { }
 
     protected get basePath(): string {
-        return this.baseUrlService.getBaseUrl();
+        return AppConfig.settings.apiBaseUrl.baseUrl;
     }
 
     protected processErrors(response: Promise<any>) {
@@ -21,11 +20,11 @@ export class ApiBase {
 
                 if (url.endsWith('Auth/login') === false) {
                     if (e.status === 401) {
-                        this.toast.showErrorToast('Token has expired. Please login again.');
+                        this.notification.showErrorNotification('Token has expired. Please login again.');
 
                         this.logOut();
                     } else {
-                        this.toast.showErrorToast('Api service is unavailable. Check your internet connection.');
+                        this.notification.showErrorNotification('Api service is unavailable. Check your internet connection.');
                     }
                 }
             });
@@ -59,6 +58,6 @@ export class ApiBase {
 
     public async logOut() {
         localStorage.removeItem('token');
-        this.nav.navigateRoot('/login');
+        this.router.navigate(['login']);
     }
 }

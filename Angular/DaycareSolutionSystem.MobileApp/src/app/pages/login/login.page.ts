@@ -23,7 +23,8 @@ export class LoginPage {
 
     let loginDto: LoginDTO = {
       username: this.username,
-      password: this.password
+      password: this.password,
+      isManagementSite: false
     };
 
     let loginSuccesful = await this.auth.logIn(loginDto);

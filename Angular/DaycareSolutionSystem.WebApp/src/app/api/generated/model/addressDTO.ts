@@ -9,10 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CoordinatesDTO } from './coordinatesDTO';
 
 
-export interface LoginDTO { 
-    username?: string;
-    password?: string;
-    isManagementSite?: boolean;
+export interface AddressDTO { 
+    id?: string;
+    postCode?: string;
+    city?: string;
+    street?: string;
+    buildingNumber?: string;
+    coordinates?: CoordinatesDTO;
 }

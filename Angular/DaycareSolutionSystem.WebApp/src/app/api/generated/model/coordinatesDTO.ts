@@ -11,8 +11,7 @@
  */
 
 
-export interface LoginDTO { 
-    username?: string;
-    password?: string;
-    isManagementSite?: boolean;
+export interface CoordinatesDTO { 
+    latitude?: number;
+    longitude?: number;
 }

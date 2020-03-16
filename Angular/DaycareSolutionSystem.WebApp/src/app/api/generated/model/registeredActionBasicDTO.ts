@@ -11,8 +11,9 @@
  */
 
 
-export interface LoginDTO { 
-    username?: string;
-    password?: string;
-    isManagementSite?: boolean;
+export interface RegisteredActionBasicDTO { 
+    id?: string;
+    date?: Date;
+    time?: Date;
+    name?: string;
 }
