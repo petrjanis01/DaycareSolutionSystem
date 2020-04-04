@@ -1,0 +1,33 @@
+<div class="content">
+    <div class="col-md-6 ml-auto mr-auto">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-10 ml-auto mr-auto">
+                        <input type="text" placeholder="Find client by name" class="form-control"
+                            [(ngModel)]="clientNameText">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="clientBasics">
+        <div *ngFor="let client of (clientBasics | clientName: clientNameText)" class=" col-md-3">
+            <div class=" card card-user">
+                <div class=" card-body">
+                    <p class=" card-text"></p>
+                    <div class=" author">
+                        <div class=" block block-one"></div>
+                        <div class=" block block-two"></div>
+                        <div class=" block block-three"></div>
+                        <div class=" block block-four"></div>
+                        <a href="javascript:void(0)" (click)="openClientDetail(client.id)">
+                            <img alt="..." class=" avatar" [src]="client.profilePicture.pictureUri" />
+                        </a>
+                        <p class=" description">{{client.fullName}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,8 +6,6 @@ import { ImageHelperService } from 'src/app/services/image-helper.service';
 import { ClientsService, PictureDTO, CoordinatesDTO } from 'src/app/api/generated';
 import { ToastService } from 'src/app/services/toast.service';
 import { GeneralHelperService } from 'src/app/services/general-helper.service';
-import { GeolocationHelperService } from 'src/app/services/geolocation/geolocation-helper-service';
-import { Address } from 'src/app/services/geolocation/address';
 import { IndividualPlanDTO } from 'src/app/api/generated/model/individualPlanDTO';
 import { VisualHelperService } from 'src/app/services/visual-helper.service';
 

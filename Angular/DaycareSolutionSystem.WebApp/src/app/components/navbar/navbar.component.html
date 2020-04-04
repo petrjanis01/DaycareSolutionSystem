@@ -18,23 +18,22 @@
     </button>
     <div class=" navbar-collapse" [ngbCollapse]="isCollapsed" id="navigation">
       <ul class=" navbar-nav ml-auto">
-        <li class=" nav-item" ngbDropdown>
+        <li *ngIf="employeeDetail" class=" nav-item" ngbDropdown>
           <a class=" nav-link" data-toggle="dropdown" href="javascript:void(0)" ngbDropdownToggle>
             <div class=" photo">
-              <img alt="Profile Photo" src="assets/img/anime3.png" />
+              <img alt="Profile Photo" [src]="employeeDetail.profilePictureUri" />
             </div>
             <b class=" caret d-none d-lg-block d-xl-block"> </b>
-            <p class=" d-lg-none">Log out</p>
           </a>
           <ul class=" dropdown-navbar" ngbDropdownMenu>
             <li class=" nav-link">
-              <a class=" nav-item" href="javascript:void(0)" ngbDropdownItem>
+              <a class=" nav-item" (click)="openProfile()" href="javascript:void(0)" ngbDropdownItem>
                 Profile
               </a>
             </li>
             <li class=" dropdown-divider"></li>
             <li class=" nav-link">
-              <a class=" nav-item" href="javascript:void(0)" ngbDropdownItem>
+              <a class=" nav-item" (click)="logout()" href="javascript:void(0)" ngbDropdownItem>
                 Log out
               </a>
             </li>

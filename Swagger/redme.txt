@@ -1,3 +1,3 @@
-Swagger integration with .net core 3.0 is not stable and generates some tags that swagger code-gen cannot process. 
-In order to make code-gen work it requires to download swagger.json and conver it to .yaml. Tested convertor: https://www.json2yaml.com/
-Then remove all 'additionalProperties' tags from DTO schemas.
+Swagger integration with .net core 3.0 is not stable (12/2019) and generates some tags that swagger code-gen cannot process. 
+In order to make code-gen work it requires to download swagger.json and conver it to yaml format. Tested convertor: https://www.json2yaml.com/
+And remove all 'additional properties' tags (already done in script).

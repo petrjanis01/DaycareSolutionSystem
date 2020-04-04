@@ -9,17 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressDTO } from './addressDTO';
-import { Gender } from './gender';
 import { PictureDTO } from './pictureDTO';
 
 
-export interface ClientDTO { 
-    firstName?: string;
-    surname?: string;
-    birthDate?: Date;
-    gender?: Gender;
-    address?: AddressDTO;
+export interface ClientBasicsDTO { 
     id?: string;
     fullName?: string;
     profilePicture?: PictureDTO;

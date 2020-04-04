@@ -15,12 +15,12 @@ import { PictureDTO } from './pictureDTO';
 
 
 export interface ClientDTO { 
-    id?: string;
     firstName?: string;
     surname?: string;
-    fullName?: string;
     birthDate?: Date;
     gender?: Gender;
-    profilePicture?: PictureDTO;
     address?: AddressDTO;
+    id?: string;
+    fullName?: string;
+    profilePicture?: PictureDTO;
 }

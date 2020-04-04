@@ -34,6 +34,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
             }
         }
 
+        // TODO unit test this
         public Dictionary<DateTime, List<RegisteredActionDO>> GetRegisteredActionsPerDay(int count, DateTime date, Guid? lastActionDisplayedId)
         {
             var startDate = lastActionDisplayedId.HasValue

@@ -32,7 +32,6 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
             {
                 var dto = MapIndividualPlanWithActionsToDto(entry.Key, entry.Value);
                 individualPlans.Add(dto);
-
             }
 
             return individualPlans.ToArray();
@@ -68,6 +67,26 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
             }
 
             return clientDtos.ToArray();
+        }
+
+        [HttpGet]
+        [Route("all-client-basics")]
+        [Authorize(Roles = "Manager")]
+        public ClientBasicsDTO[] GetAllClientBasics()
+        {
+            var clients = _clientApiService.GetAllClients();
+
+            var clientBasicsDtos = new List<ClientBasicsDTO>();
+            foreach (var client in clients)
+            {
+                var dto = new ClientBasicsDTO();
+                dto.Id = client.Id;
+                dto.FullName = client.FullName;
+                dto.ProfilePicture = new PictureDTO { PictureUri = FormatPictureToBase64(client.ProfilePicture) };
+                clientBasicsDtos.Add(dto);
+            }
+
+            return clientBasicsDtos.ToArray();
         }
 
         [HttpGet]

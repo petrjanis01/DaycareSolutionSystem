@@ -15,6 +15,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
         {
         }
 
+        // TODO unit test this
         public Dictionary<IndividualPlan, List<AgreedClientAction>> GetClientAgreedActionsByPlans(Guid clientId)
         {
             var individualPlans = DataContext.IndividualPlans.Where(ip => ip.ClientId == clientId)
@@ -45,8 +46,18 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
                 .Where(ca => ca.EmployeeId == employeeId)
                 .Select(ca => ca.IndividualPlan)
                 .Select(ip => ip.Client)
+                .OrderBy(cl => cl.FirstName)
+                .ThenBy(cl => cl.Surname)
                 .Distinct();
-                //.OrderBy(cl => cl.FullName);
+
+            return clients.ToList();
+        }
+
+        public List<Client> GetAllClients()
+        {
+            var clients = DataContext.Clients
+                .OrderBy(cl => cl.FirstName)
+                .ThenBy(cl => cl.Surname);
 
             return clients.ToList();
         }

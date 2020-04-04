@@ -3,6 +3,8 @@ import { ROUTES } from '../sidebar/sidebar.component';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { EmployeeService, EmployeeDetailDTO } from 'src/app/api/generated';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-navbar',
@@ -16,6 +18,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private toggleButton: any;
   private sidebarVisible: boolean;
 
+  public employeeDetail: EmployeeDetailDTO;
+
   public isCollapsed = true;
 
   closeResult: string;
@@ -24,7 +28,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     location: Location,
     private element: ElementRef,
     private router: Router,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private employeeService: EmployeeService,
+    private auth: AuthenticationService
   ) {
     this.location = location;
     this.sidebarVisible = false;
@@ -40,7 +46,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
       navbar.classList.add('navbar-transparent');
     }
   };
-  ngOnInit() {
+
+  async ngOnInit() {
     window.addEventListener('resize', this.updateColor);
     this.listTitles = ROUTES.filter(listTitle => listTitle);
     let navbar: HTMLElement = this.element.nativeElement;
@@ -53,6 +60,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.mobileMenuVisible = 0;
       }
     });
+
+    let dto = await this.employeeService.apiEmployeeGetEmployeeDetailGet();
+    if (dto.profilePictureUri == null) {
+      dto.profilePictureUri = './../../../assets/img/user-anonymous.png';
+    }
+
+    this.employeeDetail = dto;
+  }
+
+  openProfile() {
+    this.router.navigate(['profile']);
+  }
+
+  logout() {
+    this.auth.logOut();
   }
 
   collapse() {
@@ -83,6 +105,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     this.sidebarVisible = true;
   }
+
   sidebarClose() {
     let html = document.getElementsByTagName('html')[0];
     this.toggleButton.classList.remove('toggled');
@@ -98,6 +121,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.sidebarVisible = false;
     html.classList.remove('nav-open');
   }
+
   sidebarToggle() {
     let $toggle = document.getElementsByClassName('navbar-toggler')[0];
 
@@ -186,6 +210,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       return `with: ${reason}`;
     }
   }
+
   ngOnDestroy() {
     window.removeEventListener('resize', this.updateColor);
   }

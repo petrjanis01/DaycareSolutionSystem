@@ -19,6 +19,12 @@ export const ROUTES: RouteInfo[] = [
     icon: 'icon-calendar-60',
     class: ''
   },
+  {
+    path: '/clients',
+    title: 'Clients',
+    icon: 'icon-single-02',
+    class: ''
+  },
 ];
 
 @Component({

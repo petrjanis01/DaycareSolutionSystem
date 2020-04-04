@@ -2,6 +2,7 @@ export * from './actionDTO';
 export * from './addressDTO';
 export * from './agreedActionDTO';
 export * from './agreedActionsForDayDTO';
+export * from './clientBasicsDTO';
 export * from './clientDTO';
 export * from './clientWithNextActionDTO';
 export * from './coordinatesDTO';

@@ -17,5 +17,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
         List<RegisteredClientAction> GetNextRegisteredActionsToday(Guid? employeeId = null);
 
         List<RegisteredClientAction> GetAllNextRegisteredActions(Guid? employeeId = null);
+
+        List<Client> GetAllClients();
     }
 }

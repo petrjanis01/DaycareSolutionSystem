@@ -104,6 +104,29 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/ClientDTO"
+  "/api/Clients/all-client-basics":
+    get:
+      tags:
+      - Clients
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ClientBasicsDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ClientBasicsDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ClientBasicsDTO"
   "/api/Clients/single-client":
     get:
       tags:
@@ -364,6 +387,7 @@ components:
           nullable: true
         isManagementSite:
           type: boolean
+      additionalProperties: false
     DayOfWeek:
       enum:
       - 0
@@ -387,6 +411,7 @@ components:
         description:
           type: string
           nullable: true
+      additionalProperties: false
     AgreedActionDTO:
       type: object
       properties:
@@ -407,6 +432,7 @@ components:
           format: date-time
         action:
           "$ref": "#/components/schemas/ActionDTO"
+      additionalProperties: false
     AgreedActionsForDayDTO:
       type: object
       properties:
@@ -417,6 +443,7 @@ components:
           items:
             "$ref": "#/components/schemas/AgreedActionDTO"
           nullable: true
+      additionalProperties: false
     IndividualPlanDTO:
       type: object
       properties:
@@ -434,12 +461,14 @@ components:
           items:
             "$ref": "#/components/schemas/AgreedActionsForDayDTO"
           nullable: true
+      additionalProperties: false
     PictureDTO:
       type: object
       properties:
         pictureUri:
           type: string
           nullable: true
+      additionalProperties: false
     Gender:
       enum:
       - 1
@@ -455,6 +484,7 @@ components:
         longitude:
           type: number
           format: double
+      additionalProperties: false
     AddressDTO:
       type: object
       properties:
@@ -475,19 +505,14 @@ components:
           nullable: true
         coordinates:
           "$ref": "#/components/schemas/CoordinatesDTO"
+      additionalProperties: false
     ClientDTO:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
         firstName:
           type: string
           nullable: true
         surname:
-          type: string
-          nullable: true
-        fullName:
           type: string
           nullable: true
         birthDate:
@@ -495,10 +520,29 @@ components:
           format: date-time
         gender:
           "$ref": "#/components/schemas/Gender"
-        profilePicture:
-          "$ref": "#/components/schemas/PictureDTO"
         address:
           "$ref": "#/components/schemas/AddressDTO"
+        id:
+          type: string
+          format: uuid
+        fullName:
+          type: string
+          nullable: true
+        profilePicture:
+          "$ref": "#/components/schemas/PictureDTO"
+      additionalProperties: false
+    ClientBasicsDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fullName:
+          type: string
+          nullable: true
+        profilePicture:
+          "$ref": "#/components/schemas/PictureDTO"
+      additionalProperties: false
     RegisteredActionBasicDTO:
       type: object
       properties:
@@ -514,6 +558,7 @@ components:
         name:
           type: string
           nullable: true
+      additionalProperties: false
     ClientWithNextActionDTO:
       type: object
       properties:
@@ -522,6 +567,7 @@ components:
           format: uuid
         nextAction:
           "$ref": "#/components/schemas/RegisteredActionBasicDTO"
+      additionalProperties: false
     EmployeePosition:
       enum:
       - 0
@@ -542,6 +588,7 @@ components:
           nullable: true
         employeePosition:
           "$ref": "#/components/schemas/EmployeePosition"
+      additionalProperties: false
     RegisteredActionDTO:
       type: object
       properties:
@@ -578,6 +625,7 @@ components:
           type: boolean
         photo:
           "$ref": "#/components/schemas/PictureDTO"
+      additionalProperties: false
     MinMaxDateDTO:
       type: object
       properties:
@@ -587,6 +635,7 @@ components:
         maxDate:
           type: string
           format: date-time
+      additionalProperties: false
     RegisteredActionsClientDTO:
       type: object
       properties:
@@ -598,6 +647,7 @@ components:
           items:
             "$ref": "#/components/schemas/RegisteredActionDTO"
           nullable: true
+      additionalProperties: false
     RegisteredActionsForDayDTO:
       type: object
       properties:
@@ -613,3 +663,4 @@ components:
           nullable: true
         containsLast:
           type: boolean
+      additionalProperties: false
