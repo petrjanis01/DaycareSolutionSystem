@@ -19,6 +19,7 @@ import { ClientNamePipe } from '../pipes/client-name.pipe';
 
 import { AgmCoreModule } from '@agm/core';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
+import { ClientGeneralInfoComponent } from '../pages/clients/client-detail/client-general-info/client-general-info.component';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
     ClientsComponent,
     ProfileComponent,
     ClientDetailComponent,
-    ClientNamePipe
+    ClientNamePipe,
+    ClientGeneralInfoComponent
   ]
 })
 export class AdminLayoutModule { }
