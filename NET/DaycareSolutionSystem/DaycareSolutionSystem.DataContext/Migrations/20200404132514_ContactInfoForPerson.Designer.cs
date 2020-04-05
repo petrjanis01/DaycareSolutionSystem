@@ -3,15 +3,17 @@ using System;
 using DaycareSolutionSystem.Database.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DaycareSolutionSystem.Database.DataContext.Migrations
 {
     [DbContext(typeof(DssDataContext))]
-    partial class DssDataContextModelSnapshot : ModelSnapshot
+    [Migration("20200404132514_ContactInfoForPerson")]
+    partial class ContactInfoForPerson
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

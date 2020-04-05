@@ -32,6 +32,20 @@
     </ion-item>
 
     <ion-item-divider class="item-separator">
+      <h5>Contact information</h5>
+    </ion-item-divider>
+
+    <ion-item lines="full" mode="md" *ngIf="client.address.city">
+      <ion-label>Phone number</ion-label>
+      {{client.phoneNumber}}
+    </ion-item>
+
+    <ion-item lines="full" mode="md" *ngIf="client.address.city">
+      <ion-label>Email</ion-label>
+      {{client.email}}
+    </ion-item>
+
+    <ion-item-divider class="item-separator">
       <h5>Address</h5>
     </ion-item-divider>
 

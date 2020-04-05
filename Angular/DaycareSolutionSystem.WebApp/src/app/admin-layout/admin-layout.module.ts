@@ -17,6 +17,9 @@ import { ProfileComponent } from '../pages/profile/profile.component';
 import { ClientDetailComponent } from '../pages/clients/client-detail/client-detail.component';
 import { ClientNamePipe } from '../pipes/client-name.pipe';
 
+import { AgmCoreModule } from '@agm/core';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -25,7 +28,11 @@ import { ClientNamePipe } from '../pipes/client-name.pipe';
     ReactiveFormsModule,
     HttpClientModule,
     NgbModule,
-    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCQsd5nCdDeiSvHmgbcSt8Fbk7AOLqPmZw'
+    }),
+    AngularMultiSelectModule
   ],
   declarations: [
     DashboardComponent,

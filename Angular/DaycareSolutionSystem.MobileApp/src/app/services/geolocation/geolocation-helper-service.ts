@@ -35,7 +35,7 @@ export class GeolocationHelperService {
                         reject(err);
                     });
             }).catch(err => {
-                this.toast.showErrorToast('Unable to get device location');
+                this.toast.showErrorToast('Unable to get device location.');
             });
 
             if (cords != null) {
@@ -113,9 +113,9 @@ export class GeolocationHelperService {
     ): Address {
         let address = new Address();
 
-        let premise = addressComponents.find(a => !!a.types.find(t => t === 'premise')).long_name;
-        let streetNumber = addressComponents.find(a => !!a.types.find(t => t === 'street_number'));
-        address.buildingNumber = streetNumber != null ? `${premise}/${streetNumber.long_name}` : premise;
+        let premise = addressComponents.find(a => !!a.types.find(t => t === 'premise'));
+        let streetNumber = addressComponents.find(a => !!a.types.find(t => t === 'street_number')).long_name;
+        address.buildingNumber = premise != null ? `${premise.long_name}/${streetNumber}` : streetNumber;
 
         let postCode = addressComponents.find(a => !!a.types.find(t => t === 'postal_code')).long_name;
         address.postCode = postCode;

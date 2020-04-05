@@ -66,6 +66,8 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Employees
             dto.Birthdate = employee.Birthdate;
             dto.EmployeePosition = employee.EmployeePosition;
             dto.ProfilePictureUri = FormatPictureToBase64(employee.ProfilePicture);
+            dto.PhoneNumber = employee.PhoneNumber;
+            dto.Email = employee.Email;
 
             return dto;
         }

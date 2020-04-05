@@ -151,6 +151,8 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
             dto.BirthDate = client.Birthdate;
             dto.ProfilePicture = new PictureDTO { PictureUri = FormatPictureToBase64(client.ProfilePicture) };
             dto.Address = MapAddressToDto(client.Address);
+            dto.Email = client.Email;
+            dto.PhoneNumber = client.PhoneNumber;
 
             return dto;
         }

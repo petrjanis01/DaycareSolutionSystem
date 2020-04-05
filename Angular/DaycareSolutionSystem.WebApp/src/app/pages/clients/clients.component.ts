@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class ClientsComponent implements OnInit {
   public clientBasics: ClientBasicsDTO[];
   public clientNameFilter: string;
+  public clientNameText: string;
 
   constructor(private clientService: ClientsService, private router: Router) { }
 

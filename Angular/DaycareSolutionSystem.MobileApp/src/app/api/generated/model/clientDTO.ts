@@ -17,6 +17,8 @@ import { PictureDTO } from './pictureDTO';
 export interface ClientDTO { 
     firstName?: string;
     surname?: string;
+    email?: string;
+    phoneNumber?: string;
     birthDate?: Date;
     gender?: Gender;
     address?: AddressDTO;

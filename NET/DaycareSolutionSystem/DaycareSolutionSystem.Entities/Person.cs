@@ -18,6 +18,10 @@ namespace DaycareSolutionSystem.Database.Entities
 
         public virtual Picture ProfilePicture { get; set; }
 
+        public string Email { get; set; }
+
+        public string PhoneNumber { get; set; }
+
         public Guid? ProfilePictureId { get; set; }
     }
 }

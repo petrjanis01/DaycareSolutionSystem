@@ -515,6 +515,12 @@ components:
         surname:
           type: string
           nullable: true
+        email:
+          type: string
+          nullable: true
+        phoneNumber:
+          type: string
+          nullable: true
         birthDate:
           type: string
           format: date-time
@@ -583,6 +589,12 @@ components:
         birthdate:
           type: string
           format: date-time
+        email:
+          type: string
+          nullable: true
+        phoneNumber:
+          type: string
+          nullable: true
         profilePictureUri:
           type: string
           nullable: true

@@ -55,6 +55,8 @@ namespace DaycareSolutionSystem.Database.Migrator
             dcEmployee.Gender = Gender.Male;
             dcEmployee.FirstName = "Daycare";
             dcEmployee.Surname = "Employee";
+            dcEmployee.Email = "dcemp@dss.com";
+            dcEmployee.PhoneNumber = "+420123456789";
             dcEmployee.Birthdate = new DateTime(1990, 6, 2);
             dcEmployee.EmployeePosition = EmployeePosition.Caregiver;
 
@@ -62,6 +64,8 @@ namespace DaycareSolutionSystem.Database.Migrator
             mngrEmployee.Gender = Gender.Female;
             mngrEmployee.FirstName = "Manager";
             mngrEmployee.Surname = "Employee";
+            dcEmployee.Email = "mngr@dss.com";
+            dcEmployee.PhoneNumber = "+420123456789";
             mngrEmployee.Birthdate = new DateTime(1995, 1, 1);
             mngrEmployee.EmployeePosition = EmployeePosition.Manager;
 
@@ -110,6 +114,8 @@ namespace DaycareSolutionSystem.Database.Migrator
                 client.FirstName = i < 5 ? MaleNames[i] : FemaleNames[i - 4];
                 client.Surname = i < 6 ? LastNames[i] : LastNames[i - 6];
                 client.Birthdate = new DateTime(1945 + i, 1 + i, 1 + i);
+                client.Email = $"{client.FullName}@fakeDomain.com";
+                client.PhoneNumber = $"+420{new string('1', 9)}";
 
                 clients.Add(client);
                 _clientIds.Add(client.Id);

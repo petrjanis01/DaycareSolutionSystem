@@ -15,6 +15,8 @@ import { EmployeePosition } from './employeePosition';
 export interface EmployeeDetailDTO { 
     fullName?: string;
     birthdate?: Date;
+    email?: string;
+    phoneNumber?: string;
     profilePictureUri?: string;
     employeePosition?: EmployeePosition;
 }

@@ -83,6 +83,8 @@ export class ClientsCacheService {
         client.profilePicture = dto.profilePicture.pictureUri != null ? dto.profilePicture.pictureUri : this.defaultProfilePicture;
         client.address = new Address(dto.address);
         client.distanceFromDevice = null;
+        client.phoneNumber = dto.phoneNumber;
+        client.email = dto.email;
 
         return client;
     }
