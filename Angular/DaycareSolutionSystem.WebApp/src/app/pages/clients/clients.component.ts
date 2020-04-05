@@ -29,4 +29,8 @@ export class ClientsComponent implements OnInit {
   public openClientDetail(id: string) {
     this.router.navigate(['clients/detail', id]);
   }
+
+  public addNewClient() {
+    this.router.navigate(['clients/detail', 0])
+  }
 }

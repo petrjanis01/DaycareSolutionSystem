@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using DaycareSolutionSystem.Database.DataContext;
 using DaycareSolutionSystem.Database.Entities;
 using DaycareSolutionSystem.Database.Entities.Entities;
+using DaycareSolutionSystem.Helpers;
 using Microsoft.AspNetCore.Http;
 
 namespace DaycareSolutionSystem.Api.Host.Services
@@ -34,35 +35,10 @@ namespace DaycareSolutionSystem.Api.Host.Services
             return currentUser;
         }
 
-        // https://stackoverflow.com/questions/5714281/regex-to-parse-image-data-uri/5714347
-        protected Picture CreatePictureFromUri(string pictureUri)
-        {
-            if (string.IsNullOrEmpty(pictureUri))
-            {
-                return null;
-            }
-
-            var regex = new Regex(@"data:(?<mime>[\w/\-\.]+);(?<encoding>\w+),(?<data>.*)", RegexOptions.Compiled);
-
-            var match = regex.Match(pictureUri);
-
-            var mime = match.Groups["mime"].Value;
-            var encoding = match.Groups["encoding"].Value;
-            var data = match.Groups["data"].Value;
-
-            var binaryData = Convert.FromBase64String(data);
-
-            var picture = new Picture();
-            picture.MimeType = mime;
-            picture.BinaryData = binaryData;
-
-            return picture;
-        }
-
         public TEntity ChangeProfilePicture<TEntity>(Guid? id, string pictureUri) where TEntity : Person
         {
             var person = DataContext.Find<TEntity>(id);
-            var picture = CreatePictureFromUri(pictureUri);
+            var picture = Base64ImageHelper.CreatePictureFromUri(pictureUri);
 
             if (person != null && picture != null)
             {

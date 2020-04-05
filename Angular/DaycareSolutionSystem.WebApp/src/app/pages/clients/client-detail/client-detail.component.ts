@@ -59,14 +59,54 @@ export class ClientDetailComponent implements OnInit {
   async ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id');
 
-    let dto = await this.clientsService.apiClientsSingleClientGet(id);
-    if (dto.profilePicture.pictureUri == null) {
-      dto.profilePicture.pictureUri = './../../../../assets/img/user-anonymous.png';
+    if (id === '0') {
+      this.createNewClientDto();
+    } else {
+      this.getExistingClient(id);
     }
 
-    this.client = dto;
-    let address = this.client.address;
+  }
+
+  private async getExistingClient(id: string) {
+    let dto = await this.clientsService.apiClientsSingleClientGet(id);
+    let address = dto.address;
     await this.geolocationHelper.getFullAddressIfNeeded(address);
     this.address = address;
+    this.client = dto;
+  }
+
+  private createNewClientDto() {
+
+    let coordinatesEmptyDto: CoordinatesDTO = {
+      latitude: null,
+      longitude: null
+    };
+
+    let addressEmptyDto: AddressDTO = {
+      id: null,
+      postCode: null,
+      city: null,
+      street: null,
+      buildingNumber: null,
+      coordinates: coordinatesEmptyDto
+    };
+
+    let profilePictureEmptyDto: PictureDTO = {
+      pictureUri: null
+    };
+
+    let clientEmptyDto: ClientDTO = {
+      id: null,
+      firstName: null,
+      surname: null,
+      email: null,
+      phoneNumber: null,
+      birthDate: null,
+      gender: null,
+      profilePicture: profilePictureEmptyDto,
+      address: addressEmptyDto
+    };
+    this.address = addressEmptyDto;
+    this.client = clientEmptyDto;
   }
 }

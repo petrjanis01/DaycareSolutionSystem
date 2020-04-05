@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ClientDTO, ClientsService, AddressDTO, CoordinatesDTO, PictureDTO } from 'src/app/api/generated';
 import { GeneralHelperService } from 'src/app/services/general-helper.service';
 import { GeolocationHelperService } from 'src/app/services/geolocation-helper.service';
@@ -8,6 +8,7 @@ import { Observable, fromEvent } from 'rxjs';
 import { pluck } from 'rxjs/operators';
 import { DatepickerDateModel } from '../datepicker-date-model';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 const left = [
   query(':enter, :leave', style({ position: 'absolute' }), { optional: true }),
@@ -54,13 +55,11 @@ export class ClientGeneralInfoComponent implements OnInit {
   @Input() client: ClientDTO;
   @Input() address: AddressDTO;
 
-  public detailEditCounter = 0;
+  public detailEditCounter = -1;
 
   public latClient: number;
   public lngClient: number;
 
-  public newProfilePicture: string;
-  public clientUpdateDto: ClientDTO;
   public datepickerBirthdateModel: DatepickerDateModel;
 
   public latUpdate: number;
@@ -68,46 +67,138 @@ export class ClientGeneralInfoComponent implements OnInit {
 
   public updateDetailForm: FormGroup;
 
+  private isEdit = false;
+
   constructor(private clientsService: ClientsService, public helper: GeneralHelperService,
-    private geolocationHelper: GeolocationHelperService, private formBuilder: FormBuilder) { }
+    private geolocationHelper: GeolocationHelperService, private formBuilder: FormBuilder,
+    private router: Router, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
+    if (this.client.profilePicture.pictureUri == null) {
+      this.client.profilePicture.pictureUri = './../../../../../assets/img/user-anonymous.png';
+    }
+
+    if (this.client.id == null) {
+      this.openGeneralInfoEdit();
+      this.detailEditCounter = 1;
+      console.log('adasda');
+      return;
+    }
+
+    this.isEdit = true;
+    this.detailEditCounter = 0;
+
     this.latClient = this.address.coordinates.latitude;
     this.lngClient = this.address.coordinates.longitude;
   }
 
   public async openGeneralInfoEdit() {
     this.createDetailEditFormGroup();
-    this.mapClientToUpdateDTO();
 
-    this.latUpdate = this.latClient;
-    this.lngUpdate = this.lngClient;
-    // // when creating new client
-    // let cords = await this.geolocationHelper.getCurrentLocation();
-    // if (cords != null) {
-    //   this.latUpdate = cords.latitude;
-    //   this.lngUpdate = cords.longitude;
-    // }
-
-    // this.updateMapFromForm();
+    if (this.isEdit) {
+      this.latUpdate = this.latClient;
+      this.lngUpdate = this.lngClient;
+    } else {
+      let cords = this.geolocationHelper.getCurrentLocation();
+      if (cords == null) {
+        this.latUpdate = 0;
+        this.lngUpdate = 0;
+      }
+    }
 
     this.detailEditCounter++;
   }
 
-  public saveGeneralInfo() {
+  public async saveGeneralInfo() {
+    await this.validateAddress();
+    let updateDto = this.createUpdateDto();
+
+    this.spinner.show();
+    try {
+      let client: ClientDTO;
+      if (this.isEdit) {
+        client = await this.clientsService.apiClientsSingleClientPut(updateDto);
+      } else {
+        client = await this.clientsService.apiClientsSingleClientPost(updateDto);
+      }
+
+      this.client = client;
+      this.address = client.address;
+      this.latClient = client.address.coordinates.latitude;
+      this.lngClient = client.address.coordinates.longitude;
+    } catch{
+      this.client = updateDto;
+      await this.geolocationHelper.getFullAddressIfNeeded(updateDto.address);
+      this.address = updateDto.address;
+    } finally {
+      this.spinner.hide();
+    }
+
     this.detailEditCounter--;
+  }
+
+  private createUpdateDto(): ClientDTO {
+    let formValue = this.updateDetailForm.value;
+    let coordinatesUpdateDto: CoordinatesDTO = {
+      latitude: this.latUpdate,
+      longitude: this.lngUpdate
+    };
+
+    let addressUpdateDto: AddressDTO = {
+      id: this.isEdit ? this.address.id : null,
+      postCode: formValue.postCode,
+      city: formValue.city,
+      street: formValue.street,
+      buildingNumber: formValue.buildingNumber,
+      coordinates: coordinatesUpdateDto
+    };
+
+    let profilePictureUpdateDto: PictureDTO = {
+      pictureUri: this.client.profilePicture.pictureUri
+    };
+
+    let birthDate: DatepickerDateModel = formValue.birthDate;
+    let date = new Date();
+    date.setFullYear(birthDate.year);
+    date.setMonth(birthDate.month);
+    date.setDate(birthDate.day);
+
+    let clientUpdateDto: ClientDTO = {
+      id: this.isEdit ? this.client.id : null,
+      firstName: formValue.firstName,
+      surname: formValue.surname,
+      email: formValue.email,
+      phoneNumber: formValue.phoneNumber,
+      birthDate: date,
+      gender: formValue.gender,
+      profilePicture: profilePictureUpdateDto,
+      address: addressUpdateDto
+    };
+
+    console.log(clientUpdateDto);
+    return clientUpdateDto;
+  }
+
+  public cancelEdit() {
+    if (!this.isEdit) {
+      this.router.navigate(['clients']);
+      return;
+    }
+
+    this.detailEditCounter--;
+    console.log(this.detailEditCounter);
+    this.updateDetailForm = null;
   }
 
   public selectImage(ev: any) {
     this.imageInput.nativeElement.click();
   }
 
-  public confirmAddress() {
+  public async validateAddress() {
     let address = this.createAddressFromFormValues();
-    this.geolocationHelper.getGpsCoordinatesFromAddress(address).then(res => {
-      this.latUpdate = res.latitude;
-      this.lngUpdate = res.longitude;
-    });
+    let res = await this.geolocationHelper.getGpsCoordinatesFromAddress(address);
+    this.latUpdate = res.latitude;
+    this.lngUpdate = res.longitude;
   }
 
   public allAddressControlsValid(): boolean {
@@ -134,53 +225,21 @@ export class ClientGeneralInfoComponent implements OnInit {
   }
 
   private createDetailEditFormGroup() {
+    let date = this.client.birthDate ? this.client.birthDate : new Date();
+    this.datepickerBirthdateModel = new DatepickerDateModel(date);
+
     this.updateDetailForm = this.formBuilder.group({
       firstName: new FormControl(this.client.firstName, Validators.required),
       surname: new FormControl(this.client.surname, Validators.required),
       email: new FormControl(this.client.email, Validators.required),
       phoneNumber: new FormControl(this.client.phoneNumber, Validators.required),
-      birthDate: new FormControl(new DatepickerDateModel(this.client.birthDate), Validators.required),
+      birthDate: new FormControl(new DatepickerDateModel(date), Validators.required),
       gender: new FormControl(this.client.gender, Validators.required),
       city: new FormControl(this.address.city, Validators.required),
       postCode: new FormControl(this.address.postCode, Validators.required),
       street: new FormControl(this.address.street),
       buildingNumber: new FormControl(this.address.buildingNumber, Validators.required)
     });
-  }
-
-  private mapClientToUpdateDTO() {
-    let coordinatesUpdateDto: CoordinatesDTO = {
-      latitude: this.client.address.coordinates.latitude,
-      longitude: this.client.address.coordinates.longitude
-    };
-
-    let addressUpdateDto: AddressDTO = {
-      id: this.client.address.id,
-      postCode: this.client.address.postCode,
-      city: this.client.address.city,
-      street: this.client.address.street,
-      buildingNumber: this.client.address.buildingNumber,
-      coordinates: coordinatesUpdateDto
-    };
-
-    let profilePictureUpdateDto: PictureDTO = {
-      pictureUri: this.client.profilePicture.pictureUri
-    };
-
-    let clientUpdateDto: ClientDTO = {
-      id: this.client.id,
-      firstName: this.client.firstName,
-      surname: this.client.surname,
-      email: this.client.email,
-      phoneNumber: this.client.phoneNumber,
-      birthDate: this.client.birthDate,
-      gender: this.client.gender,
-      profilePicture: profilePictureUpdateDto,
-      address: addressUpdateDto
-    };
-
-    this.datepickerBirthdateModel = new DatepickerDateModel(this.client.birthDate);
-    this.clientUpdateDto = clientUpdateDto;
   }
 
   // https://stackoverflow.com/questions/39272970/angular-2-encode-image-to-base64
@@ -193,7 +252,7 @@ export class ClientGeneralInfoComponent implements OnInit {
 
       this.imageToBase64(reader, file)
         .subscribe(base64image => {
-          this.clientUpdateDto.profilePicture.pictureUri = base64image;
+          this.client.profilePicture.pictureUri = base64image;
         });
     }
   }

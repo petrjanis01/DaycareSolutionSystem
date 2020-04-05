@@ -1,4 +1,5 @@
 <div class=" row justify-content-center">
+    <ngx-spinner></ngx-spinner>
     <div class=" col-md-10" [@detailEditSlider]="detailEditCounter">
         <div class="card" *ngIf="client && address && detailEditCounter == 0">
             <div class="card-header row justify-content-between">
@@ -68,18 +69,18 @@
                     <h3 class="title">Client edit</h3>
                 </div>
                 <div class="col-md3">
-                    <button class="btn btn-danger">Cancel</button>
-                    <button style="margin-left: 10px;" class="btn btn-success">Save</button>
+                    <button class="btn btn-danger" (click)="cancelEdit()">Cancel</button>
+                    <button style="margin-left: 10px;" class="btn btn-success" (click)="saveGeneralInfo()">Save</button>
                 </div>
             </div>
-            <div class="card-body" [formGroup]="updateDetailForm">
+            <div class="card-body" *ngIf="updateDetailForm" [formGroup]="updateDetailForm">
                 <div class="row">
                     <div class="col-md-4 col-sm-6 flex-column text-center">
                         <h4 class="section-label">Profile picture</h4>
                         <div class="fileinput text-center">
                             <input type="file" hidden #imageInput accept="image/*" (change)="processFile($event)">
                             <div class="thumbnail">
-                                <img [src]="clientUpdateDto.profilePicture.pictureUri">
+                                <img [src]="client.profilePicture.pictureUri">
                             </div>
                             <div>
                                 <button class="btn-round btn btn-primary ng-star-inserted"
@@ -164,7 +165,7 @@
                             <input class=" form-control" placeholder="Building number" type="text"
                                 formControlName="buildingNumber" />
                         </div>
-                        <button class=" btn" [disabled]="!allAddressControlsValid()" (click)="confirmAddress()">Validate
+                        <button class=" btn" [disabled]="!allAddressControlsValid()" (click)="validateAddress()">Validate
                             address</button>
                     </div>
                 </div>

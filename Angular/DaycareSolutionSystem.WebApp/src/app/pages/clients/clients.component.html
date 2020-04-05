@@ -1,11 +1,14 @@
 <div class="content">
-    <div class="col-md-6 ml-auto mr-auto">
+    <div class="col-xl-8 ml-auto mr-auto">
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-10 ml-auto mr-auto">
+                    <div class="col-xl-8" style="margin-top: 5px">
                         <input type="text" placeholder="Find client by name" class="form-control"
                             [(ngModel)]="clientNameText">
+                    </div>
+                    <div class="col-xl-4">
+                        <button class="btn btn-secondary" (click)="addNewClient()">Add new client</button>
                     </div>
                 </div>
             </div>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DaycareSolutionSystem.Api.Host.Controllers.Schedule;
 using DaycareSolutionSystem.Database.DataContext;
+using DaycareSolutionSystem.Helpers;
 using Microsoft.AspNetCore.Http;
 
 namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
@@ -87,7 +88,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
 
             if (dto.Photo != null && string.IsNullOrEmpty(dto.Photo.PictureUri) == false)
             {
-                var picture = CreatePictureFromUri(dto.Photo.PictureUri);
+                var picture = Base64ImageHelper.CreatePictureFromUri(dto.Photo.PictureUri);
                 if (registeredAction.Photo != null)
                 {
                     registeredAction.Photo.MimeType = picture.MimeType;

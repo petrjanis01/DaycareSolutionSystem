@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DaycareSolutionSystem.Api.Host.Controllers.Clients;
 using DaycareSolutionSystem.Database.DataContext;
 using DaycareSolutionSystem.Database.Entities.Entities;
 using DaycareSolutionSystem.Helpers;
@@ -60,6 +61,41 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
                 .ThenBy(cl => cl.Surname);
 
             return clients.ToList();
+        }
+
+        public Client CreateClient(Client client)
+        {
+            DataContext.Clients.Add(client);
+            DataContext.SaveChanges();
+
+            return client;
+        }
+
+        public Client UpdateClient(Client clientUpdated)
+        {
+            var client = DataContext.Clients.FirstOrDefault(cl => cl.Id == clientUpdated.Id);
+
+            client.FirstName = clientUpdated.FirstName;
+            client.Surname = clientUpdated.Surname;
+            client.PhoneNumber = clientUpdated.PhoneNumber;
+            client.Email = clientUpdated.Email;
+            client.Birthdate = clientUpdated.Birthdate;
+            client.Gender = clientUpdated.Gender;
+
+            client.ProfilePicture.MimeType = clientUpdated.ProfilePicture.MimeType;
+            client.ProfilePicture.BinaryData = clientUpdated.ProfilePicture.BinaryData;
+
+            client.Address.City = clientUpdated.Address.City;
+            client.Address.BuildingNumber = clientUpdated.Address.BuildingNumber;
+            client.Address.PostCode = clientUpdated.Address.PostCode;
+            client.Address.Street = clientUpdated.Address.Street;
+
+            client.Address.Coordinates.Latitude = clientUpdated.Address.Coordinates.Latitude;
+            client.Address.Coordinates.Longitude = clientUpdated.Address.Coordinates.Longitude;
+
+            DataContext.SaveChanges();
+
+            return client;
         }
 
         public Client GetClient(Guid clientId)

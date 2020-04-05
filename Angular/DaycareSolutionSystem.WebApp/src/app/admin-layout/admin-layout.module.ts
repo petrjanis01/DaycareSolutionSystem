@@ -20,6 +20,7 @@ import { ClientNamePipe } from '../pipes/client-name.pipe';
 import { AgmCoreModule } from '@agm/core';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { ClientGeneralInfoComponent } from '../pages/clients/client-detail/client-general-info/client-general-info.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { ClientGeneralInfoComponent } from '../pages/clients/client-detail/clien
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCQsd5nCdDeiSvHmgbcSt8Fbk7AOLqPmZw'
     }),
-    AngularMultiSelectModule
+    AngularMultiSelectModule,
+    NgxSpinnerModule
   ],
   declarations: [
     DashboardComponent,

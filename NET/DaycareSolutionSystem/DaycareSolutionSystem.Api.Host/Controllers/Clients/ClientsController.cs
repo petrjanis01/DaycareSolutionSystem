@@ -4,6 +4,7 @@ using System.Linq;
 using DaycareSolutionSystem.Api.Host.Controllers.DTO;
 using DaycareSolutionSystem.Api.Host.Services.Clients;
 using DaycareSolutionSystem.Database.Entities.Entities;
+using DaycareSolutionSystem.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -99,6 +100,32 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
             return dto;
         }
 
+        [HttpPut]
+        [Authorize(Roles = "Manager")]
+        [Route("single-client")]
+        public ClientDTO UpdateClient(ClientDTO clientDto)
+        {
+            var client = MapDtoToClient(clientDto);
+
+            var updatedClient = _clientApiService.UpdateClient(client);
+            var dto = MapClientToDto(updatedClient);
+
+            return dto;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Manager")]
+        [Route("single-client")]
+        public ClientDTO CreateClient(ClientDTO clientDto)
+        {
+            var client = MapDtoToClient(clientDto);
+
+            var updatedClient = _clientApiService.CreateClient(client);
+            var dto = MapClientToDto(updatedClient);
+
+            return dto;
+        }
+
         [HttpGet]
         [Route("today-scheduled-clients")]
         public ClientWithNextActionDTO[] GetClientsScheduledToday(Guid? employeeId = null)
@@ -155,6 +182,37 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
             dto.PhoneNumber = client.PhoneNumber;
 
             return dto;
+        }
+
+        private Client MapDtoToClient(ClientDTO clientDto)
+        {
+            var client = new Client();
+            client.Id = clientDto.Id;
+            client.FirstName = clientDto.FirstName;
+            client.Surname = clientDto.Surname;
+            client.PhoneNumber = clientDto.PhoneNumber;
+            client.Email = clientDto.Email;
+            client.Birthdate = clientDto.BirthDate;
+            client.Gender = clientDto.Gender;
+
+
+            client.Address = new Address();
+            client.Address.City = clientDto.Address.City;
+            client.Address.BuildingNumber = clientDto.Address.BuildingNumber;
+            client.Address.PostCode = clientDto.Address.PostCode;
+            client.Address.Street = clientDto.Address.Street;
+
+            if (clientDto.ProfilePicture.PictureUri != null)
+            {
+                var picture = Base64ImageHelper.CreatePictureFromUri(clientDto.ProfilePicture.PictureUri);
+                client.ProfilePicture = picture;
+            }
+
+            client.Address.Coordinates = new Coordinates();
+            client.Address.Coordinates.Latitude = clientDto.Address.Coordinates.Latitude.ToString();
+            client.Address.Coordinates.Longitude = clientDto.Address.Coordinates.Longitude.ToString();
+
+            return client;
         }
 
         private AddressDTO MapAddressToDto(Address address)
