@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
+using System.Linq;
+using System.Security.Claims;
 using DaycareSolutionSystem.Api.Host.Services.Clients;
 using DaycareSolutionSystem.Database.Entities.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace DaycareSolutionSystem.Api.Host.Test
 {
@@ -13,15 +13,18 @@ namespace DaycareSolutionSystem.Api.Host.Test
     public class ClientApiServiceTest : ApiTestBase
     {
         private IClientApiService _testedService;
+        private Mock<IHttpContextAccessor> _httpContextMock;
 
         [TestInitialize]
         public void TestInit()
         {
-            _testedService = new ClientApiService(DataContext, new HttpContextAccessor());
+            _httpContextMock = new Mock<IHttpContextAccessor>();
+
+            _testedService = new ClientApiService(DataContext, _httpContextMock.Object);
         }
 
         [TestMethod]
-        public void GetNextNotStartedRegisteredActionsToday_AllTodayAndNotStarted_CorrectDataReturned()
+        public void GetNextNotStartedRegisteredActionsToday_AllTodayAndNotStarted()
         {
             var employee = new Employee();
             DataContext.Employees.Add(employee);
@@ -31,9 +34,9 @@ namespace DaycareSolutionSystem.Api.Host.Test
             DataContext.Clients.AddRange(new[] { client2, client1 });
 
             var action1 = new RegisteredClientAction
-            { PlannedStartDateTime = DateTime.Now, ClientId = client1.Id, EmployeeId = employee.Id };
+            { PlannedStartDateTime = DateTime.Now.AddHours(1), ClientId = client1.Id, EmployeeId = employee.Id };
             var action2 = new RegisteredClientAction
-            { PlannedStartDateTime = DateTime.Now, ClientId = client1.Id, EmployeeId = employee.Id };
+            { PlannedStartDateTime = DateTime.Now.AddHours(2), ClientId = client1.Id, EmployeeId = employee.Id };
             var action3 = new RegisteredClientAction
             { PlannedStartDateTime = DateTime.Now, ClientId = client2.Id, EmployeeId = employee.Id };
 
@@ -42,11 +45,13 @@ namespace DaycareSolutionSystem.Api.Host.Test
 
             var result = _testedService.GetNextNotStartedRegisteredActionsToday(employee.Id);
 
-            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(result.FirstOrDefault(r => r.Id == action1.Id));
+            Assert.IsNotNull(result.FirstOrDefault(r => r.Id == action3.Id));
+            Assert.IsNull(result.FirstOrDefault(r => r.Id == action2.Id));
         }
 
         [TestMethod]
-        public void GetNextNotStartedRegisteredActionsToday_InOtherDays_ReturnsCorrectAmount()
+        public void GetNextNotStartedRegisteredActionsToday_InOtherDays()
         {
             var employee = new Employee();
             DataContext.Employees.Add(employee);
@@ -68,10 +73,11 @@ namespace DaycareSolutionSystem.Api.Host.Test
             var result = _testedService.GetNextNotStartedRegisteredActionsToday(employee.Id);
 
             Assert.AreEqual(1, result.Count);
+            Assert.IsNotNull(result.FirstOrDefault(r => r.Id == action1.Id));
         }
 
         [TestMethod]
-        public void GetNextNotStartedRegisteredActionsToday_WithOtherEmployees_ReturnsCorrectAmount()
+        public void GetNextNotStartedRegisteredActionsToday_WithOtherEmployees()
         {
             var employee1 = new Employee();
             var employee2 = new Employee();
@@ -92,10 +98,11 @@ namespace DaycareSolutionSystem.Api.Host.Test
 
             var result = _testedService.GetNextNotStartedRegisteredActionsToday(employee1.Id);
             Assert.AreEqual(1, result.Count);
+            Assert.IsNotNull(result.FirstOrDefault(r => r.Id == action1.Id));
         }
 
         [TestMethod]
-        public void GetNextNotStartedRegisteredActionsToday_SomeStarted_ReturnsCorrectAmount()
+        public void GetNextNotStartedRegisteredActionsToday_SomeStarted()
         {
             var employee = new Employee();
             DataContext.Employees.Add(employee);
@@ -114,8 +121,8 @@ namespace DaycareSolutionSystem.Api.Host.Test
             DataContext.SaveChanges();
 
             var result = _testedService.GetNextNotStartedRegisteredActionsToday(employee.Id);
-
             Assert.AreEqual(1, result.Count);
+            Assert.IsNotNull(result.FirstOrDefault(r => r.Id == action2.Id));
         }
     }
 }
