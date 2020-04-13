@@ -20,9 +20,21 @@ import { JsonDateInterceptor } from './api/json-date-interceptor';
 import { NotifiactionService } from './services/notification.service';
 import { AuthGuardService } from './services/auth-guard.service';
 
+import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
+
 export function initializeApp(appConfig: AppConfig) {
   return () => appConfig.load();
 }
+
+function trimLastSlashFromUrl(baseUrl: string) {
+  if (!baseUrl) {
+    return null;
+  } else if (baseUrl[baseUrl.length - 1] === '/') {
+    let trimmedUrl = baseUrl.substring(0, baseUrl.length - 1);
+    return trimmedUrl;
+  }
+}
+
 
 @NgModule({
   imports: [
@@ -46,6 +58,11 @@ export function initializeApp(appConfig: AppConfig) {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
       deps: [AppConfig], multi: true
+    },
+    {
+      provide: APP_BASE_HREF,
+      useFactory: (s: PlatformLocation) => trimLastSlashFromUrl(s.getBaseHrefFromDOM()),
+      deps: [PlatformLocation]
     }
   ],
   bootstrap: [AppComponent],

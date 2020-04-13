@@ -5,6 +5,7 @@ import { Client } from './client';
 import { ImageHelperService } from '../image-helper.service';
 import { GeolocationHelperService } from '../geolocation/geolocation-helper-service';
 import { Address } from '../geolocation/address';
+import { GeneralHelperService } from '../general-helper.service';
 
 @Injectable({ providedIn: 'root' })
 export class ClientsCacheService {
@@ -20,7 +21,8 @@ export class ClientsCacheService {
         private clientsService: ClientsService,
         private loadingController: LoadingController,
         private imageHelper: ImageHelperService,
-        private geolocationHelper: GeolocationHelperService
+        private geolocationHelper: GeolocationHelperService,
+        private helper: GeneralHelperService
     ) { }
 
     public async loadClientsCache() {
@@ -67,7 +69,7 @@ export class ClientsCacheService {
     }
 
     private async loadDefaulProfilePicture() {
-        let img = await this.imageHelper.fileToBase64('assets/img/user-anonymous.png');
+        let img = await this.imageHelper.fileToBase64(this.helper.getAnonymousImgUrlFormatted());
 
         this.defaultProfilePicture = img;
     }

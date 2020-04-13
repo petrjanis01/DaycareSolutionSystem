@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientsService, ClientBasicsDTO } from 'src/app/api/generated';
 import { Router } from '@angular/router';
+import { GeneralHelperService } from 'src/app/services/general-helper.service';
 
 @Component({
   selector: 'app-clients',
@@ -12,14 +13,15 @@ export class ClientsComponent implements OnInit {
   public clientNameFilter: string;
   public clientNameText: string;
 
-  constructor(private clientService: ClientsService, private router: Router) { }
+  constructor(private clientService: ClientsService, private router: Router,
+    private helper: GeneralHelperService) { }
 
   async ngOnInit() {
     let dtos = await this.clientService.apiClientsAllClientBasicsGet();
 
     dtos.forEach(dto => {
       if (dto.profilePicture.pictureUri == null) {
-        dto.profilePicture.pictureUri = 'assets/img/user-anonymous.png';
+        dto.profilePicture.pictureUri = this.helper.getAnonymousImgUrlFormatted();
       }
     });
 

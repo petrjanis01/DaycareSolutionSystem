@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { EmployeeService, EmployeeDetailDTO } from 'src/app/api/generated';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { GeneralHelperService } from 'src/app/services/general-helper.service';
 
 @Component({
   selector: 'app-navbar',
@@ -30,7 +31,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private router: Router,
     private modalService: NgbModal,
     private employeeService: EmployeeService,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
+    private helper: GeneralHelperService
   ) {
     this.location = location;
     this.sidebarVisible = false;
@@ -63,7 +65,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     let dto = await this.employeeService.apiEmployeeGetEmployeeDetailGet();
     if (dto.profilePictureUri == null) {
-      dto.profilePictureUri = 'assets/img/user-anonymous.png';
+      dto.profilePictureUri = this.helper.getAnonymousImgUrlFormatted();
     }
 
     this.employeeDetail = dto;

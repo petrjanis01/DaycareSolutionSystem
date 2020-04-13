@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer2, AfterContentInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2, AfterContentInit, AfterViewInit, Inject } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LoginDTO } from 'src/app/api/generated';
 import { Router } from '@angular/router';
+import { APP_BASE_HREF } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -15,11 +16,12 @@ export class LoginComponent implements AfterViewInit {
   @ViewChild('passwordInput') passwordInput: ElementRef;
   @ViewChild('loginBg') loginBg: ElementRef;
 
-  constructor(private renderer: Renderer2, private auth: AuthenticationService, private router: Router) { }
+  constructor(private renderer: Renderer2, private auth: AuthenticationService,
+    private router: Router, @Inject(APP_BASE_HREF) private baseHref: string) { }
 
   ngAfterViewInit() {
-    console.log(this.loginBg);
-    this.renderer.setStyle(this.loginBg.nativeElement, 'background', 'url("/assets/img/login-bg.jpg")');
+    let bgImgUrl = `${this.baseHref != null ? this.baseHref : ''}/assets/img/login-bg.jpg`;
+    this.renderer.setStyle(this.loginBg.nativeElement, 'background', `url('${bgImgUrl}')`);
   }
 
   public onUsernameBlur() {

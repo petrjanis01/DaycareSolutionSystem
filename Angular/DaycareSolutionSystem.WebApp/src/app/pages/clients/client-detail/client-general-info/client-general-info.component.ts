@@ -75,7 +75,7 @@ export class ClientGeneralInfoComponent implements OnInit {
 
   ngOnInit() {
     if (this.client.profilePicture.pictureUri == null) {
-      this.client.profilePicture.pictureUri = 'assets/img/user-anonymous.png';
+      this.client.profilePicture.pictureUri = this.helper.getAnonymousImgUrlFormatted();
     }
 
     if (this.client.id == null) {

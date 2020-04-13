@@ -3,6 +3,7 @@ import { ImageHelperService } from 'src/app/services/image-helper.service';
 import { EmployeeService, EmployeeDetailDTO, PictureDTO } from 'src/app/api/generated';
 import { ToastService } from 'src/app/services/toast.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { GeneralHelperService } from 'src/app/services/general-helper.service';
 
 @Component({
   selector: 'app-profile',
@@ -16,7 +17,8 @@ export class ProfilePage implements OnInit {
     private imageHelper: ImageHelperService,
     private employeeService: EmployeeService,
     private auth: AuthenticationService,
-    private toasterService: ToastService) { }
+    private toasterService: ToastService,
+    private helper: GeneralHelperService) { }
 
   ngOnInit() {
     this.loadEmployeeProfile();
@@ -26,7 +28,7 @@ export class ProfilePage implements OnInit {
     this.employeeDetail = await this.employeeService.apiEmployeeGetEmployeeDetailGet();
 
     if (this.employeeDetail.profilePictureUri == null) {
-      this.employeeDetail.profilePictureUri = 'assets/img/user-anonymous.png';
+      this.employeeDetail.profilePictureUri = this.helper.getAnonymousImgUrlFormatted();
     }
   }
 
