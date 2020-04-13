@@ -16,14 +16,14 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
         {
         }
 
-        // TODO unit test this
         public Dictionary<IndividualPlan, List<AgreedClientAction>> GetClientAgreedActionsByPlans(Guid clientId)
         {
             var individualPlans = DataContext.IndividualPlans.Where(ip => ip.ClientId == clientId)
                 .OrderBy(ip => ip.ValidFromDate).ToList();
 
             var agreedActions = DataContext.AgreedClientActions
-                .Where(ac => individualPlans.Select(ip => ip.Id).Contains(ac.IndividualPlanId)).ToList();
+                .Where(ac => individualPlans.Select(ip => ip.Id).Contains(ac.IndividualPlanId))
+                .Distinct().ToList();
 
             var actionsByPlans = new Dictionary<IndividualPlan, List<AgreedClientAction>>();
 
@@ -110,23 +110,26 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
             return ChangeProfilePicture<Client>(clientId, pictureUri);
         }
 
-        // TODO check this method (probably not returning correct data)
-        public List<RegisteredClientAction> GetNextRegisteredActionsToday(Guid? employeeId = null)
+        // returns first action for each client that is planned for today and hasn't started yet
+        public List<RegisteredClientAction> GetNextNotStartedRegisteredActionsToday(Guid? employeeId = null)
         {
             employeeId ??= GetCurrentUser()?.Employee.Id;
 
+            // get all clients that has registered actions planned for today
             var clients = DataContext.RegisteredClientActions
                 .Where(ca => ca.PlannedStartDateTime.Date == DateTime.Today)
                 .Where(ca => ca.EmployeeId == employeeId)
                 .Where(ca => ca.IsCanceled == false)
-                .Select(ca => ca.Client).ToList();
+                .Select(ca => ca.Client)
+                .Distinct().ToList();
 
             var clientActions = new List<RegisteredClientAction>();
             foreach (var client in clients)
             {
+                // get all actions planned for today that hasn't been done or started yet
                 var futureClientActions =
                     DataContext.RegisteredClientActions.Where(ca => ca.ClientId == client.Id)
-                        .Where(ca => ca.PlannedStartDateTime > DateTime.Now);
+                        .Where(ca => ca.ActionStartedDateTime.HasValue == false);
 
                 var nextClientAction = futureClientActions.OrderBy(ca => ca.PlannedStartDateTime).First();
                 clientActions.Add(nextClientAction);
@@ -135,7 +138,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
             return clientActions;
         }
 
-        // TODO unit test for this
+        // Get next registered actions
         public List<RegisteredClientAction> GetAllNextRegisteredActions(Guid? employeeId = null)
         {
             employeeId ??= GetCurrentUser()?.Employee.Id;
@@ -150,7 +153,6 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
                         .Where(ca => ca.ClientId == client.Id)
                         .Where(ca => ca.EmployeeId == employeeId)
                         .Where(ca => ca.IsCanceled == false)
-
                         .Where(ca => ca.PlannedStartDateTime > DateTime.Now);
 
                 if (futureRegisteredActions.Any() == false)

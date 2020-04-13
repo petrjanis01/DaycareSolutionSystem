@@ -130,7 +130,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
         [Route("today-scheduled-clients")]
         public ClientWithNextActionDTO[] GetClientsScheduledToday(Guid? employeeId = null)
         {
-            var clientActions = _clientApiService.GetNextRegisteredActionsToday(employeeId);
+            var clientActions = _clientApiService.GetNextNotStartedRegisteredActionsToday(employeeId);
 
             var clientsWithNextAction = new List<ClientWithNextActionDTO>();
             foreach (var clientAction in clientActions)
