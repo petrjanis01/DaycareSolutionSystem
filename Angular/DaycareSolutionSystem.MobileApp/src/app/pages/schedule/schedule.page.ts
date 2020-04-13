@@ -11,7 +11,7 @@ import { VisualHelperService } from 'src/app/services/visual-helper.service';
   styleUrls: ['./schedule.page.scss'],
 })
 export class SchedulePage implements OnInit {
-  @ViewChild(IonDatetime, { static: false }) datePicker: IonDatetime;
+  @ViewChild(IonDatetime) datePicker: IonDatetime;
   public registeredActions: RegisteredActionsForDayDTO[];
   public selectedDate: string;
   public minDate: Date;

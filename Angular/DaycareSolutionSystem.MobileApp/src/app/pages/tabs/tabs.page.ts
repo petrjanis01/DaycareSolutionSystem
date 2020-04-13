@@ -9,7 +9,7 @@ import { IonTabs } from '@ionic/angular';
   styleUrls: ['tabs.page.scss']
 })
 export class TabsPage implements AfterViewInit {
-  @ViewChild(IonTabs, { static: false }) tabs: IonTabs;
+  @ViewChild(IonTabs) tabs: IonTabs;
 
   constructor(private clientsCache: ClientsCacheService, public visualHelper: VisualHelperService) { }
 
