@@ -1,0 +1,1 @@
+docker build . -f .\Clients.Dockerfile --tag dss_clients:latest

@@ -110,12 +110,12 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
             return ChangeProfilePicture<Client>(clientId, pictureUri);
         }
 
-        // returns first action for each client that is planned for today and hasn't started yet
+        // Returns first action for each client that is planned for today and hasn't started yet
         public List<RegisteredClientAction> GetNextNotStartedRegisteredActionsToday(Guid? employeeId = null)
         {
             employeeId ??= GetCurrentUser()?.Employee.Id;
 
-            // get all clients that has registered actions planned for today
+            // Get all clients that has registered actions planned for today
             var clients = DataContext.RegisteredClientActions
                 .Where(ca => ca.PlannedStartDateTime.Date == DateTime.Today)
                 .Where(ca => ca.EmployeeId == employeeId)
@@ -126,7 +126,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
             var clientActions = new List<RegisteredClientAction>();
             foreach (var client in clients)
             {
-                // get all actions planned for today that hasn't been done or started yet
+                // Get all actions planned for today that hasn't been done or started yet
                 var futureClientActions =
                     DataContext.RegisteredClientActions.Where(ca => ca.ClientId == client.Id)
                         .Where(ca => ca.ActionStartedDateTime.HasValue == false);
@@ -138,7 +138,9 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
             return clientActions;
         }
 
-        // Get next registered actions
+        // Gets all employee linked clients next actions that hasn't started.
+        // When next registered action for any client does not exists 
+        // and individual plan is still valid creates registered action from agreed action and returns it.
         public List<RegisteredClientAction> GetAllNextRegisteredActions(Guid? employeeId = null)
         {
             employeeId ??= GetCurrentUser()?.Employee.Id;

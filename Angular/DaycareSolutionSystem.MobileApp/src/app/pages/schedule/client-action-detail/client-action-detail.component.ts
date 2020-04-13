@@ -7,10 +7,11 @@ import { GeneralHelperService } from 'src/app/services/general-helper.service';
 
 @Component({
   selector: 'app-client-action-detail',
-  templateUrl: './client-action-detail.page.html',
-  styleUrls: ['./client-action-detail.page.scss'],
+  templateUrl: './client-action-detail.component.html',
+  styleUrls: ['./client-action-detail.component.scss'],
 })
-export class ClientActionDetailPage implements OnInit {
+export class ClientActionDetailComponent implements OnInit {
+
   @Input() action: RegisteredActionDTO;
 
   public actionEditable: RegisteredActionDTO;
@@ -93,7 +94,7 @@ export class ClientActionDetailPage implements OnInit {
   }
 
   public cancledChanged(ev: any) {
-    if (ev && ev.detail && ev.detail.checked) {
+    if (ev && ev.detail && ev.detail.checked && !this.actionEditable.comment) {
       this.toaster.showInfoToast('Please enter reason why is action cancled to comment section.');
     }
   }

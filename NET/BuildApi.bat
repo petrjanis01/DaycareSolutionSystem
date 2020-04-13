@@ -1,0 +1,1 @@
+docker build . -f .\Api.Dockerfile --tag dss_api:latest

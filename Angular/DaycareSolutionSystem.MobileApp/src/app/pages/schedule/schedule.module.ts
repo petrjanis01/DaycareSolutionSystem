@@ -7,20 +7,14 @@ import { IonicModule } from '@ionic/angular';
 
 import { SchedulePage } from './schedule.page';
 import { ClientActionsOverviewComponent } from './client-actions-overview/client-actions-overview.component';
-import { ClientActionDetailPage } from './client-action-detail/client-action-detail.page';
 import { SharedComponentsModule } from 'src/app/shared-components/share-components.module';
-import { ClientDetailPageModule } from '../clients/client-detail/client-detail.module';
-import { ClientDetailPage } from '../clients/client-detail/client-detail.page';
+import { ClientActionDetailComponent } from './client-action-detail/client-action-detail.component';
 
 const routes: Routes = [
   {
     path: '',
     component: SchedulePage
   },
-  {
-    path: 'client-detail/:id',
-    component: ClientDetailPage
-  }
 ];
 
 @NgModule({
@@ -29,14 +23,13 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     SharedComponentsModule,
-    ClientDetailPageModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
     SchedulePage,
     ClientActionsOverviewComponent,
-    ClientActionDetailPage
+    ClientActionDetailComponent
   ],
-  entryComponents: [ClientActionDetailPage]
+  entryComponents: [ClientActionDetailComponent]
 })
 export class SchedulePageModule { }

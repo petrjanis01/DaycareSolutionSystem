@@ -3,8 +3,8 @@ import { RegisteredActionsClientDTO } from 'src/app/api/generated';
 import { ClientsCacheService } from 'src/app/services/clients/clients-cache.service';
 import { Client } from 'src/app/services/clients/client';
 import { ModalController } from '@ionic/angular';
-import { ClientActionDetailPage } from '../client-action-detail/client-action-detail.page';
 import { VisualHelperService } from 'src/app/services/visual-helper.service';
+import { ClientActionDetailComponent } from '../client-action-detail/client-action-detail.component';
 
 @Component({
   selector: 'client-actions-overview',
@@ -38,7 +38,7 @@ export class ClientActionsOverviewComponent implements OnInit {
     let actionToPass = this.clientActions.registeredActions.find(a => a.id === actionId);
 
     let modal = await this.modalController.create({
-      component: ClientActionDetailPage,
+      component: ClientActionDetailComponent,
       componentProps: {
         action: actionToPass
       }

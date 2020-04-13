@@ -86,8 +86,6 @@
     <div style="display: flex; justify-content: center;">
       <img style="max-width: 70%;" *ngIf="actionEditable.photo.pictureUri" [src]="actionEditable.photo.pictureUri">
     </div>
-    <!-- TODO stop watch https://medium.com/web-developer/create-a-stopwatch-ionic-3-angular-5-d45bc0358626 -->
-
   </ion-item-group>
 </ion-content>
 
@@ -100,7 +98,7 @@
       *ngIf="actionEditable.actionStartedDateTime && !actionEditable.actionFinishedDateTime" (click)="stopAction()">
       Stop action
     </ion-button>
-    
+
     <ng-container *ngIf="isTimerVisible">
       {{time}}
     </ng-container>
