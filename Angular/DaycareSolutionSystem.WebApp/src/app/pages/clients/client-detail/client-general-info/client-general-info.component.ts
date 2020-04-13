@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ClientDTO, ClientsService, AddressDTO, CoordinatesDTO, PictureDTO } from 'src/app/api/generated';
 import { GeneralHelperService } from 'src/app/services/general-helper.service';
 import { GeolocationHelperService } from 'src/app/services/geolocation-helper.service';
@@ -75,7 +75,7 @@ export class ClientGeneralInfoComponent implements OnInit {
 
   ngOnInit() {
     if (this.client.profilePicture.pictureUri == null) {
-      this.client.profilePicture.pictureUri = './../../../../../assets/img/user-anonymous.png';
+      this.client.profilePicture.pictureUri = 'assets/img/user-anonymous.png';
     }
 
     if (this.client.id == null) {

@@ -1,0 +1,5 @@
+# 2010
+.\Angular\httpd-foreground -crlf
+
+# 2020
+.\Angular\httpd-foreground  text eol=lf

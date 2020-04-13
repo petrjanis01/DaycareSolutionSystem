@@ -4,7 +4,7 @@
   "newProjectRoot": "projects",
   "projects": {
     "black-dashboard-angular": {
-      "root": "",
+      "root": "asd",
       "sourceRoot": "src",
       "projectType": "application",
       "prefix": "app",

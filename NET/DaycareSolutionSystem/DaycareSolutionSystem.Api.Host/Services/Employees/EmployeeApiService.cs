@@ -29,8 +29,11 @@ namespace DaycareSolutionSystem.Api.Host.Services.Employees
 
         public void ChangePassword(string newPassword)
         {
-            var user = GetCurrentUser();
+            var userId = GetCurrentUser().Id;
+
+            var user = DataContext.Users.Find(userId);
             user.Password = new PasswordHasher().HashPassword(newPassword);
+            DataContext.SaveChanges();
         }
     }
 }

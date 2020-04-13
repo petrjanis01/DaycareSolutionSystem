@@ -63,7 +63,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     let dto = await this.employeeService.apiEmployeeGetEmployeeDetailGet();
     if (dto.profilePictureUri == null) {
-      dto.profilePictureUri = './../../../assets/img/user-anonymous.png';
+      dto.profilePictureUri = 'assets/img/user-anonymous.png';
     }
 
     this.employeeDetail = dto;

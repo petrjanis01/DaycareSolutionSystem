@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# create config file
+if [ ! -e /usr/local/apache2/htdocs/assets/config.json ]; then
+    touch /usr/local/apache2/htdocs/assets/config.json
+fi
+echo "{\n\t\"apiUrl\": \"$(printenv API_URL)\"\n}" > /usr/local/apache2/htdocs/assets/config.json
+
+# start Apache
+set -e
+
+# Apache gets grumpy about PID files pre-existing
+rm -f /usr/local/apache2/logs/httpd.pid
+
+exec httpd -DFOREGROUND

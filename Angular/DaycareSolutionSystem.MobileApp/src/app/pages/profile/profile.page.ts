@@ -26,7 +26,7 @@ export class ProfilePage implements OnInit {
     this.employeeDetail = await this.employeeService.apiEmployeeGetEmployeeDetailGet();
 
     if (this.employeeDetail.profilePictureUri == null) {
-      this.employeeDetail.profilePictureUri = './../../../assets/img/user-anonymous.png';
+      this.employeeDetail.profilePictureUri = 'assets/img/user-anonymous.png';
     }
   }
 

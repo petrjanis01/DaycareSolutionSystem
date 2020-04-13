@@ -67,7 +67,7 @@ export class ClientsCacheService {
     }
 
     private async loadDefaulProfilePicture() {
-        let img = await this.imageHelper.fileToBase64('./../../../../assets/img/user-anonymous.png');
+        let img = await this.imageHelper.fileToBase64('assets/img/user-anonymous.png');
 
         this.defaultProfilePicture = img;
     }

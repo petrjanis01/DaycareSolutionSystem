@@ -27,6 +27,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
         }
 
         [HttpPost]
+        [Authorize(Roles = "Manager")]
         [Route("generate-next-month-actions")]
         public void GenerateNextMonthRegisteredActions()
         {

@@ -19,7 +19,7 @@ export class ClientsComponent implements OnInit {
 
     dtos.forEach(dto => {
       if (dto.profilePicture.pictureUri == null) {
-        dto.profilePicture.pictureUri = './../../../assets/img/user-anonymous.png';
+        dto.profilePicture.pictureUri = 'assets/img/user-anonymous.png';
       }
     });
 

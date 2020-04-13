@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DaycareSolutionSystem.Api.Host.Controllers.Schedule;
 using DaycareSolutionSystem.Database.DataContext;
+using DaycareSolutionSystem.Database.Entities.Entities;
 using DaycareSolutionSystem.Helpers;
 using Microsoft.AspNetCore.Http;
 
@@ -17,22 +18,63 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
 
         public void GenerateNextMonthRegisteredActions()
         {
-            var lastGeneratedAction = DataContext.RegisteredClientActions
-                .OrderByDescending(ca => ca.PlannedStartDateTime)
-                .First();
+            var fromDate = DateTime.Today;
+            var untilDate = DateTime.Today.AddMonths(1);
 
-            var agreedActions = DataContext.AgreedClientActions
-                .Where(ac => ac.IndividualPlan.ValidUntilDate > DateTime.Today)
-                .ToList();
+            var agreedActions = GetValidAgreedActions(fromDate).ToList();
+            var oldRegisteredActions = DataContext.RegisteredClientActions.ToList();
+            var newRegisteredActions = new List<RegisteredClientAction>();
 
-            var startDate = lastGeneratedAction.ActionStartedDateTime.Value;
-            var endDate = startDate.AddMonths(1).AddDays(-1);
-
-            while (startDate <= endDate)
+            while (fromDate <= untilDate)
             {
+                // add actions from newly valid plan to collection
+                var oldIds = agreedActions.Select(ac => ac.Id);
+                var newAgreedActions = GetValidAgreedActions(fromDate)
+                    // only that day
+                    .Where(ac => ac.Day == fromDate.DayOfWeek)
+                    .Where(ac => oldIds.Contains(ac.Id) == false);
 
-                startDate = startDate.AddDays(1).Date;
+                agreedActions.AddRange(newAgreedActions);
+
+                var actionsInDay = agreedActions.Where(ac => ac.Day == fromDate.DayOfWeek).ToList();
+
+                foreach (var action in actionsInDay)
+                {
+                    // when registered action hasn't been created from agreed action
+                    if (oldRegisteredActions.FirstOrDefault(ac => ac.AgreedClientActionId == action.Id) != null)
+                    {
+                        var newAction = CreateRegisteredActionFromAgreedAction(action, fromDate);
+                        newRegisteredActions.Add(newAction);
+                    }
+                }
+
+                fromDate = fromDate.AddDays(1);
             }
+
+            DataContext.RegisteredClientActions.AddRange(newRegisteredActions);
+        }
+
+        private RegisteredClientAction CreateRegisteredActionFromAgreedAction(AgreedClientAction agreedClientAction, DateTime date)
+        {
+            var registeredAction = new RegisteredClientAction();
+
+            registeredAction.IsCanceled = false;
+            registeredAction.ClientId = agreedClientAction.IndividualPlan.ClientId;
+            registeredAction.PlannedStartDateTime = date.Add(agreedClientAction.PlannedStartTime);
+            registeredAction.EmployeeId = agreedClientAction.EmployeeId;
+            registeredAction.AgreedClientActionId = agreedClientAction.Id;
+            registeredAction.IsCompleted = false;
+
+            return registeredAction;
+        }
+
+        private IOrderedQueryable<AgreedClientAction> GetValidAgreedActions(DateTime date)
+        {
+            var agreedActions = DataContext.AgreedClientActions
+                .Where(ac => ac.IndividualPlan.ValidFromDate <= date && ac.IndividualPlan.ValidUntilDate >= date)
+                .OrderBy(ac => ac.Day);
+
+            return agreedActions;
         }
 
         // TODO unit test this
