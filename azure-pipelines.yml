@@ -14,7 +14,7 @@ steps:
   displayName: Build Api and push to container registry
   inputs:
         command: buildAndPush
-        repository: dss_api
+        repository: $(api_image_name)
         dockerfile: NET/Api.Dockerfile
         containerRegistry: DockerHubRepo_api
         tags: latest
@@ -23,7 +23,7 @@ steps:
   displayName: Build clients and push to container registry
   inputs:
         command: buildAndPush
-        repository: dss_clients
+        repository: $(clients_image_name)
         dockerfile: Angular/Clients.Dockerfile
         containerRegistry: DockerHubRepo_clients
         tags: latest
