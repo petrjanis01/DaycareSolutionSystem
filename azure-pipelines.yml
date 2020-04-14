@@ -16,7 +16,7 @@ steps:
         command: buildAndPush
         repository: dss_api
         dockerfile: NET/Api.Dockerfile
-        containerRegistry: DockerHubRepos
+        containerRegistry: DockerHubRepo_api
         tags: latest
 
 - task: Docker@2
@@ -25,5 +25,5 @@ steps:
         command: buildAndPush
         repository: dss_clients
         dockerfile: Angular/Clients.Dockerfile
-        containerRegistry: DockerHubRepos
+        containerRegistry: DockerHubRepo_clients
         tags: latest
