@@ -16,11 +16,10 @@ namespace DaycareSolutionSystem.Database.Migrator
 
             var serviceProvider = new ServiceCollection()
                 .AddDbContext<DssDataContext>(options => options.UseNpgsql(configuration.GetConnectionString("DssConnectionString")))
-                .AddSingleton<IDemoDataInitializer, DemoDataInitializer>()
-                .AddSingleton<IImageFetcherService, ImageFetcherService>()
+                .AddSingleton<DemoDataInitializer>()
                 .BuildServiceProvider();
 
-            var initializer = serviceProvider.GetService<IDemoDataInitializer>();
+            var initializer = serviceProvider.GetService<DemoDataInitializer>();
             initializer.DatabaseInit();
             initializer.CreateDemoData();
         }

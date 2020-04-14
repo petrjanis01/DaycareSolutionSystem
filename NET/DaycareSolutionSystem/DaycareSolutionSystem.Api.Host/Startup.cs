@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using DaycareSolutionSystem.Api.Host.DatabaseValidation;
 using DaycareSolutionSystem.Api.Host.Services.Actions;
 using DaycareSolutionSystem.Api.Host.Services.Authentication;
 using DaycareSolutionSystem.Api.Host.Services.Clients;
@@ -38,11 +39,14 @@ namespace DaycareSolutionSystem.Api.Host
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            services.AddSingleton<IRuntimeDatabaseValidator, RuntimeDatabaseValidator>();
+
             services.AddScoped<IJwtAuthenticationApiService, JwtAuthenticationApiService>();
             services.AddScoped<IRegisteredActionsApiService, RegisteredActionsApiService>();
             services.AddScoped<IClientApiService, ClientApiService>();
             services.AddScoped<IEmployeeApiService, EmployeeApiService>();
             services.AddScoped<IActionsApiService, ActionsApiService>();
+
 
             var securityKey = Configuration.GetSection("AppConfiguration")?.GetValue<string>("SecurityKey");
 

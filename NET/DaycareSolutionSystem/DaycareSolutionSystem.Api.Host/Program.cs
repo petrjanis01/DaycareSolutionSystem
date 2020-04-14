@@ -1,4 +1,6 @@
+using DaycareSolutionSystem.Api.Host.DatabaseValidation;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace DaycareSolutionSystem.Api.Host
@@ -7,7 +9,12 @@ namespace DaycareSolutionSystem.Api.Host
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+
+            var dbValidator = host.Services.GetService<IRuntimeDatabaseValidator>();
+            dbValidator.EnsureRuntimeDatabaseValidity();
+
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

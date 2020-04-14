@@ -5,7 +5,7 @@ using DaycareSolutionSystem.Database.Entities.Entities;
 
 namespace DaycareSolutionSystem.Helpers
 {
-    public class ImageFetcherService : IImageFetcherService
+    public class ImageFetcher
     {
 
         public Picture DownloadImageFromUrl(string uri)
