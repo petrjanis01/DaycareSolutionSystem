@@ -82,8 +82,18 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
             client.Birthdate = clientUpdated.Birthdate;
             client.Gender = clientUpdated.Gender;
 
-            client.ProfilePicture.MimeType = clientUpdated.ProfilePicture.MimeType;
-            client.ProfilePicture.BinaryData = clientUpdated.ProfilePicture.BinaryData;
+            if (client.ProfilePicture == null && clientUpdated.ProfilePicture != null)
+            {
+                DataContext.Pictures.Add(clientUpdated.ProfilePicture);
+                client.ProfilePicture = clientUpdated.ProfilePicture;
+                client.ProfilePictureId = clientUpdated.ProfilePictureId;
+
+            }
+            else if (clientUpdated.ProfilePicture != null)
+            {
+                client.ProfilePicture.MimeType = clientUpdated.ProfilePicture.MimeType;
+                client.ProfilePicture.BinaryData = clientUpdated.ProfilePicture.BinaryData;
+            }
 
             client.Address.City = clientUpdated.Address.City;
             client.Address.BuildingNumber = clientUpdated.Address.BuildingNumber;
@@ -96,6 +106,13 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
             DataContext.SaveChanges();
 
             return client;
+        }
+
+        public void DeleteClient(Guid clientId)
+        {
+            var client = DataContext.Clients.Find(clientId);
+            DataContext.Clients.Remove(client);
+            DataContext.SaveChanges();
         }
 
         public Client GetClient(Guid clientId)

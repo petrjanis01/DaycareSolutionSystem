@@ -14,5 +14,5 @@
 export interface ActionDTO { 
     id?: string;
     name?: string;
-    description?: string;
+    generalDescription?: string;
 }

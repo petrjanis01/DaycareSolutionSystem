@@ -8,7 +8,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
 {
     public class ClientBasicsDTO
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         public string FullName { get; set; }
 

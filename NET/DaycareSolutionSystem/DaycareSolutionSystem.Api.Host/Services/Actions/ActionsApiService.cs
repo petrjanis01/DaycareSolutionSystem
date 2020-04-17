@@ -37,7 +37,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Actions
 
         public void UpdateAction(Action action)
         {
-            var queriedAction = DataContext.Actions.Find(action);
+            var queriedAction = DataContext.Actions.FirstOrDefault(a => a.Id == action.Id);
             queriedAction.Name = action.Name;
             queriedAction.GeneralDescription = action.GeneralDescription;
             DataContext.SaveChanges();

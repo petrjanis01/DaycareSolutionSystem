@@ -4,6 +4,98 @@ info:
   title: My API
   version: v1
 paths:
+  "/api/Action":
+    get:
+      tags:
+      - Action
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ActionDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ActionDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ActionDTO"
+    post:
+      tags:
+      - Action
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ActionDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/ActionDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/ActionDTO"
+      responses:
+        '200':
+          description: Success
+    put:
+      tags:
+      - Action
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ActionDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/ActionDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/ActionDTO"
+      responses:
+        '200':
+          description: Success
+    delete:
+      tags:
+      - Action
+      parameters:
+      - name: id
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+  "/api/Action/single-action":
+    get:
+      tags:
+      - Action
+      parameters:
+      - name: id
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ActionDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ActionDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ActionDTO"
   "/api/Auth/login":
     post:
       tags:
@@ -104,6 +196,18 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/ClientDTO"
+    delete:
+      tags:
+      - Clients
+      parameters:
+      - name: clientId
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
   "/api/Clients/all-client-basics":
     get:
       tags:
@@ -412,24 +516,22 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/RegisteredActionsForDayDTO"
-  "/api/Test/test":
-    post:
-      tags:
-      - Test
-      parameters:
-      - name: lat
-        in: query
-        schema:
-          type: string
-      - name: lon
-        in: query
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Success
 components:
   schemas:
+    ActionDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        generalDescription:
+          type: string
+          nullable: true
+      additionalProperties: false
     LoginDTO:
       type: object
       properties:
@@ -453,19 +555,6 @@ components:
       - 6
       type: integer
       format: int32
-    ActionDTO:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-      additionalProperties: false
     AgreedActionDTO:
       type: object
       properties:
@@ -545,6 +634,7 @@ components:
         id:
           type: string
           format: uuid
+          nullable: true
         postCode:
           type: string
           nullable: true
@@ -585,6 +675,7 @@ components:
         id:
           type: string
           format: uuid
+          nullable: true
         fullName:
           type: string
           nullable: true
@@ -597,6 +688,7 @@ components:
         id:
           type: string
           format: uuid
+          nullable: true
         fullName:
           type: string
           nullable: true

@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AdminLayoutRoutes } from './admin-layout.routing';
-import { DashboardComponent } from '../pages/dashboard/dashboard.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ScheduleComponent } from 'src/app/pages/schedule/schedule.component';
@@ -21,6 +20,8 @@ import { AgmCoreModule } from '@agm/core';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { ClientGeneralInfoComponent } from '../pages/clients/client-detail/client-general-info/client-general-info.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { EmployeesComponent } from '../pages/employees/employees.component';
+import { ActionsComponent } from '../pages/actions/actions.component';
 
 @NgModule({
   imports: [
@@ -38,13 +39,14 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     NgxSpinnerModule
   ],
   declarations: [
-    DashboardComponent,
     ScheduleComponent,
     ClientsComponent,
     ProfileComponent,
     ClientDetailComponent,
     ClientNamePipe,
-    ClientGeneralInfoComponent
+    ClientGeneralInfoComponent,
+    EmployeesComponent,
+    ActionsComponent
   ]
 })
 export class AdminLayoutModule { }

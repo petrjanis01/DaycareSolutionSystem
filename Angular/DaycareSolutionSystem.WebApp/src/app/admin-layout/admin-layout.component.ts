@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { VisualHelperService } from '../services/visual-helper.service';
 
 @Component({
   selector: 'app-admin-layout',
@@ -8,8 +9,10 @@ import { Component, OnInit } from '@angular/core';
 export class AdminLayoutComponent implements OnInit {
   public sidebarColor = 'red';
 
-  constructor() { }
+  constructor(private visualHelper: VisualHelperService) { }
+
   changeSidebarColor(color) {
+    this.visualHelper.themeColor = color;
     let sidebar = document.getElementsByClassName('sidebar')[0];
     let mainPanel = document.getElementsByClassName('main-panel')[0];
 

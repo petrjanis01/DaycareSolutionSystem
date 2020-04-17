@@ -20,8 +20,8 @@ namespace DaycareSolutionSystem.Api.Host.DatabaseValidation
 
         public void EnsureRuntimeDatabaseValidity()
         {
-            // This workaround allows service to start inside in container without crashing on db connection for the first time.
-            // Problem - Even that service is dependent on db service postgres default behaviour is that it reset itself after first start.
+            // This workaround allows service to start inside container without crashing on db connection for the first time.
+            // Problem (docker) - Even that api service is depends on db service postgres default behaviour is that it reset itself after first start.
             // This results in small time period when db service is unavailable and api startup process crashes.
             Thread.Sleep(5 * 1000);
 

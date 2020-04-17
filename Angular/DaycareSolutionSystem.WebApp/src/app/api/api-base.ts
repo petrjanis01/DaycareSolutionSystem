@@ -22,7 +22,7 @@ export class ApiBase {
                     this.notification.showErrorNotification('Token has expired. Please login again.');
 
                     this.logOut();
-                } else if (e.status >= 500) {
+                } else if (e.status >= 400) {
                     this.notification.showErrorNotification('Api call error.');
                 } else {
                     this.notification.showErrorNotification('Api service is unavailable. Check your internet connection.');

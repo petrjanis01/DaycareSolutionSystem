@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using DaycareSolutionSystem.Api.Host.Services.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Action = DaycareSolutionSystem.Database.Entities.Entities.Action;
@@ -10,12 +12,28 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Actions
     [Authorize]
     public class ActionController : DssBaseController
     {
+        private readonly IActionsApiService _actionsApiService;
+
+        public ActionController(IActionsApiService actionsApiService)
+        {
+            _actionsApiService = actionsApiService;
+        }
 
         [HttpGet]
         [Authorize(Roles = "Manager")]
         public ActionDTO[] GetAllActions()
         {
-            return new ActionDTO[1];
+            var actions = _actionsApiService.GetAllActions();
+
+            var dtos = new List<ActionDTO>();
+
+            foreach (var action in actions)
+            {
+                var dto = MapActionToDto(action);
+                dtos.Add(dto);
+            }
+
+            return dtos.ToArray();
         }
 
         [HttpGet]
@@ -23,28 +41,33 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Actions
         [Authorize(Roles = "Manager")]
         public ActionDTO GetAction(Guid id)
         {
-            return new ActionDTO();
+            var action = _actionsApiService.GetSingleAction(id);
+            var dto = MapActionToDto(action);
+
+            return dto;
         }
 
         [HttpPost]
         [Authorize(Roles = "Manager")]
         public void CreateAction(ActionDTO dto)
         {
-
+            var action = MapDtoToAction(dto);
+            _actionsApiService.CreateAction(action);
         }
 
         [HttpPut]
         [Authorize(Roles = "Manager")]
         public void UpdateAction(ActionDTO dto)
         {
-
+            var action = MapDtoToAction(dto);
+            _actionsApiService.UpdateAction(action);
         }
 
         [HttpDelete]
         [Authorize(Roles = "Manager")]
         public void DeleteAction(Guid id)
         {
-
+            _actionsApiService.DeleteAction(id);
         }
 
         private ActionDTO MapActionToDto(Action action)

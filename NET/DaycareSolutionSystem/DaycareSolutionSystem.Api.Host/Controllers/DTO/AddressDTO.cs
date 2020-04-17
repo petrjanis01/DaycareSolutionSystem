@@ -4,7 +4,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.DTO
 {
     public class AddressDTO
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         public string PostCode { get; set; }
 

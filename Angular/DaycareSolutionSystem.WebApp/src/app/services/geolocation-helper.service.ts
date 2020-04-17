@@ -99,7 +99,6 @@ export class GeolocationHelperService {
             return null;
         }
 
-        console.log(addressComponents);
         let address = this.mapAddressComponentsToAdress(addressComponents);
         address.coordinates = coordinates;
 

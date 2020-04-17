@@ -3,40 +3,15 @@ import { Router } from '@angular/router';
 import { ClientDTO, ClientsService, AddressDTO, CoordinatesDTO, PictureDTO } from 'src/app/api/generated';
 import { GeneralHelperService } from 'src/app/services/general-helper.service';
 import { GeolocationHelperService } from 'src/app/services/geolocation-helper.service';
-import { trigger, transition, query, style, animate, group } from '@angular/animations';
+import { trigger, transition } from '@angular/animations';
 import { Observable, fromEvent } from 'rxjs';
 import { pluck } from 'rxjs/operators';
 import { DatepickerDateModel } from '../datepicker-date-model';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { SliderAnimation } from 'src/app/components/slider-animation'
+import { NotifiactionService } from 'src/app/services/notification.service';
 
-const left = [
-  query(':enter, :leave', style({ position: 'absolute' }), { optional: true }),
-  group([
-    query(':enter', [style({ transform: 'translateX(-100%)', opacity: 0 }),
-    animate('1s ease-out', style({ transform: 'translateX(0%)', opacity: 1 }))], {
-      optional: true,
-    }),
-    query(':leave', [style({ transform: 'translateX(0%)', opacity: 1 }),
-    animate('1s ease-out', style({ transform: 'translateX(100%)', opacity: 0 }))], {
-      optional: true,
-    }),
-  ]),
-];
-
-const right = [
-  query(':enter, :leave', style({ position: 'absolute' }), { optional: true }),
-  group([
-    query(':enter', [style({ transform: 'translateX(100%)', opacity: 0 }),
-    animate('1s ease-out', style({ transform: 'translateX(0%)', opacity: 1 }))], {
-      optional: true,
-    }),
-    query(':leave', [style({ transform: 'translateX(0%)', opacity: 1 }),
-    animate('1s ease-out', style({ transform: 'translateX(-100%)', opacity: 0 }))], {
-      optional: true,
-    }),
-  ]),
-];
 
 @Component({
   selector: 'app-client-general-info',
@@ -44,8 +19,8 @@ const right = [
   styleUrls: ['./client-general-info.component.scss'],
   animations: [
     trigger('detailEditSlider', [
-      transition(':increment', right),
-      transition(':decrement', left),
+      transition(':increment', SliderAnimation.right),
+      transition(':decrement', SliderAnimation.left),
     ]),
   ]
 })
@@ -71,7 +46,8 @@ export class ClientGeneralInfoComponent implements OnInit {
 
   constructor(private clientsService: ClientsService, public helper: GeneralHelperService,
     private geolocationHelper: GeolocationHelperService, private formBuilder: FormBuilder,
-    private router: Router, private spinner: NgxSpinnerService) { }
+    private router: Router, private spinner: NgxSpinnerService,
+    private notifications: NotifiactionService) { }
 
   ngOnInit() {
     if (this.client.profilePicture.pictureUri == null) {
@@ -97,15 +73,21 @@ export class ClientGeneralInfoComponent implements OnInit {
     if (this.isEdit) {
       this.latUpdate = this.latClient;
       this.lngUpdate = this.lngClient;
+
+      this.detailEditCounter++;
     } else {
-      let cords = this.geolocationHelper.getCurrentLocation();
+      let cords = await this.geolocationHelper.getCurrentLocation();
       if (cords == null) {
         this.latUpdate = 0;
         this.lngUpdate = 0;
+      } else {
+        this.latUpdate = cords.latitude;
+        this.lngUpdate = cords.longitude;
+
+        this.latClient = this.latUpdate;
+        this.lngClient = this.lngUpdate;
       }
     }
-
-    this.detailEditCounter++;
   }
 
   public async saveGeneralInfo() {
@@ -121,19 +103,37 @@ export class ClientGeneralInfoComponent implements OnInit {
         client = await this.clientsService.apiClientsSingleClientPost(updateDto);
       }
 
+      this.notifications.showSuccessNotification('Operation succesful');
       this.client = client;
       this.address = client.address;
       this.latClient = client.address.coordinates.latitude;
       this.lngClient = client.address.coordinates.longitude;
+      this.isEdit = true;
+      this.detailEditCounter--;
     } catch{
       this.client = updateDto;
       await this.geolocationHelper.getFullAddressIfNeeded(updateDto.address);
       this.address = updateDto.address;
     } finally {
       this.spinner.hide();
-    }
 
-    this.router.navigate([`clients/detail/${client.id}`]);
+      if (this.client.profilePicture.pictureUri == null) {
+        this.client.profilePicture.pictureUri = this.helper.getAnonymousImgUrlFormatted();
+      }
+    }
+  }
+
+  public async deleteClient() {
+    if (confirm(`Are you sure you want to delete client ${this.client.fullName}`)) {
+      this.spinner.show();
+      try {
+        await this.clientsService.apiClientsDelete(this.client.id);
+        this.notifications.showSuccessNotification('Client deleted');
+        this.router.navigate(['/clients'])
+      } finally {
+        this.spinner.hide();
+      }
+    }
   }
 
   private createUpdateDto(): ClientDTO {
@@ -153,7 +153,8 @@ export class ClientGeneralInfoComponent implements OnInit {
     };
 
     let profilePictureUpdateDto: PictureDTO = {
-      pictureUri: this.client.profilePicture.pictureUri
+      pictureUri: this.client.profilePicture.pictureUri.includes(this.helper.getAnonymousImgUrlFormatted()) ? null :
+        this.client.profilePicture.pictureUri
     };
 
     let birthDate: DatepickerDateModel = formValue.birthDate;
@@ -171,10 +172,9 @@ export class ClientGeneralInfoComponent implements OnInit {
       birthDate: date,
       gender: formValue.gender,
       profilePicture: profilePictureUpdateDto,
-      address: addressUpdateDto
+      address: addressUpdateDto,
     };
 
-    console.log(clientUpdateDto);
     return clientUpdateDto;
   }
 
@@ -230,8 +230,8 @@ export class ClientGeneralInfoComponent implements OnInit {
     this.updateDetailForm = this.formBuilder.group({
       firstName: new FormControl(this.client.firstName, Validators.required),
       surname: new FormControl(this.client.surname, Validators.required),
-      email: new FormControl(this.client.email, Validators.required),
-      phoneNumber: new FormControl(this.client.phoneNumber, Validators.required),
+      email: new FormControl(this.client.email),
+      phoneNumber: new FormControl(this.client.phoneNumber),
       birthDate: new FormControl(new DatepickerDateModel(date), Validators.required),
       gender: new FormControl(this.client.gender, Validators.required),
       city: new FormControl(this.address.city, Validators.required),

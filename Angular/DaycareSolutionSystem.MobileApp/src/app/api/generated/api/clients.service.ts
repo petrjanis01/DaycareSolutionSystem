@@ -207,6 +207,40 @@ export class ClientsService extends ApiBase{
         return this.processErrors(result);
     }
 
+    public async apiClientsDelete(clientId?: string, ): Promise<any> {
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (clientId !== undefined && clientId !== null) {
+            queryParameters = queryParameters.set('clientId', <any>clientId);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+
+        let result = this.httpClient.delete<any>(`${this.basePath}/api/Clients`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: this.createAuthHeaders(headers),
+            }
+        ).toPromise();
+
+        return this.processErrors(result);
+    }
+
     public async apiClientsGet(employeeId?: string, ): Promise<Array<ClientDTO>> {
 
 

@@ -4,9 +4,15 @@
         <div class="card" *ngIf="client && address && detailEditCounter == 0">
             <div class="card-header row justify-content-between">
                 <h3 class="title col-md-3">Client information</h3>
-                <button class="btn btn-icon btn-simple btn-danger mr-auto" (click)="openGeneralInfoEdit()">
-                    <i class="tim-icons icon-pencil"></i>
-                </button>
+                <div class="mr-auto">
+                    <button class="btn btn-icon btn-simple btn-danger" style="margin-right: 5px"
+                        (click)="openGeneralInfoEdit()">
+                        <i class="tim-icons icon-pencil"></i>
+                    </button>
+                    <button class="btn btn-icon btn-simple btn-danger" (click)="deleteClient()">
+                        <i class="tim-icons icon-trash-simple"></i>
+                    </button>
+                </div>
             </div>
 
             <div class=" card-body">
@@ -70,7 +76,8 @@
                 </div>
                 <div class="col-md3">
                     <button class="btn btn-danger" (click)="cancelEdit()">Cancel</button>
-                    <button style="margin-left: 10px;" class="btn btn-success" (click)="saveGeneralInfo()">Save</button>
+                    <button style="margin-left: 10px;" [disabled]="!updateDetailForm.valid" class="btn btn-success"
+                        (click)="saveGeneralInfo()">Save</button>
                 </div>
             </div>
             <div class="card-body" *ngIf="updateDetailForm" [formGroup]="updateDetailForm">
@@ -165,7 +172,8 @@
                             <input class=" form-control" placeholder="Building number" type="text"
                                 formControlName="buildingNumber" />
                         </div>
-                        <button class=" btn" [disabled]="!allAddressControlsValid()" (click)="validateAddress()">Validate
+                        <button class=" btn" [disabled]="!allAddressControlsValid()"
+                            (click)="validateAddress()">Validate
                             address</button>
                     </div>
                 </div>

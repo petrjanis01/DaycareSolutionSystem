@@ -23,7 +23,7 @@ export class ApiBase {
                     this.toast.showErrorToast('Token has expired. Please login again.');
 
                     this.logOut();
-                } else if (e.status >= 500) {
+                } else if (e.status >= 400) {
                     this.toast.showErrorToast('Api call error.');
                 } else {
                     this.toast.showErrorToast('Api service is unavailable. Check your internet connection.');

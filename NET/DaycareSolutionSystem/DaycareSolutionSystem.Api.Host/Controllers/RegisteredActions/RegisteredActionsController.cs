@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DaycareSolutionSystem.Api.Host.Controllers.Actions;
 using DaycareSolutionSystem.Api.Host.Controllers.DTO;
 using DaycareSolutionSystem.Api.Host.Controllers.Schedule;
 using Microsoft.AspNetCore.Authorization;
@@ -137,7 +138,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
             var dto = new ActionDTO();
             dto.Id = action.Id;
             dto.Name = action.Name;
-            dto.Description = action.GeneralDescription;
+            dto.GeneralDescription = action.GeneralDescription;
 
             return dto;
         }

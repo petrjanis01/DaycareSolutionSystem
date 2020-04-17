@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DaycareSolutionSystem.Api.Host.Controllers.Actions;
 using DaycareSolutionSystem.Api.Host.Controllers.DTO;
 using DaycareSolutionSystem.Api.Host.Services.Clients;
 using DaycareSolutionSystem.Database.Entities.Entities;
@@ -126,6 +127,13 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
             return dto;
         }
 
+        [HttpDelete]
+        [Authorize(Roles = "Manager")]
+        public void DeleteClient(Guid clientId)
+        {
+            _clientApiService.DeleteClient(clientId);
+        }
+
         [HttpGet]
         [Route("today-scheduled-clients")]
         public ClientWithNextActionDTO[] GetClientsScheduledToday(Guid? employeeId = null)
@@ -187,7 +195,10 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
         private Client MapDtoToClient(ClientDTO clientDto)
         {
             var client = new Client();
-            client.Id = clientDto.Id;
+            if (clientDto.Id.HasValue)
+            {
+                client.Id = clientDto.Id.Value;
+            }
             client.FirstName = clientDto.FirstName;
             client.Surname = clientDto.Surname;
             client.PhoneNumber = clientDto.PhoneNumber;
@@ -259,7 +270,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
 
                     var actionDto = new ActionDTO();
                     actionDto.Id = action.ActionId;
-                    actionDto.Description = action.Action.GeneralDescription;
+                    actionDto.GeneralDescription = action.Action.GeneralDescription;
                     actionDto.Name = action.Action.Name;
 
                     agreedActionDto.Action = actionDto;

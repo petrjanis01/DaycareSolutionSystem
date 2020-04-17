@@ -23,5 +23,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
         Client CreateClient(Client client);
 
         Client UpdateClient(Client clientUpdated);
+
+        void DeleteClient(Guid clientId);
     }
 }

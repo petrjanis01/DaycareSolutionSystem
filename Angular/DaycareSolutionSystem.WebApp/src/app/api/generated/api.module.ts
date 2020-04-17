@@ -3,22 +3,22 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
+import { ActionService } from './api/action.service';
 import { AuthService } from './api/auth.service';
 import { ClientsService } from './api/clients.service';
 import { EmployeeService } from './api/employee.service';
 import { RegisteredActionsService } from './api/registeredActions.service';
-import { TestService } from './api/test.service';
 
 @NgModule({
   imports:      [],
   declarations: [],
   exports:      [],
   providers: [
+    ActionService,
     AuthService,
     ClientsService,
     EmployeeService,
-    RegisteredActionsService,
-    TestService ]
+    RegisteredActionsService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders {
