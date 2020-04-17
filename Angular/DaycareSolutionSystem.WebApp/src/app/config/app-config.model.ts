@@ -1,7 +1,5 @@
 export interface IAppConfig {
-    apiBaseUrl: {
-        baseUrl: string;
-    };
+    apiBaseUrl: string;
     googleMaps: {
         apiKey: string
     };

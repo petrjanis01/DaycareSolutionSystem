@@ -26,7 +26,7 @@ export class BaseUrlService {
         let baseUrl = localStorage.getItem('baseUrl');
 
         if (this.useUrlFromConfig || baseUrl == null) {
-            return AppConfig.settings.apiBaseUrl.baseUrl;
+            return AppConfig.settings.apiBaseUrl;
         }
         return baseUrl;
     }

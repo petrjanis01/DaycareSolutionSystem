@@ -81,7 +81,6 @@ export class ClientGeneralInfoComponent implements OnInit {
     if (this.client.id == null) {
       this.openGeneralInfoEdit();
       this.detailEditCounter = 1;
-      console.log('adasda');
       return;
     }
 
@@ -112,13 +111,13 @@ export class ClientGeneralInfoComponent implements OnInit {
   public async saveGeneralInfo() {
     await this.validateAddress();
     let updateDto = this.createUpdateDto();
-
+    let client: ClientDTO;
     this.spinner.show();
     try {
-      let client: ClientDTO;
       if (this.isEdit) {
         client = await this.clientsService.apiClientsSingleClientPut(updateDto);
       } else {
+        console.log(updateDto);
         client = await this.clientsService.apiClientsSingleClientPost(updateDto);
       }
 
@@ -134,7 +133,7 @@ export class ClientGeneralInfoComponent implements OnInit {
       this.spinner.hide();
     }
 
-    this.detailEditCounter--;
+    this.router.navigate([`clients/detail/${client.id}`]);
   }
 
   private createUpdateDto(): ClientDTO {

@@ -10,7 +10,7 @@ export class ApiBase {
         private notification: NotifiactionService) { }
 
     protected get basePath(): string {
-        return AppConfig.settings.apiBaseUrl.baseUrl;
+        return AppConfig.settings.apiBaseUrl;
     }
 
     protected processErrors(response: Promise<any>) {
@@ -18,14 +18,14 @@ export class ApiBase {
             .catch(e => {
                 let url: string = e.url;
 
-                if (url.endsWith('Auth/login') === false) {
-                    if (e.status === 401) {
-                        this.notification.showErrorNotification('Token has expired. Please login again.');
+                if (e.status === 401) {
+                    this.notification.showErrorNotification('Token has expired. Please login again.');
 
-                        this.logOut();
-                    } else {
-                        this.notification.showErrorNotification('Api service is unavailable. Check your internet connection.');
-                    }
+                    this.logOut();
+                } else if (e.status >= 500) {
+                    this.notification.showErrorNotification('Api call error.');
+                } else {
+                    this.notification.showErrorNotification('Api service is unavailable. Check your internet connection.');
                 }
             });
 

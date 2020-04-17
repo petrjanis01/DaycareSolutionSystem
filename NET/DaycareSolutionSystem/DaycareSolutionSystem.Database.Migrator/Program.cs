@@ -15,7 +15,7 @@ namespace DaycareSolutionSystem.Database.Migrator
             var configuration = SetupConfiguration();
 
             var serviceProvider = new ServiceCollection()
-                .AddDbContext<DssDataContext>(options => options.UseNpgsql(configuration.GetConnectionString("DssConnectionString")))
+                .AddDbContext<DssDataContext>(options => options.UseNpgsql(configuration.GetValue<string>("DssConnectionString")))
                 .AddSingleton<DemoDataInitializer>()
                 .BuildServiceProvider();
 

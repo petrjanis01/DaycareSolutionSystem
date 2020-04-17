@@ -35,7 +35,7 @@ namespace DaycareSolutionSystem.Api.Host
             services.Configure<IConfiguration>(Configuration.GetSection("AppConfiguration"));
 
             services.AddDbContext<DssDataContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DssConnectionString")));
+                options.UseNpgsql(Configuration.GetValue<string>("DssConnectionString")));
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

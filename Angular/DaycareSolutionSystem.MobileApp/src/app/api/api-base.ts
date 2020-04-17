@@ -19,14 +19,14 @@ export class ApiBase {
             .catch(e => {
                 let url: string = e.url;
 
-                if (url.endsWith('Auth/login') === false) {
-                    if (e.status === 401) {
-                        this.toast.showErrorToast('Token has expired. Please login again.');
+                if (e.status === 401) {
+                    this.toast.showErrorToast('Token has expired. Please login again.');
 
-                        this.logOut();
-                    } else {
-                        this.toast.showErrorToast('Api service is unavailable. Check your internet connection.');
-                    }
+                    this.logOut();
+                } else if (e.status >= 500) {
+                    this.toast.showErrorToast('Api call error.');
+                } else {
+                    this.toast.showErrorToast('Api service is unavailable. Check your internet connection.');
                 }
             });
 
