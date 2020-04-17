@@ -16,29 +16,6 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
         {
         }
 
-        public Dictionary<IndividualPlan, List<AgreedClientAction>> GetClientAgreedActionsByPlans(Guid clientId)
-        {
-            var individualPlans = DataContext.IndividualPlans.Where(ip => ip.ClientId == clientId)
-                .OrderBy(ip => ip.ValidFromDate).ToList();
-
-            var agreedActions = DataContext.AgreedClientActions
-                .Where(ac => individualPlans.Select(ip => ip.Id).Contains(ac.IndividualPlanId))
-                .Distinct().ToList();
-
-            var actionsByPlans = new Dictionary<IndividualPlan, List<AgreedClientAction>>();
-
-            foreach (var individualPlan in individualPlans)
-            {
-                var actionsForPlan = agreedActions
-                    .Where(ac => ac.IndividualPlanId == individualPlan.Id)
-                    .OrderBy(ac => ac.Day);
-
-                actionsByPlans.Add(individualPlan, actionsForPlan.ToList());
-            }
-
-            return actionsByPlans;
-        }
-
         public List<Client> GetAgreedActionsLinkedClients(Guid? employeeId)
         {
             employeeId ??= GetCurrentUser().EmployeeId;
@@ -100,8 +77,17 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
             client.Address.PostCode = clientUpdated.Address.PostCode;
             client.Address.Street = clientUpdated.Address.Street;
 
-            client.Address.Coordinates.Latitude = clientUpdated.Address.Coordinates.Latitude;
-            client.Address.Coordinates.Longitude = clientUpdated.Address.Coordinates.Longitude;
+            if (client.Address.Coordinates == null && clientUpdated.Address.Coordinates != null)
+            {
+                DataContext.Coordinates.Add(clientUpdated.Address.Coordinates);
+                client.Address.Coordinates = clientUpdated.Address.Coordinates;
+
+            }
+            else if (clientUpdated.ProfilePicture != null)
+            {
+                client.Address.Coordinates.Latitude = clientUpdated.Address.Coordinates.Latitude;
+                client.Address.Coordinates.Longitude = clientUpdated.Address.Coordinates.Longitude;
+            }
 
             DataContext.SaveChanges();
 

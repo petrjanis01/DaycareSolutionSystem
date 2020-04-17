@@ -5,6 +5,7 @@ using DaycareSolutionSystem.Api.Host.Services.Actions;
 using DaycareSolutionSystem.Api.Host.Services.Authentication;
 using DaycareSolutionSystem.Api.Host.Services.Clients;
 using DaycareSolutionSystem.Api.Host.Services.Employees;
+using DaycareSolutionSystem.Api.Host.Services.IndividualPlans;
 using DaycareSolutionSystem.Api.Host.Services.RegisteredActions;
 using DaycareSolutionSystem.Database.DataContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -46,6 +47,7 @@ namespace DaycareSolutionSystem.Api.Host
             services.AddScoped<IClientApiService, ClientApiService>();
             services.AddScoped<IEmployeeApiService, EmployeeApiService>();
             services.AddScoped<IActionsApiService, ActionsApiService>();
+            services.AddScoped<IIndividualPlansApiService, IndividualPlansApiService>();
 
 
             var securityKey = Configuration.GetSection("AppConfiguration")?.GetValue<string>("SecurityKey");

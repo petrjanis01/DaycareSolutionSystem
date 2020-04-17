@@ -73,6 +73,16 @@ paths:
       responses:
         '200':
           description: Success
+          content:
+            text/plain:
+              schema:
+                type: boolean
+            application/json:
+              schema:
+                type: boolean
+            text/json:
+              schema:
+                type: boolean
   "/api/Action/single-action":
     get:
       tags:
@@ -114,35 +124,6 @@ paths:
       responses:
         '200':
           description: Success
-  "/api/Clients/agreed-actions-by-plans":
-    get:
-      tags:
-      - Clients
-      parameters:
-      - name: clientId
-        in: query
-        schema:
-          type: string
-          format: uuid
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/IndividualPlanDTO"
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/IndividualPlanDTO"
-            text/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/IndividualPlanDTO"
   "/api/Clients/change-profile-picture":
     post:
       tags:
@@ -425,6 +406,82 @@ paths:
       responses:
         '200':
           description: Success
+  "/api/IndividualPlans":
+    delete:
+      tags:
+      - IndividualPlans
+      parameters:
+      - name: id
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+    post:
+      tags:
+      - IndividualPlans
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/IndividualPlanCreateUpdateDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/IndividualPlanCreateUpdateDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/IndividualPlanCreateUpdateDTO"
+      responses:
+        '200':
+          description: Success
+    put:
+      tags:
+      - IndividualPlans
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/IndividualPlanCreateUpdateDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/IndividualPlanCreateUpdateDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/IndividualPlanCreateUpdateDTO"
+      responses:
+        '200':
+          description: Success
+  "/api/IndividualPlans/agreed-actions-by-plans":
+    get:
+      tags:
+      - IndividualPlans
+      parameters:
+      - name: clientId
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/IndividualPlanDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/IndividualPlanDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/IndividualPlanDTO"
   "/api/RegisteredActions/generate-next-month-actions":
     post:
       tags:
@@ -543,67 +600,6 @@ components:
           nullable: true
         isManagementSite:
           type: boolean
-      additionalProperties: false
-    DayOfWeek:
-      enum:
-      - 0
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      type: integer
-      format: int32
-    AgreedActionDTO:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        clientActionSpecificDescription:
-          type: string
-          nullable: true
-        estimatedDurationMinutes:
-          type: integer
-          format: int32
-        plannedStartTime:
-          type: string
-          format: date-time
-        plannedEndTime:
-          type: string
-          format: date-time
-        action:
-          "$ref": "#/components/schemas/ActionDTO"
-      additionalProperties: false
-    AgreedActionsForDayDTO:
-      type: object
-      properties:
-        day:
-          "$ref": "#/components/schemas/DayOfWeek"
-        agreedActions:
-          type: array
-          items:
-            "$ref": "#/components/schemas/AgreedActionDTO"
-          nullable: true
-      additionalProperties: false
-    IndividualPlanDTO:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        validFrom:
-          type: string
-          format: date-time
-        validUntil:
-          type: string
-          format: date-time
-        actionsForDay:
-          type: array
-          items:
-            "$ref": "#/components/schemas/AgreedActionsForDayDTO"
-          nullable: true
       additionalProperties: false
     PictureDTO:
       type: object
@@ -746,6 +742,84 @@ components:
           nullable: true
         employeePosition:
           "$ref": "#/components/schemas/EmployeePosition"
+      additionalProperties: false
+    IndividualPlanCreateUpdateDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: true
+        validFrom:
+          type: string
+          format: date-time
+        validUntil:
+          type: string
+          format: date-time
+        clientId:
+          type: string
+          format: uuid
+      additionalProperties: false
+    DayOfWeek:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      type: integer
+      format: int32
+    AgreedActionDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        clientActionSpecificDescription:
+          type: string
+          nullable: true
+        estimatedDurationMinutes:
+          type: integer
+          format: int32
+        plannedStartTime:
+          type: string
+          format: date-time
+        plannedEndTime:
+          type: string
+          format: date-time
+        action:
+          "$ref": "#/components/schemas/ActionDTO"
+      additionalProperties: false
+    AgreedActionsForDayDTO:
+      type: object
+      properties:
+        day:
+          "$ref": "#/components/schemas/DayOfWeek"
+        agreedActions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AgreedActionDTO"
+          nullable: true
+      additionalProperties: false
+    IndividualPlanDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        validFrom:
+          type: string
+          format: date-time
+        validUntil:
+          type: string
+          format: date-time
+        actionsForDay:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AgreedActionsForDayDTO"
+          nullable: true
       additionalProperties: false
     RegisteredActionDTO:
       type: object

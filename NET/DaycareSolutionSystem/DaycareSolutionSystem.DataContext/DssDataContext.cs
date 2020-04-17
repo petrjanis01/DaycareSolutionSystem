@@ -27,6 +27,7 @@ namespace DaycareSolutionSystem.Database.DataContext
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<AgreedClientAction> AgreedClientActions { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<Coordinates> Coordinates { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<IndividualPlan> IndividualPlans { get; set; }
         public virtual DbSet<Picture> Pictures { get; set; }

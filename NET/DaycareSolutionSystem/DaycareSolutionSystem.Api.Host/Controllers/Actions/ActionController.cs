@@ -65,9 +65,10 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Actions
 
         [HttpDelete]
         [Authorize(Roles = "Manager")]
-        public void DeleteAction(Guid id)
+        public bool DeleteAction(Guid id)
         {
-            _actionsApiService.DeleteAction(id);
+            var isDeleted = _actionsApiService.DeleteAction(id);
+            return isDeleted;
         }
 
         private ActionDTO MapActionToDto(Action action)

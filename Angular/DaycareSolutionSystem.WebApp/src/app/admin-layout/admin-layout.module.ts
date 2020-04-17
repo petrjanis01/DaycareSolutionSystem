@@ -22,6 +22,7 @@ import { ClientGeneralInfoComponent } from '../pages/clients/client-detail/clien
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { EmployeesComponent } from '../pages/employees/employees.component';
 import { ActionsComponent } from '../pages/actions/actions.component';
+import { ClientIndividualPlansComponent } from '../pages/clients/client-detail/client-individual-plans/client-individual-plans.component';
 
 @NgModule({
   imports: [
@@ -46,7 +47,8 @@ import { ActionsComponent } from '../pages/actions/actions.component';
     ClientNamePipe,
     ClientGeneralInfoComponent,
     EmployeesComponent,
-    ActionsComponent
+    ActionsComponent,
+    ClientIndividualPlansComponent
   ]
 })
 export class AdminLayoutModule { }

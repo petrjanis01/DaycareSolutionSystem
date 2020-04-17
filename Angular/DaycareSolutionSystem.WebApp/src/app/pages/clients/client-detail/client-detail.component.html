@@ -1,3 +1,4 @@
 <div class="content">
     <app-client-general-info *ngIf="client" [client]="client" [address]="address"></app-client-general-info>
+    <app-client-individual-plans *ngIf="client" [clientId]="client.id"></app-client-individual-plans>
 </div>

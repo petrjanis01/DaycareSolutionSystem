@@ -20,7 +20,8 @@ import { Router } from '@angular/router';
 
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
-import { ActionDTO } from '../model/actionDTO';
+import { IndividualPlanCreateUpdateDTO } from '../model/individualPlanCreateUpdateDTO';
+import { IndividualPlanDTO } from '../model/individualPlanDTO';
 
 import { Configuration } from '../configuration';
 
@@ -28,7 +29,7 @@ import { Configuration } from '../configuration';
 @Injectable({
   providedIn: 'root'
 })
-export class ActionService extends ApiBase{
+export class IndividualPlansService extends ApiBase{
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -54,7 +55,44 @@ export class ActionService extends ApiBase{
         return false;
     }
 
-    public async apiActionDelete(id?: string, ): Promise<boolean> {
+    public async apiIndividualPlansAgreedActionsByPlansGet(clientId?: string, ): Promise<Array<IndividualPlanDTO>> {
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (clientId !== undefined && clientId !== null) {
+            queryParameters = queryParameters.set('clientId', <any>clientId);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+
+        let result = this.httpClient.get<Array<IndividualPlanDTO>>(`${this.basePath}/api/IndividualPlans/agreed-actions-by-plans`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: this.createAuthHeaders(headers),
+            }
+        ).toPromise();
+
+        return this.processErrors(result);
+    }
+
+    public async apiIndividualPlansDelete(id?: string, ): Promise<any> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
@@ -66,9 +104,6 @@ export class ActionService extends ApiBase{
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -80,7 +115,7 @@ export class ActionService extends ApiBase{
         ];
 
 
-        let result = this.httpClient.delete<boolean>(`${this.basePath}/api/Action`,
+        let result = this.httpClient.delete<any>(`${this.basePath}/api/IndividualPlans`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -91,37 +126,7 @@ export class ActionService extends ApiBase{
         return this.processErrors(result);
     }
 
-    public async apiActionGet(): Promise<Array<ActionDTO>> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-
-        let result = this.httpClient.get<Array<ActionDTO>>(`${this.basePath}/api/Action`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: this.createAuthHeaders(headers),
-            }
-        ).toPromise();
-
-        return this.processErrors(result);
-    }
-
-    public async apiActionPost(ActionDTO?: ActionDTO, ): Promise<any> {
+    public async apiIndividualPlansPost(IndividualPlanCreateUpdateDTO?: IndividualPlanCreateUpdateDTO, ): Promise<any> {
 
 
         let headers = this.defaultHeaders;
@@ -146,8 +151,8 @@ export class ActionService extends ApiBase{
         }
 
 
-        let result = this.httpClient.post<any>(`${this.basePath}/api/Action`,
-            ActionDTO,
+        let result = this.httpClient.post<any>(`${this.basePath}/api/IndividualPlans`,
+            IndividualPlanCreateUpdateDTO,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: this.createAuthHeaders(headers),
@@ -157,7 +162,7 @@ export class ActionService extends ApiBase{
         return this.processErrors(result);
     }
 
-    public async apiActionPut(ActionDTO?: ActionDTO, ): Promise<any> {
+    public async apiIndividualPlansPut(IndividualPlanCreateUpdateDTO?: IndividualPlanCreateUpdateDTO, ): Promise<any> {
 
 
         let headers = this.defaultHeaders;
@@ -182,46 +187,9 @@ export class ActionService extends ApiBase{
         }
 
 
-        let result = this.httpClient.put<any>(`${this.basePath}/api/Action`,
-            ActionDTO,
+        let result = this.httpClient.put<any>(`${this.basePath}/api/IndividualPlans`,
+            IndividualPlanCreateUpdateDTO,
             {
-                withCredentials: this.configuration.withCredentials,
-                headers: this.createAuthHeaders(headers),
-            }
-        ).toPromise();
-
-        return this.processErrors(result);
-    }
-
-    public async apiActionSingleActionGet(id?: string, ): Promise<ActionDTO> {
-
-
-        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (id !== undefined && id !== null) {
-            queryParameters = queryParameters.set('id', <any>id);
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-
-        let result = this.httpClient.get<ActionDTO>(`${this.basePath}/api/Action/single-action`,
-            {
-                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: this.createAuthHeaders(headers),
             }

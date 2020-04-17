@@ -10,6 +10,7 @@ export * from './dayOfWeek';
 export * from './employeeDetailDTO';
 export * from './employeePosition';
 export * from './gender';
+export * from './individualPlanCreateUpdateDTO';
 export * from './individualPlanDTO';
 export * from './loginDTO';
 export * from './minMaxDateDTO';

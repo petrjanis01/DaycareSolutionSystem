@@ -14,6 +14,6 @@ namespace DaycareSolutionSystem.Api.Host.Services.Actions
 
         void UpdateAction(Action action);
 
-        void DeleteAction(Guid id);
+        bool DeleteAction(Guid id);
     }
 }

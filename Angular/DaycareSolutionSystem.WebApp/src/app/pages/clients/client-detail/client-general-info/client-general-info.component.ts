@@ -157,12 +157,8 @@ export class ClientGeneralInfoComponent implements OnInit {
         this.client.profilePicture.pictureUri
     };
 
-    let birthDate: DatepickerDateModel = formValue.birthDate;
-    let date = new Date();
-    date.setFullYear(birthDate.year);
-    date.setMonth(birthDate.month);
-    date.setDate(birthDate.day);
-
+    let birthDateModel: DatepickerDateModel = formValue.birthDate;
+    let date = this.helper.getDateFromDatepickerModel(birthDateModel);
     let clientUpdateDto: ClientDTO = {
       id: this.isEdit ? this.client.id : null,
       firstName: formValue.firstName,

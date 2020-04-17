@@ -1,5 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
+import { DatepickerDateModel } from '../pages/clients/client-detail/datepicker-date-model';
 
 @Injectable({ providedIn: 'root' })
 export class GeneralHelperService {
@@ -21,5 +22,14 @@ export class GeneralHelperService {
         let imgUrl = `${this.baseHref != null ? this.baseHref : ''}/assets/img/user-anonymous.png`;
 
         return imgUrl;
+    }
+
+    public getDateFromDatepickerModel(model: DatepickerDateModel): Date {
+        let date = new Date();
+        date.setDate(model.day);
+        date.setFullYear(model.year);
+        date.setMonth(model.month - 1);
+
+        return date;
     }
 }

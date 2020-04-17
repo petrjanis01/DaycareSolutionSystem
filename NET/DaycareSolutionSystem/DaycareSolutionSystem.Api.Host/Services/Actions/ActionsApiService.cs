@@ -43,11 +43,19 @@ namespace DaycareSolutionSystem.Api.Host.Services.Actions
             DataContext.SaveChanges();
         }
 
-        public void DeleteAction(Guid id)
+        public bool DeleteAction(Guid id)
         {
             var action = DataContext.Actions.Find(id);
-            DataContext.Actions.Remove(action);
-            DataContext.SaveChanges();
+
+            if (action.AgreedClientActions.Count == 0)
+            {
+                DataContext.Actions.Remove(action);
+                DataContext.SaveChanges();
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

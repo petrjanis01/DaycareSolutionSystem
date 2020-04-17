@@ -7,6 +7,7 @@ import { ActionService } from './api/action.service';
 import { AuthService } from './api/auth.service';
 import { ClientsService } from './api/clients.service';
 import { EmployeeService } from './api/employee.service';
+import { IndividualPlansService } from './api/individualPlans.service';
 import { RegisteredActionsService } from './api/registeredActions.service';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { RegisteredActionsService } from './api/registeredActions.service';
     AuthService,
     ClientsService,
     EmployeeService,
+    IndividualPlansService,
     RegisteredActionsService ]
 })
 export class ApiModule {

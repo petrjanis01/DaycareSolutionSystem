@@ -85,9 +85,14 @@ export class ActionsComponent implements OnInit {
     if (confirm(`Are you sure you want to delete action: ${action.name}`)) {
       this.spinner.show();
       try {
-        await this.actionService.apiActionDelete(id);
-        this.notifications.showSuccessNotification('Action deleted');
-        this.realoadActions();
+        let isDeleted = await this.actionService.apiActionDelete(id);
+        if (isDeleted) {
+          this.notifications.showSuccessNotification('Action deleted');
+          this.realoadActions();
+        } else {
+          this.notifications.showInfoNotification('Any of agreed client actions is based on this action - action cannot be deleted');
+        }
+
         this.isEditOpen = false;
       } finally {
         this.spinner.hide();

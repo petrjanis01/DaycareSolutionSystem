@@ -56,7 +56,7 @@ export class ActionService extends ApiBase{
         return false;
     }
 
-    public async apiActionDelete(id?: string, ): Promise<any> {
+    public async apiActionDelete(id?: string, ): Promise<boolean> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
@@ -68,6 +68,9 @@ export class ActionService extends ApiBase{
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -79,7 +82,7 @@ export class ActionService extends ApiBase{
         ];
 
 
-        let result = this.httpClient.delete<any>(`${this.basePath}/api/Action`,
+        let result = this.httpClient.delete<boolean>(`${this.basePath}/api/Action`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
