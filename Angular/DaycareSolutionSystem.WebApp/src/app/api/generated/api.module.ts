@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 
 import { ActionService } from './api/action.service';
+import { AgreedActionService } from './api/agreedAction.service';
 import { AuthService } from './api/auth.service';
 import { ClientsService } from './api/clients.service';
 import { EmployeeService } from './api/employee.service';
@@ -16,6 +17,7 @@ import { RegisteredActionsService } from './api/registeredActions.service';
   exports:      [],
   providers: [
     ActionService,
+    AgreedActionService,
     AuthService,
     ClientsService,
     EmployeeService,

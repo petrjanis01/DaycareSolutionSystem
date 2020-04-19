@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using DaycareSolutionSystem.Database.DataContext;
 using DaycareSolutionSystem.Database.Entities.Entities;
+using DaycareSolutionSystem.Entities.Enums;
 using DaycareSolutionSystem.Helpers;
 using Microsoft.AspNetCore.Http;
 
@@ -11,6 +14,22 @@ namespace DaycareSolutionSystem.Api.Host.Services.Employees
         public EmployeeApiService(DssDataContext dataContext, IHttpContextAccessor httpContextAccessor) :
             base(dataContext, httpContextAccessor)
         {
+        }
+
+        public List<Employee> GetAllEmployeesExceptCurrent()
+        {
+            var currentEmployeeId = GetCurrentUser().EmployeeId;
+
+            var employees = DataContext.Employees.Where(e => e.Id != currentEmployeeId).ToList();
+            return employees;
+        }
+
+        public List<Employee> GetAllCaregivers()
+        {
+            var caregivers = DataContext.Employees.Where(e => e.EmployeePosition == EmployeePosition.Caregiver)
+                .ToList();
+
+            return caregivers;
         }
 
         public Employee ChangeEmployeeProfilePicture(string pictureUri, Guid? employeeId)

@@ -1,11 +1,12 @@
 ﻿using System;
+using DaycareSolutionSystem.Api.Host.Controllers.AgreedActions;
 
-namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
+namespace DaycareSolutionSystem.Api.Host.Controllers.IndividualPlans
 {
     public class AgreedActionsForDayDTO
     {
         public DayOfWeek Day { get; set; }
 
-        public AgreedActionDTO[] AgreedActions { get; set; }
+        public AgreedActionBasicDTO[] AgreedActions { get; set; }
     }
 }

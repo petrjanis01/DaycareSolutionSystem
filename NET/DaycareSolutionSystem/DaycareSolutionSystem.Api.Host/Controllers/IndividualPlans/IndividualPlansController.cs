@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DaycareSolutionSystem.Api.Host.Controllers.Actions;
-using DaycareSolutionSystem.Api.Host.Controllers.Clients;
+using DaycareSolutionSystem.Api.Host.Controllers.AgreedActions;
 using DaycareSolutionSystem.Api.Host.Services.IndividualPlans;
 using DaycareSolutionSystem.Database.Entities.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -12,13 +12,39 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.IndividualPlans
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class IndividualPlansController : ControllerBase
+    public class IndividualPlansController : DssBaseController
     {
         private readonly IIndividualPlansApiService _individualPlansApiService;
 
         public IndividualPlansController(IIndividualPlansApiService individualPlansService)
         {
             _individualPlansApiService = individualPlansService;
+        }
+
+        [HttpGet]
+        public IndividualPlanDTO[] GetClientAgreedActionsByPlans(Guid clientId)
+        {
+            var actionsByPlans = _individualPlansApiService.GetClientAgreedActionsByPlans(clientId);
+
+            var individualPlans = new List<IndividualPlanDTO>();
+            foreach (var entry in actionsByPlans)
+            {
+                var dto = MapIndividualPlanWithActionsToDto(entry.Key, entry.Value);
+                individualPlans.Add(dto);
+            }
+
+            return individualPlans.ToArray();
+        }
+
+        [HttpGet]
+        [Route("single-plan")]
+        public IndividualPlanDTO GetSingleIndividualPlan(Guid planId)
+        {
+            var plan = _individualPlansApiService.GetSingleIndividualPlan(planId);
+            var actions = plan.AgreedClientActions.ToList();
+
+            var dto = MapIndividualPlanWithActionsToDto(plan, actions);
+            return dto;
         }
 
         [HttpDelete]
@@ -46,22 +72,6 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.IndividualPlans
             _individualPlansApiService.UpdateIndividualPlan(plan);
         }
 
-        [HttpGet]
-        [Route("agreed-actions-by-plans")]
-        public IndividualPlanDTO[] GetClientAgreedActionsByPlans(Guid clientId)
-        {
-            var actionsByPlans = _individualPlansApiService.GetClientAgreedActionsByPlans(clientId);
-
-            var individualPlans = new List<IndividualPlanDTO>();
-            foreach (var entry in actionsByPlans)
-            {
-                var dto = MapIndividualPlanWithActionsToDto(entry.Key, entry.Value);
-                individualPlans.Add(dto);
-            }
-
-            return individualPlans.ToArray();
-        }
-
         // Mappers
         private IndividualPlanDTO MapIndividualPlanWithActionsToDto(IndividualPlan plan, List<AgreedClientAction> actions)
         {
@@ -75,10 +85,10 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.IndividualPlans
                 var actionsForDay = new AgreedActionsForDayDTO();
                 actionsForDay.Day = day;
 
-                var actionsDtos = new List<AgreedActionDTO>();
+                var actionsDtos = new List<AgreedActionBasicDTO>();
                 foreach (var action in group)
                 {
-                    var agreedActionDto = new AgreedActionDTO();
+                    var agreedActionDto = new AgreedActionBasicDTO();
                     agreedActionDto.Id = action.Id;
                     agreedActionDto.EstimatedDurationMinutes = action.EstimatedDurationMinutes;
                     agreedActionDto.ClientActionSpecificDescription = action.ClientActionSpecificDescription;

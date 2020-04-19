@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AdminLayoutRoutes } from './admin-layout.routing';
@@ -23,6 +23,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { EmployeesComponent } from '../pages/employees/employees.component';
 import { ActionsComponent } from '../pages/actions/actions.component';
 import { ClientIndividualPlansComponent } from '../pages/clients/client-detail/client-individual-plans/client-individual-plans.component';
+import { ClientAgreedActionsDetailComponent } from '../pages/clients/client-detail/client-individual-plans/client-agreed-actions-detail/client-agreed-actions-detail.component';
+import { AgreedActionModalComponent } from '../pages/clients/client-detail/client-individual-plans/client-agreed-actions-detail/agreed-action-modal/agreed-action-modal.component';
 
 @NgModule({
   imports: [
@@ -48,7 +50,15 @@ import { ClientIndividualPlansComponent } from '../pages/clients/client-detail/c
     ClientGeneralInfoComponent,
     EmployeesComponent,
     ActionsComponent,
-    ClientIndividualPlansComponent
+    ClientIndividualPlansComponent,
+    ClientAgreedActionsDetailComponent,
+    AgreedActionModalComponent
+  ],
+  providers: [
+    DatePipe
+  ],
+  entryComponents: [
+    AgreedActionModalComponent
   ]
 })
 export class AdminLayoutModule { }

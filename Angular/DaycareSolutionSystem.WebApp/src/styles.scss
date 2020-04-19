@@ -26,3 +26,7 @@ ngb-datepicker-navigation-select select option {
 .ngb-dp-day.ng-star-inserted .btn-light:hover {
   color: white;
 }
+
+mwl-calendar-week-view.no-dates .cal-day-headers span {
+  visibility: hidden;
+}

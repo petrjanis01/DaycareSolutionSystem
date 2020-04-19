@@ -9,11 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AgreedActionBasicDTO } from './agreedActionBasicDTO';
-import { DayOfWeek } from './dayOfWeek';
+import { ActionDTO } from './actionDTO';
 
 
-export interface AgreedActionsForDayDTO { 
-    day?: DayOfWeek;
-    agreedActions?: Array<AgreedActionBasicDTO>;
+export interface AgreedActionBasicDTO { 
+    id?: string;
+    clientActionSpecificDescription?: string;
+    estimatedDurationMinutes?: number;
+    plannedStartTime?: Date;
+    plannedEndTime?: Date;
+    action?: ActionDTO;
 }

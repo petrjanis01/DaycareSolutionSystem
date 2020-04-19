@@ -20,8 +20,7 @@ import { Router } from '@angular/router';
 
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
-import { IndividualPlanCreateUpdateDTO } from '../model/individualPlanCreateUpdateDTO';
-import { IndividualPlanDTO } from '../model/individualPlanDTO';
+import { AgreedActionDto } from '../model/agreedActionDto';
 
 import { Configuration } from '../configuration';
 
@@ -29,7 +28,7 @@ import { Configuration } from '../configuration';
 @Injectable({
   providedIn: 'root'
 })
-export class IndividualPlansService extends ApiBase{
+export class AgreedActionService extends ApiBase{
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -55,7 +54,7 @@ export class IndividualPlansService extends ApiBase{
         return false;
     }
 
-    public async apiIndividualPlansDelete(id?: string, ): Promise<any> {
+    public async apiAgreedActionDelete(id?: string, ): Promise<boolean> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
@@ -67,40 +66,6 @@ export class IndividualPlansService extends ApiBase{
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-
-        let result = this.httpClient.delete<any>(`${this.basePath}/api/IndividualPlans`,
-            {
-                params: queryParameters,
-                withCredentials: this.configuration.withCredentials,
-                headers: this.createAuthHeaders(headers),
-            }
-        ).toPromise();
-
-        return this.processErrors(result);
-    }
-
-    public async apiIndividualPlansGet(clientId?: string, ): Promise<Array<IndividualPlanDTO>> {
-
-
-        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (clientId !== undefined && clientId !== null) {
-            queryParameters = queryParameters.set('clientId', <any>clientId);
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
             'text/plain',
             'application/json',
             'text/json'
@@ -115,7 +80,7 @@ export class IndividualPlansService extends ApiBase{
         ];
 
 
-        let result = this.httpClient.get<Array<IndividualPlanDTO>>(`${this.basePath}/api/IndividualPlans`,
+        let result = this.httpClient.delete<boolean>(`${this.basePath}/api/AgreedAction`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -126,7 +91,7 @@ export class IndividualPlansService extends ApiBase{
         return this.processErrors(result);
     }
 
-    public async apiIndividualPlansPost(IndividualPlanCreateUpdateDTO?: IndividualPlanCreateUpdateDTO, ): Promise<any> {
+    public async apiAgreedActionPost(AgreedActionDto?: AgreedActionDto, ): Promise<any> {
 
 
         let headers = this.defaultHeaders;
@@ -151,8 +116,8 @@ export class IndividualPlansService extends ApiBase{
         }
 
 
-        let result = this.httpClient.post<any>(`${this.basePath}/api/IndividualPlans`,
-            IndividualPlanCreateUpdateDTO,
+        let result = this.httpClient.post<any>(`${this.basePath}/api/AgreedAction`,
+            AgreedActionDto,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: this.createAuthHeaders(headers),
@@ -162,7 +127,7 @@ export class IndividualPlansService extends ApiBase{
         return this.processErrors(result);
     }
 
-    public async apiIndividualPlansPut(IndividualPlanCreateUpdateDTO?: IndividualPlanCreateUpdateDTO, ): Promise<any> {
+    public async apiAgreedActionPut(AgreedActionDto?: AgreedActionDto, ): Promise<any> {
 
 
         let headers = this.defaultHeaders;
@@ -187,8 +152,8 @@ export class IndividualPlansService extends ApiBase{
         }
 
 
-        let result = this.httpClient.put<any>(`${this.basePath}/api/IndividualPlans`,
-            IndividualPlanCreateUpdateDTO,
+        let result = this.httpClient.put<any>(`${this.basePath}/api/AgreedAction`,
+            AgreedActionDto,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: this.createAuthHeaders(headers),
@@ -198,12 +163,12 @@ export class IndividualPlansService extends ApiBase{
         return this.processErrors(result);
     }
 
-    public async apiIndividualPlansSinglePlanGet(planId?: string, ): Promise<IndividualPlanDTO> {
+    public async apiAgreedActionSingleActionGet(id?: string, ): Promise<AgreedActionDto> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (planId !== undefined && planId !== null) {
-            queryParameters = queryParameters.set('planId', <any>planId);
+        if (id !== undefined && id !== null) {
+            queryParameters = queryParameters.set('id', <any>id);
         }
 
         let headers = this.defaultHeaders;
@@ -224,7 +189,7 @@ export class IndividualPlansService extends ApiBase{
         ];
 
 
-        let result = this.httpClient.get<IndividualPlanDTO>(`${this.basePath}/api/IndividualPlans/single-plan`,
+        let result = this.httpClient.get<AgreedActionDto>(`${this.basePath}/api/AgreedAction/single-action`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,

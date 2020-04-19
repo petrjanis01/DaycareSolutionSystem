@@ -10,9 +10,13 @@
  * Do not edit the class manually.
  */
 import { ActionDTO } from './actionDTO';
+import { DayOfWeek } from './dayOfWeek';
 
 
-export interface AgreedActionDTO { 
+export interface AgreedActionDto { 
+    employeeId?: string;
+    individualPlanId?: string;
+    day?: DayOfWeek;
     id?: string;
     clientActionSpecificDescription?: string;
     estimatedDurationMinutes?: number;

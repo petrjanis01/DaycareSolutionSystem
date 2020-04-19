@@ -32,4 +32,13 @@ export class GeneralHelperService {
 
         return date;
     }
+
+    public getClosestDateThatsDay(day: number): Date {
+        day = day === 6 ? day = 0 : day + 1;
+        let date = new Date();
+        let dayOfDate = date.getDay();
+        date.setDate(date.getDate() + (day - dayOfDate));
+
+        return date;
+    }
 }

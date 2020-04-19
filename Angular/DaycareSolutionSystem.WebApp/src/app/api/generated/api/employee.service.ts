@@ -20,6 +20,7 @@ import { Router } from '@angular/router';
 
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
+import { EmployeeBasicDTO } from '../model/employeeBasicDTO';
 import { EmployeeDetailDTO } from '../model/employeeDetailDTO';
 import { PictureDTO } from '../model/pictureDTO';
 
@@ -53,6 +54,36 @@ export class EmployeeService extends ApiBase{
             }
         }
         return false;
+    }
+
+    public async apiEmployeeAllCaregiversGet(): Promise<Array<EmployeeBasicDTO>> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+
+        let result = this.httpClient.get<Array<EmployeeBasicDTO>>(`${this.basePath}/api/Employee/all-caregivers`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: this.createAuthHeaders(headers),
+            }
+        ).toPromise();
+
+        return this.processErrors(result);
     }
 
     public async apiEmployeeChangePasswordPut(newPassword?: string, ): Promise<any> {
@@ -125,6 +156,36 @@ export class EmployeeService extends ApiBase{
             PictureDTO,
             {
                 params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: this.createAuthHeaders(headers),
+            }
+        ).toPromise();
+
+        return this.processErrors(result);
+    }
+
+    public async apiEmployeeGet(): Promise<Array<EmployeeBasicDTO>> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+
+        let result = this.httpClient.get<Array<EmployeeBasicDTO>>(`${this.basePath}/api/Employee`,
+            {
                 withCredentials: this.configuration.withCredentials,
                 headers: this.createAuthHeaders(headers),
             }

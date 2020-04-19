@@ -57,7 +57,41 @@ export class IndividualPlansService extends ApiBase{
         return false;
     }
 
-    public async apiIndividualPlansAgreedActionsByPlansGet(clientId?: string, ): Promise<Array<IndividualPlanDTO>> {
+    public async apiIndividualPlansDelete(id?: string, ): Promise<any> {
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (id !== undefined && id !== null) {
+            queryParameters = queryParameters.set('id', <any>id);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+
+        let result = this.httpClient.delete<any>(`${this.basePath}/api/IndividualPlans`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: this.createAuthHeaders(headers),
+            }
+        ).toPromise();
+
+        return this.processErrors(result);
+    }
+
+    public async apiIndividualPlansGet(clientId?: string, ): Promise<Array<IndividualPlanDTO>> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
@@ -83,41 +117,7 @@ export class IndividualPlansService extends ApiBase{
         ];
 
 
-        let result = this.httpClient.get<Array<IndividualPlanDTO>>(`${this.basePath}/api/IndividualPlans/agreed-actions-by-plans`,
-            {
-                params: queryParameters,
-                withCredentials: this.configuration.withCredentials,
-                headers: this.createAuthHeaders(headers),
-            }
-        ).toPromise();
-
-        return this.processErrors(result);
-    }
-
-    public async apiIndividualPlansDelete(id?: string, ): Promise<any> {
-
-
-        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (id !== undefined && id !== null) {
-            queryParameters = queryParameters.set('id', <any>id);
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-
-        let result = this.httpClient.delete<any>(`${this.basePath}/api/IndividualPlans`,
+        let result = this.httpClient.get<Array<IndividualPlanDTO>>(`${this.basePath}/api/IndividualPlans`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -192,6 +192,43 @@ export class IndividualPlansService extends ApiBase{
         let result = this.httpClient.put<any>(`${this.basePath}/api/IndividualPlans`,
             IndividualPlanCreateUpdateDTO,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: this.createAuthHeaders(headers),
+            }
+        ).toPromise();
+
+        return this.processErrors(result);
+    }
+
+    public async apiIndividualPlansSinglePlanGet(planId?: string, ): Promise<IndividualPlanDTO> {
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (planId !== undefined && planId !== null) {
+            queryParameters = queryParameters.set('planId', <any>planId);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+
+        let result = this.httpClient.get<IndividualPlanDTO>(`${this.basePath}/api/IndividualPlans/single-plan`,
+            {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: this.createAuthHeaders(headers),
             }

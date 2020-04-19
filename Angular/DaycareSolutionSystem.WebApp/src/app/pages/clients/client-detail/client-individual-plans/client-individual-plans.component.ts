@@ -25,6 +25,7 @@ export class ClientIndividualPlansComponent implements OnInit {
   public editOpenCounter = 0;
   public planEditForm: FormGroup
   public isFromUntilWarningVisible = false;
+  public planId: string;
 
   constructor(private plansService: IndividualPlansService, private formBuilder: FormBuilder,
     private spinner: NgxSpinnerService, private notifications: NotifiactionService,
@@ -35,7 +36,7 @@ export class ClientIndividualPlansComponent implements OnInit {
   }
 
   private async reloadPlans() {
-    let dtos = await this.plansService.apiIndividualPlansAgreedActionsByPlansGet(this.clientId);
+    let dtos = await this.plansService.apiIndividualPlansGet(this.clientId);
     console.log(dtos);
     this.plans = dtos;
   }
@@ -80,7 +81,7 @@ export class ClientIndividualPlansComponent implements OnInit {
   }
 
   public openPlanDetail(id: string) {
-
+    this.planId = id;
   }
 
   public cancelEdit() {

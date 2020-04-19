@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
+namespace DaycareSolutionSystem.Api.Host.Controllers.IndividualPlans
 {
     public class IndividualPlanDTO
     {

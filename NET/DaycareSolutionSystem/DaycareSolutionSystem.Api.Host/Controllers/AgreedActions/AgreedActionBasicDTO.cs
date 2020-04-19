@@ -1,16 +1,15 @@
 ﻿using System;
 using DaycareSolutionSystem.Api.Host.Controllers.Actions;
-using DaycareSolutionSystem.Api.Host.Controllers.DTO;
 
-namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
+namespace DaycareSolutionSystem.Api.Host.Controllers.AgreedActions
 {
-    public class AgreedActionDTO
+    public class AgreedActionBasicDTO
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         public string ClientActionSpecificDescription { get; set; }
 
-        public int EstimatedDurationMinutes { get; set; }
+        public int? EstimatedDurationMinutes { get; set; }
 
         public DateTime PlannedStartTime { get; set; }
 

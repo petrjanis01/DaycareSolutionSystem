@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using DaycareSolutionSystem.Api.Host.DatabaseValidation;
 using DaycareSolutionSystem.Api.Host.Services.Actions;
+using DaycareSolutionSystem.Api.Host.Services.AgreedActions;
 using DaycareSolutionSystem.Api.Host.Services.Authentication;
 using DaycareSolutionSystem.Api.Host.Services.Clients;
 using DaycareSolutionSystem.Api.Host.Services.Employees;
@@ -48,6 +49,7 @@ namespace DaycareSolutionSystem.Api.Host
             services.AddScoped<IEmployeeApiService, EmployeeApiService>();
             services.AddScoped<IActionsApiService, ActionsApiService>();
             services.AddScoped<IIndividualPlansApiService, IndividualPlansApiService>();
+            services.AddScoped<IAgreedActionsApiService, AgreedActionsApiService>();
 
 
             var securityKey = Configuration.GetSection("AppConfiguration")?.GetValue<string>("SecurityKey");

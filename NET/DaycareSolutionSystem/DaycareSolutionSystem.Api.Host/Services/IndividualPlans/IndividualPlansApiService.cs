@@ -36,6 +36,12 @@ namespace DaycareSolutionSystem.Api.Host.Services.IndividualPlans
             return actionsByPlans;
         }
 
+        public IndividualPlan GetSingleIndividualPlan(Guid planId)
+        {
+            var plan = DataContext.IndividualPlans.Find(planId);
+            return plan;
+        }
+
         public void CreateIndividualPlan(IndividualPlan plan)
         {
             DataContext.IndividualPlans.Add(plan);

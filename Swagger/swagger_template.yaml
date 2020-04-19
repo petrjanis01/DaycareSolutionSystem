@@ -106,6 +106,86 @@ paths:
             text/json:
               schema:
                 "$ref": "#/components/schemas/ActionDTO"
+  "/api/AgreedAction/single-action":
+    get:
+      tags:
+      - AgreedAction
+      parameters:
+      - name: id
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/AgreedActionDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AgreedActionDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/AgreedActionDto"
+  "/api/AgreedAction":
+    post:
+      tags:
+      - AgreedAction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AgreedActionDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/AgreedActionDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/AgreedActionDto"
+      responses:
+        '200':
+          description: Success
+    put:
+      tags:
+      - AgreedAction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AgreedActionDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/AgreedActionDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/AgreedActionDto"
+      responses:
+        '200':
+          description: Success
+    delete:
+      tags:
+      - AgreedAction
+      parameters:
+      - name: id
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: boolean
+            application/json:
+              schema:
+                type: boolean
+            text/json:
+              schema:
+                type: boolean
   "/api/Auth/login":
     post:
       tags:
@@ -347,6 +427,52 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/ClientWithNextActionDTO"
+  "/api/Employee":
+    get:
+      tags:
+      - Employee
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/EmployeeBasicDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/EmployeeBasicDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/EmployeeBasicDTO"
+  "/api/Employee/all-caregivers":
+    get:
+      tags:
+      - Employee
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/EmployeeBasicDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/EmployeeBasicDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/EmployeeBasicDTO"
   "/api/Employee/change-password":
     put:
       tags:
@@ -407,6 +533,34 @@ paths:
         '200':
           description: Success
   "/api/IndividualPlans":
+    get:
+      tags:
+      - IndividualPlans
+      parameters:
+      - name: clientId
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/IndividualPlanDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/IndividualPlanDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/IndividualPlanDTO"
     delete:
       tags:
       - IndividualPlans
@@ -453,12 +607,12 @@ paths:
       responses:
         '200':
           description: Success
-  "/api/IndividualPlans/agreed-actions-by-plans":
+  "/api/IndividualPlans/single-plan":
     get:
       tags:
       - IndividualPlans
       parameters:
-      - name: clientId
+      - name: planId
         in: query
         schema:
           type: string
@@ -469,19 +623,13 @@ paths:
           content:
             text/plain:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/IndividualPlanDTO"
+                "$ref": "#/components/schemas/IndividualPlanDTO"
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/IndividualPlanDTO"
+                "$ref": "#/components/schemas/IndividualPlanDTO"
             text/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/IndividualPlanDTO"
+                "$ref": "#/components/schemas/IndividualPlanDTO"
   "/api/RegisteredActions/generate-next-month-actions":
     post:
       tags:
@@ -588,6 +736,48 @@ components:
         generalDescription:
           type: string
           nullable: true
+      additionalProperties: false
+    DayOfWeek:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      type: integer
+      format: int32
+    AgreedActionDto:
+      type: object
+      properties:
+        employeeId:
+          type: string
+          format: uuid
+        individualPlanId:
+          type: string
+          format: uuid
+        day:
+          "$ref": "#/components/schemas/DayOfWeek"
+        id:
+          type: string
+          format: uuid
+          nullable: true
+        clientActionSpecificDescription:
+          type: string
+          nullable: true
+        estimatedDurationMinutes:
+          type: integer
+          format: int32
+          nullable: true
+        plannedStartTime:
+          type: string
+          format: date-time
+        plannedEndTime:
+          type: string
+          format: date-time
+        action:
+          "$ref": "#/components/schemas/ActionDTO"
       additionalProperties: false
     LoginDTO:
       type: object
@@ -716,6 +906,19 @@ components:
         nextAction:
           "$ref": "#/components/schemas/RegisteredActionBasicDTO"
       additionalProperties: false
+    EmployeeBasicDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fullName:
+          type: string
+          nullable: true
+        profilePictureUri:
+          type: string
+          nullable: true
+      additionalProperties: false
     EmployeePosition:
       enum:
       - 0
@@ -725,9 +928,6 @@ components:
     EmployeeDetailDTO:
       type: object
       properties:
-        fullName:
-          type: string
-          nullable: true
         birthdate:
           type: string
           format: date-time
@@ -737,52 +937,32 @@ components:
         phoneNumber:
           type: string
           nullable: true
+        employeePosition:
+          "$ref": "#/components/schemas/EmployeePosition"
+        id:
+          type: string
+          format: uuid
+        fullName:
+          type: string
+          nullable: true
         profilePictureUri:
           type: string
           nullable: true
-        employeePosition:
-          "$ref": "#/components/schemas/EmployeePosition"
       additionalProperties: false
-    IndividualPlanCreateUpdateDTO:
+    AgreedActionBasicDTO:
       type: object
       properties:
         id:
           type: string
           format: uuid
           nullable: true
-        validFrom:
-          type: string
-          format: date-time
-        validUntil:
-          type: string
-          format: date-time
-        clientId:
-          type: string
-          format: uuid
-      additionalProperties: false
-    DayOfWeek:
-      enum:
-      - 0
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      type: integer
-      format: int32
-    AgreedActionDTO:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
         clientActionSpecificDescription:
           type: string
           nullable: true
         estimatedDurationMinutes:
           type: integer
           format: int32
+          nullable: true
         plannedStartTime:
           type: string
           format: date-time
@@ -800,7 +980,7 @@ components:
         agreedActions:
           type: array
           items:
-            "$ref": "#/components/schemas/AgreedActionDTO"
+            "$ref": "#/components/schemas/AgreedActionBasicDTO"
           nullable: true
       additionalProperties: false
     IndividualPlanDTO:
@@ -820,6 +1000,23 @@ components:
           items:
             "$ref": "#/components/schemas/AgreedActionsForDayDTO"
           nullable: true
+      additionalProperties: false
+    IndividualPlanCreateUpdateDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: true
+        validFrom:
+          type: string
+          format: date-time
+        validUntil:
+          type: string
+          format: date-time
+        clientId:
+          type: string
+          format: uuid
       additionalProperties: false
     RegisteredActionDTO:
       type: object
