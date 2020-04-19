@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClientDTO, ClientsService, AddressDTO, CoordinatesDTO, PictureDTO } from 'src/app/api/generated';
 import { GeneralHelperService } from 'src/app/services/general-helper.service';
@@ -6,10 +6,10 @@ import { GeolocationHelperService } from 'src/app/services/geolocation-helper.se
 import { trigger, transition } from '@angular/animations';
 import { Observable, fromEvent } from 'rxjs';
 import { pluck } from 'rxjs/operators';
-import { DatepickerDateModel } from '../datepicker-date-model';
+import { DatepickerDateModel } from '../../../../shared/datepicker-date-model';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { SliderAnimation } from 'src/app/components/slider-animation'
+import { SliderAnimation } from 'src/app/shared/slider-animation'
 import { NotifiactionService } from 'src/app/services/notification.service';
 
 
@@ -29,6 +29,7 @@ export class ClientGeneralInfoComponent implements OnInit {
 
   @Input() client: ClientDTO;
   @Input() address: AddressDTO;
+  @Output() onanimationInProgress = new EventEmitter();
 
   public detailEditCounter = -1;
 
@@ -75,6 +76,7 @@ export class ClientGeneralInfoComponent implements OnInit {
       this.lngUpdate = this.lngClient;
 
       this.detailEditCounter++;
+      this.onanimationInProgress.emit();
     } else {
       let cords = await this.geolocationHelper.getCurrentLocation();
       if (cords == null) {
@@ -109,6 +111,7 @@ export class ClientGeneralInfoComponent implements OnInit {
       this.latClient = client.address.coordinates.latitude;
       this.lngClient = client.address.coordinates.longitude;
       this.isEdit = true;
+      this.onanimationInProgress.emit();
       this.detailEditCounter--;
     } catch{
       this.client = updateDto;
@@ -180,8 +183,8 @@ export class ClientGeneralInfoComponent implements OnInit {
       return;
     }
 
+    this.onanimationInProgress.emit();
     this.detailEditCounter--;
-    console.log(this.detailEditCounter);
     this.updateDetailForm = null;
   }
 

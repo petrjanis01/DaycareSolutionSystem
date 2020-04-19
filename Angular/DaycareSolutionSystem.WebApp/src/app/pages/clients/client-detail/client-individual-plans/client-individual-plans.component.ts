@@ -1,8 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { IndividualPlanDTO, IndividualPlansService, IndividualPlanCreateUpdateDTO } from 'src/app/api/generated';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { DatepickerDateModel } from '../datepicker-date-model';
-import { SliderAnimation } from 'src/app/components/slider-animation';
+import { DatepickerDateModel } from '../../../../shared/datepicker-date-model';
+import { SliderAnimation } from 'src/app/shared/slider-animation';
 import { trigger, transition } from '@angular/animations';
 import { NotifiactionService } from 'src/app/services/notification.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -21,11 +21,13 @@ import { GeneralHelperService } from 'src/app/services/general-helper.service';
 })
 export class ClientIndividualPlansComponent implements OnInit {
   @Input() clientId: string;
+
   public plans: IndividualPlanDTO[];
   public editOpenCounter = 0;
   public planEditForm: FormGroup
   public isFromUntilWarningVisible = false;
   public planId: string;
+  public isPlanDetailVisible = false;
 
   constructor(private plansService: IndividualPlansService, private formBuilder: FormBuilder,
     private spinner: NgxSpinnerService, private notifications: NotifiactionService,
@@ -44,6 +46,7 @@ export class ClientIndividualPlansComponent implements OnInit {
   public addPlan() {
     this.createEditPlanForm();
     this.editOpenCounter++;
+    this.onAnimationInProgress();
   }
 
   public openPlanEdit(id: string) {
@@ -51,6 +54,7 @@ export class ClientIndividualPlansComponent implements OnInit {
     this.createEditPlanForm(plan);
 
     this.editOpenCounter++;
+    this.onAnimationInProgress();
   }
 
   private createEditPlanForm(plan?: IndividualPlanDTO) {
@@ -77,15 +81,18 @@ export class ClientIndividualPlansComponent implements OnInit {
     } finally {
       this.spinner.hide();
       this.editOpenCounter = 0;
+      this.onAnimationInProgress();
     }
   }
 
   public openPlanDetail(id: string) {
     this.planId = id;
+    this.isPlanDetailVisible = true;
   }
 
   public cancelEdit() {
     this.editOpenCounter--;
+    this.onAnimationInProgress();
   }
 
   public async savePlan() {
@@ -121,9 +128,19 @@ export class ClientIndividualPlansComponent implements OnInit {
 
       this.reloadPlans();
       this.notifications.showSuccessNotification('Operation sucessful');
+      this.onAnimationInProgress();
       this.editOpenCounter--;
     } finally {
       this.spinner.hide();
     }
+  }
+
+  private onAnimationInProgress() {
+    this.isPlanDetailVisible = false;
+    setTimeout(() => { this.isPlanDetailVisible = true }, 1000);
+  }
+
+  public onClose() {
+    this.isPlanDetailVisible = false;
   }
 }

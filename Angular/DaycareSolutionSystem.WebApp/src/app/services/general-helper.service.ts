@@ -1,13 +1,14 @@
 import { Injectable, Inject } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
-import { DatepickerDateModel } from '../pages/clients/client-detail/datepicker-date-model';
+import { DatepickerDateModel } from '../shared/datepicker-date-model';
+import { TimepickerTimeModel } from '../shared/timepicker-time-model';
 
 @Injectable({ providedIn: 'root' })
 export class GeneralHelperService {
 
     constructor(@Inject(APP_BASE_HREF) private baseHref: string) { }
 
-    private weekdays: Array<string> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    public weekdays: Array<string> = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     public genders: Array<string> = ['Male', 'Female'];
 
     public getDayNameByIndex(index: number): string {
@@ -33,8 +34,16 @@ export class GeneralHelperService {
         return date;
     }
 
+    public getDateFromTimepickerModel(model: TimepickerTimeModel): Date {
+        let date = new Date();
+        date.setHours(model.hour);
+        date.setMinutes(model.minute);
+        date.setSeconds(model.second);
+
+        return date;
+    }
+
     public getClosestDateThatsDay(day: number): Date {
-        day = day === 6 ? day = 0 : day + 1;
         let date = new Date();
         let dayOfDate = date.getDay();
         date.setDate(date.getDate() + (day - dayOfDate));

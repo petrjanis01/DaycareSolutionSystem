@@ -88,7 +88,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.AgreedActions
             }
             else
             {
-                var duration = (dto.PlannedEndTime.TimeOfDay - dto.PlannedStartTime.TimeOfDay).Minutes;
+                var duration = (int)(dto.PlannedEndTime - dto.PlannedStartTime).TotalMinutes;
                 action.EstimatedDurationMinutes = duration;
             }
 

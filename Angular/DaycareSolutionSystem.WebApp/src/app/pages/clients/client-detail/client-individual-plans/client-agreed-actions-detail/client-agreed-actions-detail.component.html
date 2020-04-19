@@ -1,6 +1,12 @@
 <ngx-spinner></ngx-spinner>
 <div class="card ">
     <div class="card-body">
+        <div class="row">
+            <button class="btn btn-icon btn-simple btn-danger ml-auto" style="margin-right: 5px; margin-bottom: 10px;"
+                (click)="close()">
+                <i class="tim-icons icon-simple-remove"></i>
+            </button>
+        </div>
         <div class="row" *ngIf="externalEvents && events">
             <div class="col-md-2" mwlDroppable>
                 <h5>Actions</h5>

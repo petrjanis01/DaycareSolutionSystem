@@ -25,6 +25,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.AgreedActions
 
         public bool DeleteAgreedClientAction(Guid id)
         {
+            // TODO validate if action can be deleted when has some reg. actions
             var action = DataContext.AgreedClientActions.Find(id);
 
             if (action.RegisteredClientActions.Any() == false)
@@ -46,6 +47,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.AgreedActions
             queriedAction.ActionId = action.ActionId;
             queriedAction.EmployeeId = action.EmployeeId;
             queriedAction.ClientActionSpecificDescription = action.ClientActionSpecificDescription;
+            queriedAction.Day = action.Day;
 
             DataContext.SaveChanges();
         }

@@ -17,7 +17,6 @@
                             <tr>
                                 <th>Valid from</th>
                                 <th>Valid until</th>
-                                <th>Agreed actions count</th>
                             </tr>
                         </thead>
                         <tbody *ngIf="plans">
@@ -27,7 +26,6 @@
                             <tr *ngFor="let plan of plans">
                                 <td>{{plan.validFrom  | date}}</td>
                                 <td>{{plan.validUntil  | date}}</td>
-                                <td>{{plan.actionsForDay.length}}</td>
                                 <td style="display: flex;">
                                     <button class="btn btn-icon btn-simple btn-danger ml-auto" style="margin-right: 5px"
                                         (click)="openPlanEdit(plan.id)">
@@ -75,4 +73,5 @@
     </div>
 </div>
 
-<app-client-agreed-actions-detail *ngIf="planId" [planId]="planId"></app-client-agreed-actions-detail>
+<app-client-agreed-actions-detail *ngIf="isPlanDetailVisible && planId" [planId]="planId" (onclose)="onClose()">
+</app-client-agreed-actions-detail>

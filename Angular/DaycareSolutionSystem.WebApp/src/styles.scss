@@ -27,6 +27,41 @@ ngb-datepicker-navigation-select select option {
   color: white;
 }
 
+// fix for bootstrap timepicker
+ngb-timepicker input {
+  color: black !important;
+}
+
 mwl-calendar-week-view.no-dates .cal-day-headers span {
   visibility: hidden;
+}
+
+.dark-modal .modal-content {
+  background: linear-gradient(#1e1e2f, #1e1e24);
+  color: white;
+}
+
+.dark-modal .modal-content ngb-timepicker input {
+  color: white !important;
+}
+
+.form-group ngb-timepicker {
+  height: 100%;
+
+  .ngb-tp-input-container {
+    width: 70px;
+  }
+}
+
+ngb-modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  opacity: 1 !important;
+}
+
+.modal-content {
+  padding: 20px;
+}
+
+.dark-modal .modal-title {
+  color: white !important;
 }

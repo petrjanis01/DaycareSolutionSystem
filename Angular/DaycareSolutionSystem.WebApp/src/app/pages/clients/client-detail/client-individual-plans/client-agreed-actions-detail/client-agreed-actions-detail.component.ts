@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IndividualPlanDTO, ActionService, IndividualPlansService, AgreedActionService, DayOfWeek } from 'src/app/api/generated';
 import { CalendarEvent } from 'angular-calendar';
 import { GeneralHelperService } from 'src/app/services/general-helper.service';
@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AgreedActionModalComponent } from './agreed-action-modal/agreed-action-modal.component';
 import { DatePipe } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { VisualHelperService } from 'src/app/services/visual-helper.service';
 
 @Component({
   selector: 'app-client-agreed-actions-detail',
@@ -14,6 +15,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class ClientAgreedActionsDetailComponent implements OnInit {
   @Input() planId: string;
+  @Output() onclose = new EventEmitter();
   public externalEvents: CalendarEvent[];
   public events: CalendarEvent[];
 
@@ -22,7 +24,7 @@ export class ClientAgreedActionsDetailComponent implements OnInit {
   constructor(private actionService: ActionService, private helper: GeneralHelperService,
     private modal: NgbModal, private datePipe: DatePipe,
     private plansService: IndividualPlansService, private agreedActionsService: AgreedActionService,
-    private spinner: NgxSpinnerService) { }
+    private spinner: NgxSpinnerService, private visualHelper: VisualHelperService) { }
 
   async ngOnInit() {
     this.createExternalEvents();
@@ -65,13 +67,11 @@ export class ClientAgreedActionsDetailComponent implements OnInit {
         startDate.setHours(agreedAction.plannedStartTime.getHours());
         startDate.setMinutes(agreedAction.plannedStartTime.getMinutes());
         startDate.setSeconds(agreedAction.plannedStartTime.getSeconds());
-        console.log(startDate);
 
         let endDate = new Date(date);
         endDate.setHours(agreedAction.plannedEndTime.getHours());
         endDate.setMinutes(agreedAction.plannedEndTime.getMinutes());
         endDate.setSeconds(agreedAction.plannedEndTime.getSeconds());
-        console.log(endDate);
 
         let event: CalendarEvent = {
           id: agreedAction.id,
@@ -92,8 +92,14 @@ export class ClientAgreedActionsDetailComponent implements OnInit {
     let externalEvent = this.externalEvents.find(e => e.id === event.id);
 
     if (externalEvent != null) {
-      // this.modal.open(AgreedActionModalComponent);
-      console.log('action added');
+      let modal = this.modal.open(AgreedActionModalComponent,
+        { windowClass: `${this.visualHelper.isDarkModeEnabled ? 'dark-modal' : ''}` });
+      modal.componentInstance.start = newStart;
+      modal.componentInstance.planId = this.planId;
+      modal.componentInstance.actionId = externalEvent.id;
+      modal.componentInstance.onclose.subscribe((ev) => {
+        this.reloadAgreedActions();
+      });
     } else {
       let eventAction = this.events.find(e => e.id === event.id);
       let oldStart = this.getOldEventStartTime(event.id);
@@ -111,7 +117,6 @@ export class ClientAgreedActionsDetailComponent implements OnInit {
     actionToMove.plannedStartTime = newStart;
     actionToMove.plannedEndTime = newEnd;
     let day = newStart.getDay();
-    day = day === 6 ? day = 0 : day + 1;
     actionToMove.day = day as DayOfWeek;
 
     await this.agreedActionsService.apiAgreedActionPut(actionToMove);
@@ -128,7 +133,16 @@ export class ClientAgreedActionsDetailComponent implements OnInit {
 
   public handleEvent(action: string, event: CalendarEvent) {
     if (action === 'clicked') {
-      let modal = this.modal.open(AgreedActionModalComponent);
+      let modal = this.modal.open(AgreedActionModalComponent,
+        { windowClass: `${this.visualHelper.isDarkModeEnabled ? 'dark-modal' : ''}` });
+      modal.componentInstance.agreedActionId = event.id;
+      modal.componentInstance.onclose.subscribe((ev) => {
+        this.reloadAgreedActions();
+      });
     }
+  }
+
+  public close() {
+    this.onclose.emit();
   }
 }

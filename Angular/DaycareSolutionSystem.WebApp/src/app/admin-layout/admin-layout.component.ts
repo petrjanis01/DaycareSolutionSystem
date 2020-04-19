@@ -28,10 +28,12 @@ export class AdminLayoutComponent implements OnInit {
   changeDashboardColor(color) {
     let body = document.getElementsByTagName('body')[0];
     if (body && color === 'white-content') {
+      this.visualHelper.isDarkModeEnabled = false;
       body.classList.add(color);
     }
     else if (body.classList.contains('white-content')) {
       body.classList.remove('white-content');
+      this.visualHelper.isDarkModeEnabled = true;
     }
   }
   ngOnInit() { }

@@ -6,7 +6,7 @@ import { GeolocationHelperService } from 'src/app/services/geolocation-helper.se
 import { trigger, transition, query, style, animate, group } from '@angular/animations';
 import { Observable, fromEvent } from 'rxjs';
 import { pluck } from 'rxjs/operators';
-import { DatepickerDateModel } from './datepicker-date-model';
+import { DatepickerDateModel } from '../../../shared/datepicker-date-model';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 const left = [
@@ -51,6 +51,7 @@ const right = [
 export class ClientDetailComponent implements OnInit {
   public client: ClientDTO;
   public address: AddressDTO;
+  public isIndividualPlanCardVisible = true;
 
   constructor(private route: ActivatedRoute, private clientsService: ClientsService,
     public helper: GeneralHelperService, private geolocationHelper: GeolocationHelperService,
@@ -108,5 +109,11 @@ export class ClientDetailComponent implements OnInit {
     };
     this.address = addressEmptyDto;
     this.client = clientEmptyDto;
+  }
+
+  public onClientInfoAnimationInProgress() {
+    this.isIndividualPlanCardVisible = false;
+
+    setTimeout(() => { this.isIndividualPlanCardVisible = true; }, 1000);
   }
 }
