@@ -72,6 +72,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
         {
             var agreedActions = DataContext.AgreedClientActions
                 .Where(ac => ac.IndividualPlan.ValidFromDate <= date && ac.IndividualPlan.ValidUntilDate >= date)
+                .Where(ac => ac.IsValid)
                 .OrderBy(ac => ac.Day);
 
             return agreedActions;

@@ -20,6 +20,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.IndividualPlans
 
             var agreedActions = DataContext.AgreedClientActions
                 .Where(ac => individualPlans.Select(ip => ip.Id).Contains(ac.IndividualPlanId))
+                .Where(ac => ac.IsValid)
                 .Distinct().ToList();
 
             var actionsByPlans = new Dictionary<IndividualPlan, List<AgreedClientAction>>();
@@ -57,7 +58,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.IndividualPlans
             DataContext.SaveChanges();
         }
 
-        public void DeleteIndividualPlan(Guid id)
+        public bool DeleteIndividualPlan(Guid id)
         {
             var plan = DataContext.IndividualPlans.Find(id);
 
@@ -65,7 +66,11 @@ namespace DaycareSolutionSystem.Api.Host.Services.IndividualPlans
             {
                 DataContext.IndividualPlans.Remove(plan);
                 DataContext.SaveChanges();
+
+                return true;
             }
+
+            return false;
         }
     }
 }

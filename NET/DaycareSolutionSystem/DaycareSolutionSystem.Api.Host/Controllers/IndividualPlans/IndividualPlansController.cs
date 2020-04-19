@@ -41,7 +41,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.IndividualPlans
         public IndividualPlanDTO GetSingleIndividualPlan(Guid planId)
         {
             var plan = _individualPlansApiService.GetSingleIndividualPlan(planId);
-            var actions = plan.AgreedClientActions.ToList();
+            var actions = plan.AgreedClientActions.Where(ca => ca.IsValid).ToList();
 
             var dto = MapIndividualPlanWithActionsToDto(plan, actions);
             return dto;
@@ -49,9 +49,10 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.IndividualPlans
 
         [HttpDelete]
         [Authorize(Roles = "Manager")]
-        public void DeletePlan(Guid id)
+        public bool DeletePlan(Guid id)
         {
-            _individualPlansApiService.DeleteIndividualPlan(id);
+            var isDeleted = _individualPlansApiService.DeleteIndividualPlan(id);
+            return isDeleted;
         }
 
         [HttpPost]

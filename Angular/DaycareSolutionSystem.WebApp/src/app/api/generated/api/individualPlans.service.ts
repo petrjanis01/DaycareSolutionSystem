@@ -55,7 +55,7 @@ export class IndividualPlansService extends ApiBase{
         return false;
     }
 
-    public async apiIndividualPlansDelete(id?: string, ): Promise<any> {
+    public async apiIndividualPlansDelete(id?: string, ): Promise<boolean> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
@@ -67,6 +67,9 @@ export class IndividualPlansService extends ApiBase{
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -78,7 +81,7 @@ export class IndividualPlansService extends ApiBase{
         ];
 
 
-        let result = this.httpClient.delete<any>(`${this.basePath}/api/IndividualPlans`,
+        let result = this.httpClient.delete<boolean>(`${this.basePath}/api/IndividualPlans`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,

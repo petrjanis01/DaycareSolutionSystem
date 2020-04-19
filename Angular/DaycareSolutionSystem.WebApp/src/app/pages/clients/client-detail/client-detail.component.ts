@@ -114,6 +114,6 @@ export class ClientDetailComponent implements OnInit {
   public onClientInfoAnimationInProgress() {
     this.isIndividualPlanCardVisible = false;
 
-    setTimeout(() => { this.isIndividualPlanCardVisible = true; }, 1000);
+    setTimeout(() => { this.isIndividualPlanCardVisible = true; }, 1200);
   }
 }

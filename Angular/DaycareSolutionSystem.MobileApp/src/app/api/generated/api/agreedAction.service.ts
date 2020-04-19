@@ -56,7 +56,7 @@ export class AgreedActionService extends ApiBase{
         return false;
     }
 
-    public async apiAgreedActionDelete(id?: string, ): Promise<boolean> {
+    public async apiAgreedActionDelete(id?: string, ): Promise<any> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
@@ -68,9 +68,6 @@ export class AgreedActionService extends ApiBase{
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -82,7 +79,7 @@ export class AgreedActionService extends ApiBase{
         ];
 
 
-        let result = this.httpClient.delete<boolean>(`${this.basePath}/api/AgreedAction`,
+        let result = this.httpClient.delete<any>(`${this.basePath}/api/AgreedAction`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,

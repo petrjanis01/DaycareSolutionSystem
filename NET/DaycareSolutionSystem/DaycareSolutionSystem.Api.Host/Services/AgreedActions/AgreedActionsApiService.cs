@@ -23,20 +23,11 @@ namespace DaycareSolutionSystem.Api.Host.Services.AgreedActions
             return action;
         }
 
-        public bool DeleteAgreedClientAction(Guid id)
+        public void DeleteAgreedClientAction(Guid id)
         {
-            // TODO validate if action can be deleted when has some reg. actions
             var action = DataContext.AgreedClientActions.Find(id);
-
-            if (action.RegisteredClientActions.Any() == false)
-            {
-                DataContext.AgreedClientActions.Remove(action);
-                DataContext.SaveChanges();
-
-                return true;
-            }
-
-            return false;
+            action.IsValid = false;
+            DataContext.SaveChanges();
         }
 
         public void UpdateAgreedClientAction(AgreedClientAction action)

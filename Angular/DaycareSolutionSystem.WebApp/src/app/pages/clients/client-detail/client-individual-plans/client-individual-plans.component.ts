@@ -39,7 +39,6 @@ export class ClientIndividualPlansComponent implements OnInit {
 
   private async reloadPlans() {
     let dtos = await this.plansService.apiIndividualPlansGet(this.clientId);
-    console.log(dtos);
     this.plans = dtos;
   }
 
@@ -75,8 +74,13 @@ export class ClientIndividualPlansComponent implements OnInit {
   public async deletePlan(id: string) {
     this.spinner.show();
     try {
-      await this.plansService.apiIndividualPlansDelete(id);
-      this.notifications.showSuccessNotification('Operation sucessful');
+      let isDeleted = await this.plansService.apiIndividualPlansDelete(id);
+      if (isDeleted) {
+        this.notifications.showSuccessNotification('Operation sucessful');
+      } else {
+        this.notifications.showInfoNotification('Individual plan contains some agreed actions and cannot be deleted.')
+      }
+
       this.reloadPlans();
     } finally {
       this.spinner.hide();
@@ -136,8 +140,9 @@ export class ClientIndividualPlansComponent implements OnInit {
   }
 
   private onAnimationInProgress() {
+    let previousValue = this.isPlanDetailVisible;
     this.isPlanDetailVisible = false;
-    setTimeout(() => { this.isPlanDetailVisible = true }, 1000);
+    setTimeout(() => { this.isPlanDetailVisible = previousValue }, 1200);
   }
 
   public onClose() {

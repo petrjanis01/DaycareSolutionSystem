@@ -176,16 +176,6 @@ paths:
       responses:
         '200':
           description: Success
-          content:
-            text/plain:
-              schema:
-                type: boolean
-            application/json:
-              schema:
-                type: boolean
-            text/json:
-              schema:
-                type: boolean
   "/api/Auth/login":
     post:
       tags:
@@ -573,6 +563,16 @@ paths:
       responses:
         '200':
           description: Success
+          content:
+            text/plain:
+              schema:
+                type: boolean
+            application/json:
+              schema:
+                type: boolean
+            text/json:
+              schema:
+                type: boolean
     post:
       tags:
       - IndividualPlans

@@ -12,7 +12,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.IndividualPlans
 
         void UpdateIndividualPlan(IndividualPlan plan);
 
-        void DeleteIndividualPlan(Guid id);
+        bool DeleteIndividualPlan(Guid id);
 
         IndividualPlan GetSingleIndividualPlan(Guid planId);
     }

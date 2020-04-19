@@ -22,6 +22,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
 
             var clients = DataContext.AgreedClientActions
                 .Where(ca => ca.EmployeeId == employeeId)
+                .Where(ca => ca.IsValid)
                 .Select(ca => ca.IndividualPlan)
                 .Select(ip => ip.Client)
                 .OrderBy(cl => cl.FirstName)
@@ -184,6 +185,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
         private RegisteredClientAction FindNextAgreedClientAction(Client client, Guid employeeId)
         {
             var futureAgreedActions = DataContext.AgreedClientActions
+                .Where(ca => ca.IsValid)
                 .Where(ca => ca.EmployeeId == employeeId)
                 .Where(ca => ca.IndividualPlan.ClientId == client.Id)
                 .Where(ca => ca.IndividualPlan.ValidFromDate.Date <= DateTime.Today

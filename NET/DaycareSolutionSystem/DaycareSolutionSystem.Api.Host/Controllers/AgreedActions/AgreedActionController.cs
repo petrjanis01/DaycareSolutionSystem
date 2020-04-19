@@ -48,10 +48,9 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.AgreedActions
 
         [HttpDelete]
         [Authorize(Roles = "Manager")]
-        public bool DeleteAgreedAction(Guid id)
+        public void DeleteAgreedAction(Guid id)
         {
-            var isDeleted = _agreedActionsApiService.DeleteAgreedClientAction(id);
-            return isDeleted;
+            _agreedActionsApiService.DeleteAgreedClientAction(id);
         }
 
         // mappers

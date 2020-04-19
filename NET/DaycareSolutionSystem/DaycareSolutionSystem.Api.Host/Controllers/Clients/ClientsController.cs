@@ -111,6 +111,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
             return dto;
         }
 
+        // TODO should Client be deleted?
         [HttpDelete]
         [Authorize(Roles = "Manager")]
         public void DeleteClient(Guid clientId)

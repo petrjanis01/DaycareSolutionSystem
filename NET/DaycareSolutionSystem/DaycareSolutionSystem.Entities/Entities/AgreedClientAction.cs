@@ -12,6 +12,7 @@ namespace DaycareSolutionSystem.Database.Entities.Entities
         public AgreedClientAction()
         {
             RegisteredClientActions = new HashSet<RegisteredClientAction>();
+            IsValid = true;
         }
 
         public Guid IndividualPlanId { get; set; }
@@ -33,6 +34,8 @@ namespace DaycareSolutionSystem.Database.Entities.Entities
         public int EstimatedDurationMinutes { get; set; }
 
         public TimeSpan PlannedStartTime { get; set; }
+
+        public bool IsValid { get; set; }
 
         public virtual HashSet<RegisteredClientAction> RegisteredClientActions { get; set; }
     }

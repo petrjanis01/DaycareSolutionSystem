@@ -7,7 +7,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.AgreedActions
     {
         AgreedClientAction GetSingleAgreedClientAction(Guid id);
 
-        bool DeleteAgreedClientAction(Guid id);
+        void DeleteAgreedClientAction(Guid id);
 
         void UpdateAgreedClientAction(AgreedClientAction action);
 

@@ -64,15 +64,11 @@ export class AgreedActionModalComponent implements OnInit {
   }
 
   public async deleteAction() {
-    if (this.agreedActionId) {
+    if (confirm(`Are you sure you want to delete ${this.agreedAction.action.name} on ${this.helper.getDayNameByIndex(this.agreedAction.day)}?`)) {
       this.spinner.show();
-      let isDeleted = await this.agrredActionService.apiAgreedActionDelete(this.agreedActionId);
+      await this.agrredActionService.apiAgreedActionDelete(this.agreedActionId);
       this.spinner.hide();
-
-      if (isDeleted === false) {
-        // TODO validate if action can be deleted when has some reg. actions
-        // this.notifications.showInfoNotification('')
-      }
+      this.close();
     }
   }
 
