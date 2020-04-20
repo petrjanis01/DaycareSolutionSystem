@@ -21,7 +21,7 @@ import { ToastService } from 'src/app/services/toast.service';
 
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
-import { AgreedActionDto } from '../model/agreedActionDto';
+import { AgreedActionDTO } from '../model/agreedActionDTO';
 
 import { Configuration } from '../configuration';
 
@@ -90,7 +90,7 @@ export class AgreedActionService extends ApiBase{
         return this.processErrors(result);
     }
 
-    public async apiAgreedActionPost(AgreedActionDto?: AgreedActionDto, ): Promise<any> {
+    public async apiAgreedActionPost(AgreedActionDTO?: AgreedActionDTO, ): Promise<any> {
 
 
         let headers = this.defaultHeaders;
@@ -116,7 +116,7 @@ export class AgreedActionService extends ApiBase{
 
 
         let result = this.httpClient.post<any>(`${this.basePath}/api/AgreedAction`,
-            AgreedActionDto,
+            AgreedActionDTO,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: this.createAuthHeaders(headers),
@@ -126,7 +126,7 @@ export class AgreedActionService extends ApiBase{
         return this.processErrors(result);
     }
 
-    public async apiAgreedActionPut(AgreedActionDto?: AgreedActionDto, ): Promise<any> {
+    public async apiAgreedActionPut(AgreedActionDTO?: AgreedActionDTO, ): Promise<any> {
 
 
         let headers = this.defaultHeaders;
@@ -152,7 +152,7 @@ export class AgreedActionService extends ApiBase{
 
 
         let result = this.httpClient.put<any>(`${this.basePath}/api/AgreedAction`,
-            AgreedActionDto,
+            AgreedActionDTO,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: this.createAuthHeaders(headers),
@@ -162,7 +162,7 @@ export class AgreedActionService extends ApiBase{
         return this.processErrors(result);
     }
 
-    public async apiAgreedActionSingleActionGet(id?: string, ): Promise<AgreedActionDto> {
+    public async apiAgreedActionSingleActionGet(id?: string, ): Promise<AgreedActionDTO> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
@@ -188,7 +188,7 @@ export class AgreedActionService extends ApiBase{
         ];
 
 
-        let result = this.httpClient.get<AgreedActionDto>(`${this.basePath}/api/AgreedAction/single-action`,
+        let result = this.httpClient.get<AgreedActionDTO>(`${this.basePath}/api/AgreedAction/single-action`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,

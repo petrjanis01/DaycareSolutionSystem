@@ -32,6 +32,43 @@ namespace DaycareSolutionSystem.Api.Host.Services.Employees
             return caregivers;
         }
 
+        public Employee UpdateEmployee(Employee employee)
+        {
+            var queriedEmployee = DataContext.Employees.Find(employee.Id);
+            queriedEmployee.EmployeePosition = employee.EmployeePosition;
+            queriedEmployee.FirstName = employee.FirstName;
+            queriedEmployee.Surname = employee.Surname;
+            queriedEmployee.Gender = employee.Gender;
+            queriedEmployee.Birthdate = employee.Birthdate;
+            queriedEmployee.Email = employee.Email;
+            queriedEmployee.PhoneNumber = employee.PhoneNumber;
+
+            if (queriedEmployee.ProfilePicture == null && employee.ProfilePicture != null)
+            {
+                DataContext.Pictures.Add(employee.ProfilePicture);
+                queriedEmployee.ProfilePicture = employee.ProfilePicture;
+                queriedEmployee.ProfilePictureId = employee.ProfilePictureId;
+
+            }
+            else if (employee.ProfilePicture != null)
+            {
+                queriedEmployee.ProfilePicture.MimeType = employee.ProfilePicture.MimeType;
+                queriedEmployee.ProfilePicture.BinaryData = employee.ProfilePicture.BinaryData;
+            }
+
+            DataContext.SaveChanges();
+
+            return queriedEmployee;
+        }
+
+        public Employee CreateEmployee(Employee employee)
+        {
+            DataContext.Employees.Add(employee);
+            DataContext.SaveChanges();
+
+            return employee;
+        }
+
         public Employee ChangeEmployeeProfilePicture(string pictureUri, Guid? employeeId)
         {
             employeeId ??= GetCurrentUser()?.Employee.Id;

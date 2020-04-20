@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AgreedActionService, ActionService, AgreedActionDto, ActionDTO, EmployeeService, EmployeeBasicDTO } from 'src/app/api/generated';
+import { AgreedActionService, ActionService, AgreedActionDTO, ActionDTO, EmployeeService, EmployeeBasicDTO } from 'src/app/api/generated';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NotifiactionService } from 'src/app/services/notification.service';
@@ -19,7 +19,7 @@ export class AgreedActionModalComponent implements OnInit {
   @Input() planId: string;
   @Output() onclose = new EventEmitter<any>();
 
-  private agreedAction: AgreedActionDto;
+  private agreedAction: AgreedActionDTO;
   public editForm: FormGroup;
   public actions: ActionDTO[];
   public employees: EmployeeBasicDTO[];
@@ -36,7 +36,7 @@ export class AgreedActionModalComponent implements OnInit {
   }
 
   private async createEditForm() {
-    let action: AgreedActionDto;
+    let action: AgreedActionDTO;
     if (this.agreedActionId) {
       action = await this.agrredActionService.apiAgreedActionSingleActionGet(this.agreedActionId);
       this.agreedAction = action;
@@ -78,7 +78,7 @@ export class AgreedActionModalComponent implements OnInit {
       this.mapFormValuesToDto(this.agreedAction);
       await this.agrredActionService.apiAgreedActionPut(this.agreedAction);
     } else {
-      let dto: AgreedActionDto = {};
+      let dto: AgreedActionDTO = {};
       this.mapFormValuesToDto(dto);
       dto.individualPlanId = this.planId;
       await this.agrredActionService.apiAgreedActionPost(dto);
@@ -88,7 +88,7 @@ export class AgreedActionModalComponent implements OnInit {
     this.close();
   }
 
-  private mapFormValuesToDto(dto: AgreedActionDto) {
+  private mapFormValuesToDto(dto: AgreedActionDTO) {
     let formValue = this.editForm.value;
     dto.action = {};
     dto.action.id = formValue.action;

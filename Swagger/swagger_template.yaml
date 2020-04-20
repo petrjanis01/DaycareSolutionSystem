@@ -122,13 +122,13 @@ paths:
           content:
             text/plain:
               schema:
-                "$ref": "#/components/schemas/AgreedActionDto"
+                "$ref": "#/components/schemas/AgreedActionDTO"
             application/json:
               schema:
-                "$ref": "#/components/schemas/AgreedActionDto"
+                "$ref": "#/components/schemas/AgreedActionDTO"
             text/json:
               schema:
-                "$ref": "#/components/schemas/AgreedActionDto"
+                "$ref": "#/components/schemas/AgreedActionDTO"
   "/api/AgreedAction":
     post:
       tags:
@@ -137,13 +137,13 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/AgreedActionDto"
+              "$ref": "#/components/schemas/AgreedActionDTO"
           text/json:
             schema:
-              "$ref": "#/components/schemas/AgreedActionDto"
+              "$ref": "#/components/schemas/AgreedActionDTO"
           application/*+json:
             schema:
-              "$ref": "#/components/schemas/AgreedActionDto"
+              "$ref": "#/components/schemas/AgreedActionDTO"
       responses:
         '200':
           description: Success
@@ -154,13 +154,13 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/AgreedActionDto"
+              "$ref": "#/components/schemas/AgreedActionDTO"
           text/json:
             schema:
-              "$ref": "#/components/schemas/AgreedActionDto"
+              "$ref": "#/components/schemas/AgreedActionDTO"
           application/*+json:
             schema:
-              "$ref": "#/components/schemas/AgreedActionDto"
+              "$ref": "#/components/schemas/AgreedActionDTO"
       responses:
         '200':
           description: Success
@@ -440,6 +440,60 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/EmployeeBasicDTO"
+    post:
+      tags:
+      - Employee
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/EmployeeDetailDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/EmployeeDetailDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/EmployeeDetailDTO"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/EmployeeDetailDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/EmployeeDetailDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/EmployeeDetailDTO"
+    put:
+      tags:
+      - Employee
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/EmployeeDetailDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/EmployeeDetailDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/EmployeeDetailDTO"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/EmployeeDetailDTO"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/EmployeeDetailDTO"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/EmployeeDetailDTO"
   "/api/Employee/all-caregivers":
     get:
       tags:
@@ -748,7 +802,7 @@ components:
       - 6
       type: integer
       format: int32
-    AgreedActionDto:
+    AgreedActionDTO:
       type: object
       properties:
         employeeId:
@@ -912,6 +966,7 @@ components:
         id:
           type: string
           format: uuid
+          nullable: true
         fullName:
           type: string
           nullable: true
@@ -937,11 +992,20 @@ components:
         phoneNumber:
           type: string
           nullable: true
+        firstName:
+          type: string
+          nullable: true
+        surname:
+          type: string
+          nullable: true
+        gender:
+          "$ref": "#/components/schemas/Gender"
         employeePosition:
           "$ref": "#/components/schemas/EmployeePosition"
         id:
           type: string
           format: uuid
+          nullable: true
         fullName:
           type: string
           nullable: true

@@ -126,19 +126,6 @@ export class ClientGeneralInfoComponent implements OnInit {
     }
   }
 
-  public async deleteClient() {
-    if (confirm(`Are you sure you want to delete client ${this.client.fullName}`)) {
-      this.spinner.show();
-      try {
-        await this.clientsService.apiClientsDelete(this.client.id);
-        this.notifications.showSuccessNotification('Client deleted');
-        this.router.navigate(['/clients'])
-      } finally {
-        this.spinner.hide();
-      }
-    }
-  }
-
   private createUpdateDto(): ClientDTO {
     let formValue = this.updateDetailForm.value;
     let coordinatesUpdateDto: CoordinatesDTO = {
@@ -229,7 +216,7 @@ export class ClientGeneralInfoComponent implements OnInit {
     this.updateDetailForm = this.formBuilder.group({
       firstName: new FormControl(this.client.firstName, Validators.required),
       surname: new FormControl(this.client.surname, Validators.required),
-      email: new FormControl(this.client.email),
+      email: new FormControl(this.client.email, Validators.email),
       phoneNumber: new FormControl(this.client.phoneNumber),
       birthDate: new FormControl(new DatepickerDateModel(date), Validators.required),
       gender: new FormControl(this.client.gender, Validators.required),

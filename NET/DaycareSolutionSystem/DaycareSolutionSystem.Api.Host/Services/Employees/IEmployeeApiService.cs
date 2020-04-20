@@ -15,5 +15,9 @@ namespace DaycareSolutionSystem.Api.Host.Services.Employees
         Employee GetEmployee(Guid? employeeId);
 
         void ChangePassword(string newPassword);
+
+        Employee CreateEmployee(Employee employee);
+
+        Employee UpdateEmployee(Employee employee);
     }
 }

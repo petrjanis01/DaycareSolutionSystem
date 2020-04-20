@@ -2,7 +2,7 @@
 
 namespace DaycareSolutionSystem.Api.Host.Controllers.AgreedActions
 {
-    public class AgreedActionDto : AgreedActionBasicDTO
+    public class AgreedActionDTO : AgreedActionBasicDTO
     {
         public Guid EmployeeId { get; set; }
 

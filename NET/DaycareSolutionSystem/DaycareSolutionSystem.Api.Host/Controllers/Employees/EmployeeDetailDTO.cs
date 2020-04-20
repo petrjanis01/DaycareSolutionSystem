@@ -11,6 +11,12 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Employees
 
         public string PhoneNumber { get; set; }
 
+        public string FirstName { get; set; }
+
+        public string Surname { get; set; }
+
+        public Gender Gender { get; set; }
+
         public EmployeePosition EmployeePosition { get; set; }
     }
 }

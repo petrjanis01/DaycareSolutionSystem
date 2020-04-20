@@ -45,6 +45,10 @@
             "production": {
               "fileReplacements": [
                 {
+                  "replace": "src/index.html",
+                  "with": "src/index.prod.html"
+                },
+                {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
@@ -128,7 +132,9 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "e2e": {

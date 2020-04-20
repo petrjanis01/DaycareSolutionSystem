@@ -10,9 +10,14 @@ export class GeneralHelperService {
 
     public weekdays: Array<string> = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     public genders: Array<string> = ['Male', 'Female'];
+    public positions: Array<string> = ['Caregiver', 'Manager']
 
     public getDayNameByIndex(index: number): string {
         return this.weekdays[index];
+    }
+
+    public getPositionByIndex(index: number): string {
+        return this.positions[index];
     }
 
     public getGenderString(index: number): string {

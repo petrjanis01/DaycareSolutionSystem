@@ -25,6 +25,8 @@ import { ActionsComponent } from '../pages/actions/actions.component';
 import { ClientIndividualPlansComponent } from '../pages/clients/client-detail/client-individual-plans/client-individual-plans.component';
 import { ClientAgreedActionsDetailComponent } from '../pages/clients/client-detail/client-individual-plans/client-agreed-actions-detail/client-agreed-actions-detail.component';
 import { AgreedActionModalComponent } from '../pages/clients/client-detail/client-individual-plans/client-agreed-actions-detail/agreed-action-modal/agreed-action-modal.component';
+import { EmployeeNamePipe } from '../pipes/employee-name.pipe';
+import { EmployeeDetailComponent } from '../pages/employees/employee-detail/employee-detail.component';
 
 @NgModule({
   imports: [
@@ -47,12 +49,14 @@ import { AgreedActionModalComponent } from '../pages/clients/client-detail/clien
     ProfileComponent,
     ClientDetailComponent,
     ClientNamePipe,
+    EmployeeNamePipe,
     ClientGeneralInfoComponent,
     EmployeesComponent,
     ActionsComponent,
     ClientIndividualPlansComponent,
     ClientAgreedActionsDetailComponent,
-    AgreedActionModalComponent
+    AgreedActionModalComponent,
+    EmployeeDetailComponent
   ],
   providers: [
     DatePipe

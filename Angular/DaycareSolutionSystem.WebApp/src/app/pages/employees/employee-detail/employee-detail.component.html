@@ -1,0 +1,143 @@
+<div class="content">
+    <div class=" row justify-content-center">
+        <ngx-spinner></ngx-spinner>
+        <div class=" col-md-10" [@detailEditSlider]="detailEditCounter">
+            <div class="card" *ngIf="employee && detailEditCounter == 0">
+                <div class="card-header row justify-content-between">
+                    <h3 class="title col-md-3">Employee informations</h3>
+                    <div class="mr-auto">
+                        <button class="btn btn-icon btn-simple btn-danger" style="margin-right: 5px"
+                            (click)="openGeneralInfoEdit()">
+                            <i class="tim-icons icon-pencil"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class=" card-body">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 card-user">
+                            <img alt="..." class=" avatar" [src]="employee.profilePictureUri" />
+                        </div>
+                        <div class="col-md-3 col-sm-6 flex-column">
+                            <h4 class="section-label"><i class="tim-icons icon-badge"></i> General info</h4>
+                            <div class="row">
+                                <span class="section-label col-xl-6 ">Name:</span>
+                                <h5 class="col-xl-12 ">{{employee.fullName}}</h5>
+                            </div>
+                            <div class="row">
+                                <span class="section-label col-xl-6 ">Gender:</span>
+                                <h5 class="col-xl-12 ">{{helper.getGenderString(employee.gender)}}</h5>
+                            </div>
+                            <div class="row">
+                                <span class="section-label col-xl-6 ">Birthdate:</span>
+                                <h5 class="col-xl-12 ">{{employee.birthdate | date:'MMMM dd, yyyy'}}</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 flex-column">
+                            <h4 class="section-label"><i class="tim-icons icon-mobile"></i> Contact</h4>
+                            <div class="row">
+                                <span class="section-label col-xl-6 ">Number:</span>
+                                <h5 class="col-xl-12 ">{{employee.phoneNumber}}</h5>
+                            </div>
+                            <div class="row">
+                                <span class="section-label col-xl-6 ">Email:</span>
+                                <h5 class="col-xl-12 ">{{employee.email}}</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 flex-column">
+                            <h4 class="section-label"> Organization information </h4>
+                            <div class="row">
+                                <span class="section-label col-xl-6 ">Position:</span>
+                                <h5 class="col-xl-12 ">{{helper.getPositionByIndex(employee.employeePosition)}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card" *ngIf="detailEditCounter == 1">
+                <div class="card-header row justify-content-between">
+                    <div class="col-md-5">
+                        <h3 class="title">Client edit</h3>
+                    </div>
+                    <div class="col-md3">
+                        <button class="btn btn-danger" (click)="cancelEdit()">Cancel</button>
+                        <button style="margin-left: 10px;" [disabled]="!editForm.valid" class="btn btn-success"
+                            (click)="saveGeneralInfo()">Save</button>
+                    </div>
+                </div>
+                <div class="card-body" *ngIf="editForm" [formGroup]="editForm">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 flex-column text-center">
+                            <h4 class="section-label">Profile picture</h4>
+                            <div class="fileinput text-center">
+                                <input type="file" hidden #imageInput accept="image/*" (change)="processFile($event)">
+                                <div class="thumbnail">
+                                    <img [src]="profilePicture">
+                                </div>
+                                <div>
+                                    <button class="btn-round btn btn-primary ng-star-inserted"
+                                        (click)="selectImage($event)">Select image</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6 flex-column">
+                            <h4 class="section-label"><i class="tim-icons icon-badge"></i> General info</h4>
+                            <div class=" form-group">
+                                <label>First Name</label>
+                                <input class=" form-control" placeholder="First name" type="text"
+                                    formControlName="firstName" />
+                            </div>
+                            <div class=" form-group">
+                                <label>Surname</label>
+                                <input class=" form-control" placeholder="Surname" type="text"
+                                    formControlName="surname" />
+                            </div>
+                            <div class=" form-group">
+                                <label>Gender</label>
+                                <select class="form-control" formControlName="gender">
+                                    <option *ngFor="let gender of helper.genders; let i = index" [ngValue]="(i+1)"
+                                        style="color: black">
+                                        {{gender}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class=" form-group">
+                                <label>Birthdate</label>
+                                <input type="text" formControlName="birthDate" (click)="d.toggle()" ngbDatepicker
+                                    #d="ngbDatepicker" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6 flex-column">
+                            <h4 class="section-label"><i class="tim-icons icon-badge"></i> General info</h4>
+                            <div class=" form-group">
+                                <label>Phone number</label>
+                                <input class=" form-control" placeholder="Phone number" type="text"
+                                    formControlName="phoneNumber" />
+                            </div>
+                            <div class=" form-group">
+                                <label>Email</label>
+                                <input class=" form-control" placeholder="Email" type="text" formControlName="email" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6 flex-column">
+                            <h4 class="section-label">Organization information</h4>
+                            <div class=" form-group">
+                                <label>Position</label>
+                                <select class="form-control" formControlName="position">
+                                    <option *ngFor="let position of helper.positions; let i = index" [ngValue]="i"
+                                        style="color: black">
+                                        {{position}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

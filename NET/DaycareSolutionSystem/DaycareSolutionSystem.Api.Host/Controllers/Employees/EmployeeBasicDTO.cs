@@ -7,7 +7,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Employees
 {
     public class EmployeeBasicDTO
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         public string FullName { get; set; }
 

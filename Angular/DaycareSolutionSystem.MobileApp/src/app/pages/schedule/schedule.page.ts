@@ -55,6 +55,7 @@ export class SchedulePage implements OnInit {
 
     let dtos = await this.registeredActionsService.apiRegisteredActionsRegisteredActionsGet(itemCount, date, null);
     this.registeredActions = dtos;
+    console.log(dtos);
   }
 
   public isToday(date: Date): boolean {

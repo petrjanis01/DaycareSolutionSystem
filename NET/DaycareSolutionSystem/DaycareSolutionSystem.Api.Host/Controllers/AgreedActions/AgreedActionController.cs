@@ -22,7 +22,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.AgreedActions
         [HttpGet]
         [Route("single-action")]
         [Authorize(Roles = "Manager")]
-        public AgreedActionDto GetSingleAgreedAction(Guid id)
+        public AgreedActionDTO GetSingleAgreedAction(Guid id)
         {
             var action = _agreedActionsApiService.GetSingleAgreedClientAction(id);
             var dto = MapActionToDto(action);
@@ -32,7 +32,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.AgreedActions
 
         [HttpPost]
         [Authorize(Roles = "Manager")]
-        public void CreateAgreedAction(AgreedActionDto dto)
+        public void CreateAgreedAction(AgreedActionDTO dto)
         {
             var action = MapDtoToAction(dto);
             _agreedActionsApiService.CreateAgreedClientAction(action);
@@ -40,7 +40,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.AgreedActions
 
         [HttpPut]
         [Authorize(Roles = "Manager")]
-        public void UpdateAgreedAction(AgreedActionDto dto)
+        public void UpdateAgreedAction(AgreedActionDTO dto)
         {
             var action = MapDtoToAction(dto);
             _agreedActionsApiService.UpdateAgreedClientAction(action);
@@ -54,9 +54,9 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.AgreedActions
         }
 
         // mappers
-        private AgreedActionDto MapActionToDto(AgreedClientAction action)
+        private AgreedActionDTO MapActionToDto(AgreedClientAction action)
         {
-            var dto = new AgreedActionDto();
+            var dto = new AgreedActionDTO();
             dto.Id = action.Id;
             dto.ClientActionSpecificDescription = action.ClientActionSpecificDescription;
             dto.EstimatedDurationMinutes = action.EstimatedDurationMinutes;
@@ -70,7 +70,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.AgreedActions
             return dto;
         }
 
-        private AgreedClientAction MapDtoToAction(AgreedActionDto dto)
+        private AgreedClientAction MapDtoToAction(AgreedActionDTO dto)
         {
             var action = new AgreedClientAction();
             if (dto.Id.HasValue)

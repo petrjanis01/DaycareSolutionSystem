@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DaycareSolutionSystem.Api.Host.Controllers.DTO;
 using DaycareSolutionSystem.Api.Host.Services.Employees;
 using DaycareSolutionSystem.Database.Entities.Entities;
+using DaycareSolutionSystem.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,8 +21,6 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Employees
             _employeeApiService = employeeApiService;
         }
 
-
-
         [HttpGet]
         [Authorize(Roles = "Manager")]
         public EmployeeBasicDTO[] GetAllEmployeesBasicsExceptCurrent()
@@ -37,6 +36,28 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Employees
             }
 
             return dtos.ToArray();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Manager")]
+        public EmployeeDetailDTO CreateEmployee(EmployeeDetailDTO dto)
+        {
+            var employee = MapDetailDtoToEmployee(dto);
+            var createdEmployee = _employeeApiService.CreateEmployee(employee);
+            var createdDto = MapEmployeeToDetailDto(createdEmployee);
+
+            return createdDto;
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "Manager")]
+        public EmployeeDetailDTO UpdateEmployee(EmployeeDetailDTO dto)
+        {
+            var employee = MapDetailDtoToEmployee(dto);
+            var updateEmployee = _employeeApiService.UpdateEmployee(employee);
+            var updatedDto = MapEmployeeToDetailDto(updateEmployee);
+
+            return updatedDto;
         }
 
         [HttpGet]
@@ -109,8 +130,37 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Employees
             dto.ProfilePictureUri = FormatPictureToBase64(employee.ProfilePicture);
             dto.PhoneNumber = employee.PhoneNumber;
             dto.Email = employee.Email;
+            dto.Gender = employee.Gender;
+            dto.FirstName = employee.FirstName;
+            dto.Surname = employee.Surname;
 
             return dto;
+        }
+
+        private Employee MapDetailDtoToEmployee(EmployeeDetailDTO dto)
+        {
+            var employee = new Employee();
+
+            if (dto.Id.HasValue)
+            {
+                employee.Id = dto.Id.Value;
+            }
+
+            employee.EmployeePosition = dto.EmployeePosition;
+            employee.Birthdate = dto.Birthdate;
+            employee.Email = dto.Email;
+            employee.PhoneNumber = dto.PhoneNumber;
+            employee.FirstName = dto.FirstName;
+            employee.Surname = dto.Surname;
+            employee.Gender = dto.Gender;
+
+            if (dto.ProfilePictureUri != null)
+            {
+                var picture = Base64ImageHelper.CreatePictureFromUri(dto.ProfilePictureUri);
+                employee.ProfilePicture = picture;
+            }
+
+            return employee;
         }
 
         private EmployeeBasicDTO MapEmployeeToBasicDto(Employee employee)

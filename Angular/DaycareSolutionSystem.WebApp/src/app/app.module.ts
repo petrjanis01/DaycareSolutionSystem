@@ -21,6 +21,7 @@ import { NotifiactionService } from './services/notification.service';
 import { AuthGuardService } from './services/auth-guard.service';
 
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
+import { EmployeeDetailComponent } from './pages/employees/employee-detail/employee-detail.component';
 
 export function initializeApp(appConfig: AppConfig) {
   return () => appConfig.load();

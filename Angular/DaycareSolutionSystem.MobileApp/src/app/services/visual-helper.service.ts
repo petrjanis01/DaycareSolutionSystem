@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IonTabs, Platform } from '@ionic/angular';
-import { RegisteredActionDTO, AgreedActionDTO } from '../api/generated';
+import { RegisteredActionDTO } from '../api/generated';
 
 @Injectable({ providedIn: 'root' })
 export class VisualHelperService {

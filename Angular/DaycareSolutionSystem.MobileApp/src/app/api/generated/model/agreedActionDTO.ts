@@ -13,7 +13,7 @@ import { ActionDTO } from './actionDTO';
 import { DayOfWeek } from './dayOfWeek';
 
 
-export interface AgreedActionDto { 
+export interface AgreedActionDTO { 
     employeeId?: string;
     individualPlanId?: string;
     day?: DayOfWeek;

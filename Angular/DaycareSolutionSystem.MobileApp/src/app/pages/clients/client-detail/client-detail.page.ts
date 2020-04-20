@@ -3,7 +3,7 @@ import { Client } from 'src/app/services/clients/client';
 import { ClientsCacheService } from 'src/app/services/clients/clients-cache.service';
 import { ActivatedRoute } from '@angular/router';
 import { ImageHelperService } from 'src/app/services/image-helper.service';
-import { ClientsService, PictureDTO, CoordinatesDTO } from 'src/app/api/generated';
+import { ClientsService, PictureDTO, CoordinatesDTO, IndividualPlansService } from 'src/app/api/generated';
 import { ToastService } from 'src/app/services/toast.service';
 import { GeneralHelperService } from 'src/app/services/general-helper.service';
 import { IndividualPlanDTO } from 'src/app/api/generated/model/individualPlanDTO';
@@ -24,6 +24,7 @@ export class ClientDetailPage implements OnInit {
     private clientCache: ClientsCacheService,
     private activatedRoute: ActivatedRoute,
     private imageHelper: ImageHelperService,
+    private plansService: IndividualPlansService,
     private clientsService: ClientsService,
     private toaster: ToastService,
     public generalHelper: GeneralHelperService,
@@ -42,7 +43,7 @@ export class ClientDetailPage implements OnInit {
   }
 
   private async getIndividualPlans() {
-    let plans = await this.clientsService.apiClientsAgreedActionsByPlansGet(this.client.id);
+    let plans = await this.plansService.apiIndividualPlansGet(this.client.id);
 
     this.individualPlans = plans;
   }

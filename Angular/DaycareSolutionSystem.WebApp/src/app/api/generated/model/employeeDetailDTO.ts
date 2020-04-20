@@ -10,12 +10,16 @@
  * Do not edit the class manually.
  */
 import { EmployeePosition } from './employeePosition';
+import { Gender } from './gender';
 
 
 export interface EmployeeDetailDTO { 
     birthdate?: Date;
     email?: string;
     phoneNumber?: string;
+    firstName?: string;
+    surname?: string;
+    gender?: Gender;
     employeePosition?: EmployeePosition;
     id?: string;
     fullName?: string;

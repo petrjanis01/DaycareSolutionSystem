@@ -10,7 +10,6 @@ import { GeneralHelperService } from 'src/app/services/general-helper.service';
 })
 export class ClientsComponent implements OnInit {
   public clientBasics: ClientBasicsDTO[];
-  public clientNameFilter: string;
   public clientNameText: string;
 
   constructor(private clientService: ClientsService, private router: Router,

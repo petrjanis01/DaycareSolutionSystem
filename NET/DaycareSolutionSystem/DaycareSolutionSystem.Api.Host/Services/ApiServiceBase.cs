@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Claims;
-using System.Text.RegularExpressions;
 using DaycareSolutionSystem.Database.DataContext;
 using DaycareSolutionSystem.Database.Entities;
 using DaycareSolutionSystem.Database.Entities.Entities;
