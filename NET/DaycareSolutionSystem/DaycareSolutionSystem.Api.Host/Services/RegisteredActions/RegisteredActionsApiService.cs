@@ -16,12 +16,34 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
         {
         }
 
-        public void GenerateNextMonthRegisteredActions()
+        public List<RegisteredClientAction> GetAllRegisteredClientActionsInGivenMonth(DateTime date, Guid? clientId = null, Guid? employeeId = null)
         {
-            var fromDate = DateTime.Today;
-            var untilDate = DateTime.Today.AddMonths(1);
+            var from = new DateTime(date.Year, date.Month, 1);
+            var until = from.AddMonths(1).AddDays(-1);
 
-            var agreedActions = GetValidAgreedActions(fromDate).ToList();
+            var registeredActions = DataContext.RegisteredClientActions.Where(ra =>
+                ra.PlannedStartDateTime.Date >= from.Date
+                && ra.PlannedStartDateTime.Date <= until.Date);
+
+            if (clientId.HasValue)
+            {
+                registeredActions = registeredActions.Where(ra => ra.ClientId == clientId.Value);
+            }
+
+            if (employeeId.HasValue)
+            {
+                registeredActions = registeredActions.Where(ra => ra.EmployeeId == employeeId.Value);
+            }
+
+            return registeredActions.ToList();
+        }
+
+        public void GenerateRegisteredActionsForPeriod(DateTime? fromDate = null, DateTime? untilDate = null)
+        {
+            fromDate = fromDate.HasValue ? fromDate : DateTime.Today;
+            untilDate = untilDate.HasValue ? untilDate : DateTime.Today.AddMonths(1);
+
+            var agreedActions = GetValidAgreedActions(fromDate.Value).ToList();
             var oldRegisteredActions = DataContext.RegisteredClientActions.ToList();
             var newRegisteredActions = new List<RegisteredClientAction>();
 
@@ -29,26 +51,27 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
             {
                 // add actions from newly valid plan to collection
                 var oldIds = agreedActions.Select(ac => ac.Id);
-                var newAgreedActions = GetValidAgreedActions(fromDate)
+                var newAgreedActions = GetValidAgreedActions(fromDate.Value)
                     // only that day
-                    .Where(ac => ac.Day == fromDate.DayOfWeek)
+                    .Where(ac => ac.Day == fromDate.Value.DayOfWeek)
                     .Where(ac => oldIds.Contains(ac.Id) == false);
 
                 agreedActions.AddRange(newAgreedActions);
 
-                var actionsInDay = agreedActions.Where(ac => ac.Day == fromDate.DayOfWeek).ToList();
+                var actionsInDay = agreedActions.Where(ac => ac.Day == fromDate.Value.DayOfWeek).ToList();
 
                 foreach (var action in actionsInDay)
                 {
                     // when registered action hasn't been created from agreed action
-                    if (oldRegisteredActions.FirstOrDefault(ac => ac.AgreedClientActionId == action.Id) != null)
+                    if (oldRegisteredActions.Where(ac => ac.PlannedStartDateTime.Date == fromDate.Value.Date)
+                            .FirstOrDefault(ac => ac.AgreedClientActionId == action.Id) != null)
                     {
-                        var newAction = CreateRegisteredActionFromAgreedAction(action, fromDate);
+                        var newAction = CreateRegisteredActionFromAgreedAction(action, fromDate.Value);
                         newRegisteredActions.Add(newAction);
                     }
                 }
 
-                fromDate = fromDate.AddDays(1);
+                fromDate = fromDate.Value.AddDays(1);
             }
 
             DataContext.RegisteredClientActions.AddRange(newRegisteredActions);
@@ -68,6 +91,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
             return registeredAction;
         }
 
+        // gets agreed actions that are valid and has valid individual plan
         private IOrderedQueryable<AgreedClientAction> GetValidAgreedActions(DateTime date)
         {
             var agreedActions = DataContext.AgreedClientActions
@@ -121,6 +145,13 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
 
             registeredAction.Comment = dto.Comment;
             registeredAction.ActionStartedDateTime = dto.ActionStartedDateTime;
+            registeredAction.PlannedStartDateTime = dto.PlannedStartDateTime;
+            registeredAction.EmployeeId = dto.EmployeeId;
+
+            if (dto.Action.Id.HasValue)
+            {
+                registeredAction.ActionId = dto.Action.Id.Value;
+            }
 
             if (dto.ActionFinishedDateTime.HasValue)
             {

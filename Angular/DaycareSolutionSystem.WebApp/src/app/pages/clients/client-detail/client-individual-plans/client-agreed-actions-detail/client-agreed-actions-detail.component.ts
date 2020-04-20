@@ -103,7 +103,7 @@ export class ClientAgreedActionsDetailComponent implements OnInit {
     } else {
       let eventAction = this.events.find(e => e.id === event.id);
       let oldStart = this.getOldEventStartTime(event.id);
-      if (confirm(`Are you sure you want to move ${eventAction.title} from ${this.datePipe.transform(oldStart, 'EEEE hh:mm aa')}` +
+      if (confirm(`Are you sure you want to reschedule ${eventAction.title} from ${this.datePipe.transform(oldStart, 'EEEE hh:mm aa')}` +
         ` to ${this.datePipe.transform(newStart, 'EEEE hh:mm aa')}?`)) {
         this.moveAgreedAction(eventAction.id as string, newStart, newEnd);
       }

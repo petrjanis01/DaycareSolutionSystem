@@ -463,6 +463,7 @@ namespace DaycareSolutionSystem.Helpers
                 clientAction.PlannedStartDateTime = startDate.Add(agreedClientAction.PlannedStartTime);
                 clientAction.IsCanceled = random.Next(1, 10) == 1;
                 clientAction.IsCompleted = clientAction.IsCanceled == false && startDate < DateTime.Today;
+                clientAction.ActionId = agreedClientAction.ActionId;
                 if (clientAction.IsCompleted)
                 {
                     clientAction.ActionStartedDateTime = startDate.Add(agreedClientAction.PlannedStartTime);

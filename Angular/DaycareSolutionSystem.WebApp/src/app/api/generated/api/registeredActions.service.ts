@@ -56,7 +56,62 @@ export class RegisteredActionsService extends ApiBase{
         return false;
     }
 
-    public async apiRegisteredActionsGenerateNextMonthActionsPost(): Promise<any> {
+    public async apiRegisteredActionsAllActionsMonthGet(date?: Date, clientId?: string, employeeId?: string, ): Promise<Array<RegisteredActionDTO>> {
+
+
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (date !== undefined && date !== null) {
+            queryParameters = queryParameters.set('date', <any>date.toISOString());
+        }
+        if (clientId !== undefined && clientId !== null) {
+            queryParameters = queryParameters.set('clientId', <any>clientId);
+        }
+        if (employeeId !== undefined && employeeId !== null) {
+            queryParameters = queryParameters.set('employeeId', <any>employeeId);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+
+        let result = this.httpClient.get<Array<RegisteredActionDTO>>(`${this.basePath}/api/RegisteredActions/all-actions-month`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: this.createAuthHeaders(headers),
+            }
+        ).toPromise();
+
+        return this.processErrors(result);
+    }
+
+    public async apiRegisteredActionsGenerateActionsForPeriodPost(fromDate?: Date, untilDate?: Date, ): Promise<any> {
+
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (fromDate !== undefined && fromDate !== null) {
+            queryParameters = queryParameters.set('fromDate', <any>fromDate.toISOString());
+        }
+        if (untilDate !== undefined && untilDate !== null) {
+            queryParameters = queryParameters.set('untilDate', <any>untilDate.toISOString());
+        }
 
         let headers = this.defaultHeaders;
 
@@ -73,9 +128,10 @@ export class RegisteredActionsService extends ApiBase{
         ];
 
 
-        let result = this.httpClient.post<any>(`${this.basePath}/api/RegisteredActions/generate-next-month-actions`,
+        let result = this.httpClient.post<any>(`${this.basePath}/api/RegisteredActions/generate-actions-for-period`,
             null,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: this.createAuthHeaders(headers),
             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DaycareSolutionSystem.Api.Host.Controllers.Schedule;
+using DaycareSolutionSystem.Database.Entities.Entities;
 
 namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
 {
@@ -10,6 +11,8 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
 
         RegisteredActionDTO UpdateRegisteredAction(RegisteredActionDTO dto);
 
-        void GenerateNextMonthRegisteredActions();
+        void GenerateRegisteredActionsForPeriod(DateTime? fromDate = null, DateTime? untilDate = null);
+
+        public List<RegisteredClientAction> GetAllRegisteredClientActionsInGivenMonth(DateTime date, Guid? clientId = null, Guid? employeeId = null);
     }
 }

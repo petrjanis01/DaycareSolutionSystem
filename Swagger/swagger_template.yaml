@@ -684,10 +684,60 @@ paths:
             text/json:
               schema:
                 "$ref": "#/components/schemas/IndividualPlanDTO"
-  "/api/RegisteredActions/generate-next-month-actions":
+  "/api/RegisteredActions/all-actions-month":
+    get:
+      tags:
+      - RegisteredActions
+      parameters:
+      - name: date
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - name: clientId
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: employeeId
+        in: query
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/RegisteredActionDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/RegisteredActionDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/RegisteredActionDTO"
+  "/api/RegisteredActions/generate-actions-for-period":
     post:
       tags:
       - RegisteredActions
+      parameters:
+      - name: fromDate
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - name: untilDate
+        in: query
+        schema:
+          type: string
+          format: date-time
       responses:
         '200':
           description: Success
@@ -1086,6 +1136,12 @@ components:
       type: object
       properties:
         id:
+          type: string
+          format: uuid
+        clientId:
+          type: string
+          format: uuid
+        employeeId:
           type: string
           format: uuid
         actionStartedDateTime:

@@ -8,6 +8,10 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Schedule
     {
         public Guid Id { get; set; }
 
+        public Guid ClientId { get; set; }
+
+        public Guid EmployeeId { get; set; }
+
         public DateTime? ActionStartedDateTime { get; set; }
 
         public DateTime? ActionFinishedDateTime { get; set; }

@@ -8,16 +8,16 @@
     </TypeIdentifier>
   </Class>
   <Class Name="DaycareSolutionSystem.Database.Entities.Entities.Address">
-    <Position X="9" Y="6.5" Width="1.5" />
+    <Position X="9" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAAAAIAAAQAAAAAAAAAAAAAAIAgAAAAAA=</HashCode>
+      <HashCode>AAAAAgAAAgAAAAAIAAAAAAAAIAAAAAAAAAIAgAAAAAA=</HashCode>
       <FileName>Entities\Adress.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DaycareSolutionSystem.Database.Entities.Entities.AgreedClientAction">
     <Position X="9.25" Y="0.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAADAAAIAAAAAAAAABAAAAACAAAAAAAAACAMAACEAQ=</HashCode>
+      <HashCode>AAAADAAAIAAAAAAAAAhAAAAACAAAAAAAAACAEEASAAQ=</HashCode>
       <FileName>Entities\AgreedClientAction.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -27,7 +27,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="DaycareSolutionSystem.Database.Entities.Entities.Client">
-    <Position X="13.5" Y="5.75" Width="1.5" />
+    <Position X="14" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAABAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
       <FileName>Entities\Client.cs</FileName>
@@ -37,7 +37,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="DaycareSolutionSystem.Database.Entities.Entities.Employee">
-    <Position X="11" Y="5.75" Width="1.75" />
+    <Position X="11" Y="6" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAEAA=</HashCode>
       <FileName>Entities\Employee.cs</FileName>
@@ -55,22 +55,14 @@
   </Class>
   <Class Name="DaycareSolutionSystem.Database.Entities.Entities.RegisteredClientAction">
     <Position X="5" Y="1.25" Width="2.5" />
-    <AssociationLine Name="Client" Type="DaycareSolutionSystem.Database.Entities.Entities.Client" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="5.25" Y="4.021" />
-        <Point X="5.25" Y="8.752" />
-        <Point X="14.438" Y="8.752" />
-        <Point X="14.438" Y="7.627" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAEAAEAAAAAAAAgAAEAIAACAAAAhAAAAAAAEACAQQ=</HashCode>
+      <HashCode>AQAAEAAEAAAAACAAgAAEAIAACAAAAhAAAAACAAACAQQ=</HashCode>
       <FileName>Entities\RegisteredClientAction.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
+      <Property Name="Client" />
       <Property Name="Employee" />
       <Property Name="AgreedClientAction" />
-      <Property Name="Client" />
     </ShowAsAssociation>
   </Class>
   <Class Name="DaycareSolutionSystem.Database.Entities.Entities.User">
@@ -84,9 +76,9 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="DaycareSolutionSystem.Database.Entities.Person">
-    <Position X="12.25" Y="3.25" Width="1.5" />
+    <Position X="12.5" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAEAAAAAAAICAAAAAAAQABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAEAAACAEAICAAAAAQAQABAAAAAAABAAAAAAAAAA=</HashCode>
       <FileName>Person.cs</FileName>
     </TypeIdentifier>
   </Class>

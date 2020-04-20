@@ -1,40 +1,23 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  ViewChild,
-  TemplateRef
-} from '@angular/core';
-import {
-  startOfDay,
-  endOfDay,
-  subDays,
-  addDays,
-  endOfMonth,
-  isSameDay,
-  isSameMonth,
-  addHours
-} from 'date-fns';
-import { Subject } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { RegisteredActionsService, RegisteredActionDTO, ClientDTO, ClientBasicsDTO, EmployeeBasicDTO, ClientsService, EmployeeService } from 'src/app/api/generated';
+import { CalendarEvent } from 'angular-calendar';
+import { DatePipe } from '@angular/common';
+import { NotifiactionService } from 'src/app/services/notification.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  CalendarEvent,
-  CalendarEventAction,
-  CalendarEventTimesChangedEvent,
-  CalendarView
-} from 'angular-calendar';
 
 const colors: any = {
-  red: {
-    primary: '#ad2121',
-    secondary: '#FAE3E3'
+  canceled: {
+    primary: '#ff8080',
   },
-  blue: {
-    primary: '#1e90ff',
-    secondary: '#D1E8FF'
+  completed: {
+    primary: '#80ff80',
   },
-  yellow: {
-    primary: '#e3bc08',
-    secondary: '#FDF1BA'
+  inProgress: {
+    primary: '#ffff80',
+  },
+  default: {
+    primary: '#4ddbff'
   }
 };
 
@@ -43,150 +26,234 @@ const colors: any = {
   templateUrl: './schedule.component.html',
   styleUrls: ['./schedule.component.scss']
 })
-export class ScheduleComponent {
+export class ScheduleComponent implements OnInit {
+  private registeredActions: RegisteredActionDTO[];
+  public clients: ClientBasicsDTO[];
+  public employees: EmployeeBasicDTO[];
+  public clientsPersist: ClientBasicsDTO[];
 
-  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+  public events: CalendarEvent[];
 
-  view: CalendarView = CalendarView.Month;
+  public selectedClients = new Array<ClientBasicsDTO>();
+  public selectedEmployee: EmployeeBasicDTO;
 
-  CalendarView = CalendarView;
+  public curretlyViewedDate = new Date();
+  public activeDayIsOpen = false;
 
-  viewDate: Date = new Date();
+  constructor(private registeredActionsService: RegisteredActionsService, private clientsService: ClientsService,
+    private employeesService: EmployeeService, private datePipe: DatePipe,
+    private notifications: NotifiactionService, private spinner: NgxSpinnerService,
+    private modal: NgbModal) { }
 
-  modalData: {
-    action: string;
-    event: CalendarEvent;
-  };
-
-  actions: CalendarEventAction[] = [
-    {
-      label: '<i class="fa fa-fw fa-pencil"></i>',
-      a11yLabel: 'Edit',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent('Edited', event);
-      }
-    },
-    {
-      label: '<i class="fa fa-fw fa-times"></i>',
-      a11yLabel: 'Delete',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter(iEvent => iEvent !== event);
-        this.handleEvent('Deleted', event);
-      }
-    }
-  ];
-
-  refresh: Subject<any> = new Subject();
-
-  events: CalendarEvent[] = [
-    {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      title: 'A 3 day event',
-      color: colors.red,
-      actions: this.actions,
-      allDay: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true
-      },
-      draggable: true
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'An event with no end date',
-      color: colors.yellow,
-      actions: this.actions
-    },
-    {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      title: 'A long event that spans 2 months',
-      color: colors.blue,
-      allDay: true
-    },
-    {
-      start: addHours(startOfDay(new Date()), 2),
-      end: addHours(new Date(), 2),
-      title: 'A draggable and resizable event',
-      color: colors.yellow,
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true
-      },
-      draggable: true
-    }
-  ];
-
-  activeDayIsOpen = true;
-
-  constructor(private modal: NgbModal) { }
-
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    if (isSameMonth(date, this.viewDate)) {
-      if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-        events.length === 0
-      ) {
-        this.activeDayIsOpen = false;
-      } else {
-        this.activeDayIsOpen = true;
-      }
-      this.viewDate = date;
-    }
+  async ngOnInit() {
+    await this.loadClients();
+    this.loadEmployees();
+    this.loadRegisteredActions(this.curretlyViewedDate);
   }
 
-  eventTimesChanged({
-    event,
-    newStart,
-    newEnd
-  }: CalendarEventTimesChangedEvent): void {
-    this.events = this.events.map(iEvent => {
-      if (iEvent === event) {
-        return {
-          ...event,
-          start: newStart,
-          end: newEnd
-        };
-      }
-      return iEvent;
-    });
-    this.handleEvent('Dropped or resized', event);
+  private async loadClients() {
+    let clients = await this.clientsService.apiClientsAllClientBasicsGet();
+    this.clientsPersist = new Array<ClientBasicsDTO>();
+    this.clientsPersist = this.clientsPersist.concat(clients);
+
+    this.clients = clients;
+
+    let pleaseSelectClient: ClientBasicsDTO = {};
+    pleaseSelectClient.fullName = 'Please select client';
+    pleaseSelectClient.id = null;
+    this.clients.unshift(pleaseSelectClient);
   }
 
-  handleEvent(action: string, event: CalendarEvent): void {
-    this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
+  private async loadEmployees() {
+    this.employees = await this.employeesService.apiEmployeeAllCaregiversGet();
+    let pleaseSelectEmployee: ClientBasicsDTO = {};
+    pleaseSelectEmployee.fullName = 'Please select employee';
+    pleaseSelectEmployee.id = null;
+    this.employees.unshift(pleaseSelectEmployee);
   }
 
-  addEvent(): void {
-    this.events = [
-      ...this.events,
-      {
-        title: 'New event',
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
-        color: colors.red,
+  private async loadRegisteredActions(date: Date) {
+    let actions = await this.registeredActionsService.apiRegisteredActionsAllActionsMonthGet(date);
+    this.registeredActions = actions;
+
+    this.reloadEvents(actions);
+  }
+
+  private reloadEvents(actions: RegisteredActionDTO[]) {
+    let events = new Array<CalendarEvent>();
+
+    for (let action of actions) {
+      let startDate = new Date(action.plannedStartDateTime);
+      let endDate = new Date(action.plannedStartDateTime);
+      endDate.setMinutes(endDate.getMinutes() + action.estimatedDurationMinutes);
+      let client = this.clientsPersist.find(c => c.id === action.clientId);
+      let eventTitle = `${action.action.name} for ${client.fullName} from ${this.datePipe.transform(startDate, 'short')} to ${this.datePipe.transform(endDate, 'short')}`;
+
+      let event: CalendarEvent = {
+        id: action.id,
+        start: startDate,
+        title: eventTitle,
         draggable: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true
-        }
+        end: endDate,
+        color: this.getActionColor(action)
       }
-    ];
+
+      events.push(event);
+    }
+
+    this.events = events;
   }
 
-  deleteEvent(eventToDelete: CalendarEvent) {
-    this.events = this.events.filter(event => event !== eventToDelete);
+  private getActionColor(action: RegisteredActionDTO) {
+    if (action.isCompleted) {
+      return colors.completed;
+    }
+
+    if (action.isCanceled) {
+      return colors.canceled;
+    }
+
+    if (action.actionStartedDateTime != null) {
+      return colors.inProgress;
+    }
+
+    return colors.default;
   }
 
-  setView(view: CalendarView) {
-    this.view = view;
-  }
-
-  closeOpenMonthViewDay() {
+  public navigateCalendarLeft() {
+    let date = new Date(this.curretlyViewedDate);
+    date.setMonth(date.getMonth() - 1);
+    this.curretlyViewedDate = date;
+    this.loadRegisteredActions(this.curretlyViewedDate);
     this.activeDayIsOpen = false;
   }
 
+  public navigateCalendarRight() {
+    let date = new Date(this.curretlyViewedDate);
+    date.setMonth(date.getMonth() + 1);
+    this.curretlyViewedDate = date;
+    this.loadRegisteredActions(this.curretlyViewedDate);
+    this.activeDayIsOpen = false;
+  }
+
+  public onClientSelectChange(id: string) {
+    if (id == null) {
+      return;
+    }
+
+    let client = this.clients.find(c => c.id === id);
+    let index = this.clients.indexOf(client);
+    this.clients.splice(index, 1);
+
+    this.selectedClients.push(client);
+    this.filterActions();
+  }
+
+  public removeClient(id: string) {
+    let client = this.selectedClients.find(c => c.id === id);
+    let index = this.selectedClients.indexOf(client);
+    this.selectedClients.splice(index, 1);
+
+    this.clients.push(client);
+    this.filterActions();
+  }
+
+  public onEmployeeSelectChange(id: string) {
+    if (id == null) {
+      return;
+    }
+
+    let employee = this.employees.find(c => c.id === id);
+
+    this.selectedEmployee = employee;
+    this.filterActions();
+  }
+
+  public removeEmployee(id: string) {
+    this.selectedEmployee = null;
+
+    this.filterActions();
+  }
+
+  private filterActions() {
+    let filteredActions = new Array<RegisteredActionDTO>();
+
+    if (this.selectedClients.length === 0 && this.selectedEmployee == null) {
+      this.reloadEvents(this.registeredActions);
+      return;
+    }
+
+    if (this.selectedClients.length === 0 && this.selectedEmployee != null) {
+      let actions = this.registeredActions.filter(ra => ra.employeeId === this.selectedEmployee.id);
+      this.reloadEvents(actions);
+      return;
+    }
+
+    console.log('got here');
+
+    for (let client of this.selectedClients) {
+      let clientFilteredActions = this.registeredActions.filter(ra => ra.clientId === client.id && (this.selectedEmployee != null
+        ? ra.employeeId === this.selectedEmployee.id : true));
+      for (let action of clientFilteredActions) {
+        if (!filteredActions.find(a => a.id === action.id)) {
+          filteredActions.push(action);
+        }
+      }
+    }
+
+    this.reloadEvents(filteredActions);
+  }
+
+  public handleEvent(action: string, event: CalendarEvent) {
+    if (action === 'clicked') {
+      console.log('event clicked');
+      console.log(event);
+      // let modal = this.modal.open(AgreedActionModalComponent,
+      //   { windowClass: `${this.visualHelper.isDarkModeEnabled ? 'dark-modal' : ''}` });
+      // modal.componentInstance.agreedActionId = event.id;
+      // modal.componentInstance.onclose.subscribe((ev) => {
+      //   this.reloadAgreedActions();
+      // });
+    }
+  }
+
+  public eventDropped({ event, newStart, newEnd, allDay }) {
+    let movedAction = this.registeredActions.find(rc => rc.id === event.id);
+
+    if (movedAction.isCanceled || movedAction.isCompleted || movedAction.actionStartedDateTime != null) {
+      this.notifications.showInfoNotification('Cannot reschedule actions that are cancled, completed or in progress');
+      return;
+    }
+
+    let client = this.clientsPersist.find(c => c.id === movedAction.clientId);
+
+    if (confirm(`Are you sure you want to reschedule ${movedAction.action.name} for ${client.fullName} from ${this.datePipe.transform(movedAction.plannedStartDateTime, 'short')}` +
+      ` to ${this.datePipe.transform(newStart, 'short')}?`)) {
+      this.moveAction(movedAction, newStart);
+    }
+  }
+
+  private async moveAction(movedAction: RegisteredActionDTO, newStart) {
+    this.spinner.show();
+
+    movedAction.plannedStartDateTime = newStart;
+    let newAction = await this.registeredActionsService.apiRegisteredActionsRegisteredActionPut(movedAction);
+
+    let action = this.registeredActions.find(rc => rc.id === newAction.id);
+    let index = this.registeredActions.indexOf(action);
+    this.registeredActions.splice(index, 1);
+    this.registeredActions.push(newAction);
+    this.filterActions();
+
+    this.spinner.hide();
+  }
+
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    if (date.getMonth() === this.curretlyViewedDate.getMonth()) {
+      this.activeDayIsOpen = !((this.curretlyViewedDate.getDate() === date.getDate() && this.activeDayIsOpen === true)
+        || events.length === 0);
+
+      this.curretlyViewedDate = date;
+    }
+  }
 }

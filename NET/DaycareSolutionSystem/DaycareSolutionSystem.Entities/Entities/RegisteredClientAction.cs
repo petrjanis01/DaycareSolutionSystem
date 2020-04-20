@@ -10,6 +10,10 @@ namespace DaycareSolutionSystem.Database.Entities.Entities
 
         public virtual Client Client { get; set; }
 
+        public Guid ActionId { get; set; }
+
+        public virtual Action Action { get; set; }
+
         public Guid EmployeeId { get; set; }
 
         public virtual Employee Employee { get; set; }

@@ -27,6 +27,7 @@ import { ClientAgreedActionsDetailComponent } from '../pages/clients/client-deta
 import { AgreedActionModalComponent } from '../pages/clients/client-detail/client-individual-plans/client-agreed-actions-detail/agreed-action-modal/agreed-action-modal.component';
 import { EmployeeNamePipe } from '../pipes/employee-name.pipe';
 import { EmployeeDetailComponent } from '../pages/employees/employee-detail/employee-detail.component';
+import { RegisteredActionModalComponent } from '../pages/schedule/registered-action-modal/registered-action-modal.component';
 
 @NgModule({
   imports: [
@@ -41,7 +42,7 @@ import { EmployeeDetailComponent } from '../pages/employees/employee-detail/empl
       apiKey: 'AIzaSyCQsd5nCdDeiSvHmgbcSt8Fbk7AOLqPmZw'
     }),
     AngularMultiSelectModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
   ],
   declarations: [
     ScheduleComponent,
@@ -56,13 +57,15 @@ import { EmployeeDetailComponent } from '../pages/employees/employee-detail/empl
     ClientIndividualPlansComponent,
     ClientAgreedActionsDetailComponent,
     AgreedActionModalComponent,
-    EmployeeDetailComponent
+    EmployeeDetailComponent,
+    RegisteredActionModalComponent
   ],
   providers: [
     DatePipe
   ],
   entryComponents: [
-    AgreedActionModalComponent
+    AgreedActionModalComponent,
+    RegisteredActionModalComponent
   ]
 })
 export class AdminLayoutModule { }

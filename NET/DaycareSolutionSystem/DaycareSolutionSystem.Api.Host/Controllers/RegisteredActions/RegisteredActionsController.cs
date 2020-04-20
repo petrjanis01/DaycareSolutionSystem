@@ -27,12 +27,32 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
             _dataContext = dbContext;
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Manager")]
+        [Route("all-actions-month")]
+        public RegisteredActionDTO[] GetAllRegisteredClientActionsInGivenMonth(DateTime date, Guid? clientId = null,
+            Guid? employeeId = null)
+        {
+            var registeredActions =
+                _registeredActionsApiService.GetAllRegisteredClientActionsInGivenMonth(date, clientId, employeeId);
+
+            var dtos = new List<RegisteredActionDTO>();
+
+            foreach (var registeredClientAction in registeredActions)
+            {
+                var dto = MapRegisteredActionToDto(registeredClientAction);
+                dtos.Add(dto);
+            }
+
+            return dtos.ToArray();
+        }
+
         [HttpPost]
         [Authorize(Roles = "Manager")]
-        [Route("generate-next-month-actions")]
-        public void GenerateNextMonthRegisteredActions()
+        [Route("generate-actions-for-period")]
+        public void GenerateRegisteredActionsForPeriod(DateTime? fromDate = null, DateTime? untilDate = null)
         {
-            _registeredActionsApiService.GenerateNextMonthRegisteredActions();
+            _registeredActionsApiService.GenerateRegisteredActionsForPeriod(fromDate, untilDate);
         }
 
         [HttpPut]
@@ -129,6 +149,9 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
                 registeredClientAction.AgreedClientAction.ClientActionSpecificDescription;
             dto.Day = registeredClientAction.AgreedClientAction.Day;
             dto.Photo = new PictureDTO { PictureUri = FormatPictureToBase64(registeredClientAction.Photo) };
+            dto.Action = MapActionToDto(registeredClientAction.AgreedClientAction.Action);
+            dto.ClientId = registeredClientAction.ClientId;
+            dto.EmployeeId = registeredClientAction.EmployeeId;
 
             return dto;
         }
