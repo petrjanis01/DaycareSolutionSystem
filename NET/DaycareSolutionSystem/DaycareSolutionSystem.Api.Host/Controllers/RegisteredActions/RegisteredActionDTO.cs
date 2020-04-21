@@ -6,11 +6,13 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Schedule
 {
     public class RegisteredActionDTO
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         public Guid ClientId { get; set; }
 
         public Guid EmployeeId { get; set; }
+
+        public Guid ActionId { get; set; }
 
         public DateTime? ActionStartedDateTime { get; set; }
 

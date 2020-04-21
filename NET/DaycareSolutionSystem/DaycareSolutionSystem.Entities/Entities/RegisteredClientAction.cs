@@ -18,7 +18,10 @@ namespace DaycareSolutionSystem.Database.Entities.Entities
 
         public virtual Employee Employee { get; set; }
 
-        public Guid AgreedClientActionId { get; set; }
+        // nullable due to adhoc actions
+        public Guid? AgreedClientActionId { get; set; }
+
+        public int? EstimatedDurationMinutes { get; set; }
 
         public virtual AgreedClientAction AgreedClientAction { get; set; }
 

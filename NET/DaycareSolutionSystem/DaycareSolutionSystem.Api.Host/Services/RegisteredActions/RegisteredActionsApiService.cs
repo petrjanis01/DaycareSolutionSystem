@@ -127,7 +127,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
 
                 var actionDo = new RegisteredActionDO();
                 actionDo.Client = registeredAction.Client;
-                actionDo.Action = registeredAction.AgreedClientAction.Action;
+                actionDo.Action = registeredAction.Action;
                 actionDo.RegisteredClientAction = registeredAction;
                 actionDo.IsLast = false;
 
@@ -139,47 +139,55 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
             return registeredActionsPerDay;
         }
 
-        public RegisteredActionDTO UpdateRegisteredAction(RegisteredActionDTO dto)
+        public void CreateRegisteredAction(RegisteredClientAction action)
         {
-            var registeredAction = DataContext.RegisteredClientActions.Find(dto.Id);
+            // to simplify logic adhoc actions always have 1 hour duration
+            action.EstimatedDurationMinutes = 60;
+            DataContext.RegisteredClientActions.Add(action);
+            DataContext.SaveChanges();
+        }
 
-            registeredAction.Comment = dto.Comment;
-            registeredAction.ActionStartedDateTime = dto.ActionStartedDateTime;
-            registeredAction.PlannedStartDateTime = dto.PlannedStartDateTime;
-            registeredAction.EmployeeId = dto.EmployeeId;
+        public RegisteredClientAction UpdateRegisteredAction(RegisteredClientAction action)
+        {
+            var queriedAction = DataContext.RegisteredClientActions.Find(action.Id);
 
-            if (dto.Action.Id.HasValue)
+            queriedAction.Comment = action.Comment;
+            queriedAction.ActionStartedDateTime = action.ActionStartedDateTime;
+            queriedAction.PlannedStartDateTime = action.PlannedStartDateTime;
+            queriedAction.EmployeeId = action.EmployeeId;
+            queriedAction.ActionId = action.ActionId;
+
+
+            if (action.ActionFinishedDateTime.HasValue)
             {
-                registeredAction.ActionId = dto.Action.Id.Value;
+                queriedAction.ActionFinishedDateTime = action.ActionFinishedDateTime;
+                queriedAction.IsCompleted = true;
             }
 
-            if (dto.ActionFinishedDateTime.HasValue)
+            if (action.Photo != null)
             {
-                registeredAction.ActionFinishedDateTime = dto.ActionFinishedDateTime;
-                registeredAction.IsCompleted = true;
-                dto.IsCompleted = true;
-            }
-
-            if (dto.Photo != null && string.IsNullOrEmpty(dto.Photo.PictureUri) == false)
-            {
-                var picture = Base64ImageHelper.CreatePictureFromUri(dto.Photo.PictureUri);
-                if (registeredAction.Photo != null)
+                if (queriedAction.Photo != null)
                 {
-                    registeredAction.Photo.MimeType = picture.MimeType;
-                    registeredAction.Photo.BinaryData = picture.BinaryData;
+                    queriedAction.Photo.MimeType = action.Photo.MimeType;
+                    queriedAction.Photo.BinaryData = action.Photo.BinaryData;
                 }
                 else
                 {
-                    registeredAction.Photo = picture;
-                    DataContext.Pictures.Add(picture);
+                    queriedAction.Photo = action.Photo;
+                    DataContext.Pictures.Add(action.Photo);
                 }
             }
 
-            registeredAction.IsCanceled = dto.IsCanceled;
+            if (queriedAction.AgreedClientActionId.HasValue == false)
+            {
+                queriedAction.EstimatedDurationMinutes = action.EstimatedDurationMinutes;
+            }
+
+            queriedAction.IsCanceled = action.IsCanceled;
 
             DataContext.SaveChanges();
 
-            return dto;
+            return queriedAction;
         }
 
         private void EnsureLastIsMarked(Dictionary<DateTime, List<RegisteredActionDO>> registeredActionsPerDay)

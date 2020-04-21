@@ -1,1 +1,70 @@
-<p>registered-action-modal works!</p>
+<ngx-spinner></ngx-spinner>
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Registered action edit</h4>
+
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body" *ngIf="editForm" [formGroup]="editForm">
+    <div class="form-group">
+        <label>Action</label>
+        <select class="form-control" formControlName="action"
+            [disabled]="registeredAction && registeredAction.actionStartedDateTime">
+            <option *ngFor="let action of actions;" [ngValue]="action.id" style="color: black">
+                {{action.name}}
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Employee</label>
+        <select class="form-control" formControlName="employee"
+            [disabled]="registeredAction && registeredAction.actionStartedDateTime">
+            <option *ngFor="let employee of employees;" [ngValue]="employee.id" style="color: black">
+                {{employee.fullName}}
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group" *ngIf="!registeredAction">
+        <label>Client</label>
+        <select class="form-control" formControlName="client"
+            [disabled]="registeredAction && registeredAction.actionStartedDateTime">
+            <option *ngFor="let client of clients;" [ngValue]="client.id" style="color: black">
+                {{client.fullName}}
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Planned on date</label>
+        <input type="text" [disabled]="registeredAction && registeredAction.actionStartedDateTime"
+            formControlName="plannedStartDate" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
+            class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Planned on time</label>
+        <ngb-timepicker class="form-control" [disabled]="registeredAction && registeredAction.actionStartedDateTime"
+            formControlName="plannedStartTime" [meridian]="true"></ngb-timepicker>
+    </div>
+
+    <div class="form-group flex-column" *ngIf="registeredAction">
+        <label>Canceled</label>
+        <label class="switch">
+            <input type="checkbox" formControlName="isCanceled">
+            <span class="slider round red"></span>
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label>Comment</label>
+        <textarea type="text" class="form-control" formControlName="comment" rows="8"></textarea>
+    </div>
+
+    <div class="row justify-content-between">
+        <button [disabled]="!isValid()" class="btn btn-success ml-auto" (click)="saveAction()">Save</button>
+    </div>
+</div>

@@ -18,6 +18,7 @@ export interface RegisteredActionDTO {
     id?: string;
     clientId?: string;
     employeeId?: string;
+    actionId?: string;
     actionStartedDateTime?: Date;
     actionFinishedDateTime?: Date;
     plannedStartDateTime?: Date;

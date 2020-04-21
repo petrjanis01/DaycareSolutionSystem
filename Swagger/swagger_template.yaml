@@ -741,6 +741,24 @@ paths:
       responses:
         '200':
           description: Success
+  "/api/RegisteredActions":
+    post:
+      tags:
+      - RegisteredActions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/RegisteredActionDTO"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/RegisteredActionDTO"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/RegisteredActionDTO"
+      responses:
+        '200':
+          description: Success
   "/api/RegisteredActions/registered-action":
     put:
       tags:
@@ -1138,10 +1156,14 @@ components:
         id:
           type: string
           format: uuid
+          nullable: true
         clientId:
           type: string
           format: uuid
         employeeId:
+          type: string
+          format: uuid
+        actionId:
           type: string
           format: uuid
         actionStartedDateTime:

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using DaycareSolutionSystem.Api.Host.Services.RegisteredActions;
 using DaycareSolutionSystem.Database.DataContext;
 using DaycareSolutionSystem.Database.Entities.Entities;
+using DaycareSolutionSystem.Helpers;
 using Action = DaycareSolutionSystem.Database.Entities.Entities.Action;
 
 namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
@@ -55,13 +56,23 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
             _registeredActionsApiService.GenerateRegisteredActionsForPeriod(fromDate, untilDate);
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Manager")]
+        public void CreateRegisteredAction(RegisteredActionDTO dto)
+        {
+            var action = MapDtoToRegisteredAction(dto);
+            _registeredActionsApiService.CreateRegisteredAction(action);
+        }
+
         [HttpPut]
         [Route("registered-action")]
         public RegisteredActionDTO UpdateRegisteredAction(RegisteredActionDTO dto)
         {
-            dto = _registeredActionsApiService.UpdateRegisteredAction(dto);
+            var action = MapDtoToRegisteredAction(dto);
+            var updatedAction = _registeredActionsApiService.UpdateRegisteredAction(action);
+            var updatedDto = MapRegisteredActionToDto(updatedAction);
 
-            return dto;
+            return updatedDto;
         }
 
         [HttpGet]
@@ -133,6 +144,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
             return registeredActionsForDays.ToArray();
         }
 
+        // mappers
         private RegisteredActionDTO MapRegisteredActionToDto(RegisteredClientAction registeredClientAction)
         {
             var dto = new RegisteredActionDTO();
@@ -144,17 +156,47 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
             dto.IsCompleted = registeredClientAction.IsCompleted;
             dto.Comment = registeredClientAction.Comment;
             dto.PlannedStartDateTime = registeredClientAction.PlannedStartDateTime;
-            dto.EstimatedDurationMinutes = registeredClientAction.AgreedClientAction.EstimatedDurationMinutes;
-            dto.ClientActionSpecificDescription =
-                registeredClientAction.AgreedClientAction.ClientActionSpecificDescription;
-            dto.Day = registeredClientAction.AgreedClientAction.Day;
+            dto.EstimatedDurationMinutes = registeredClientAction.AgreedClientActionId.HasValue ? registeredClientAction.AgreedClientAction.EstimatedDurationMinutes
+                : registeredClientAction.EstimatedDurationMinutes.Value;
+            dto.ClientActionSpecificDescription = registeredClientAction.AgreedClientActionId.HasValue
+                ? registeredClientAction.AgreedClientAction.ClientActionSpecificDescription : string.Empty;
+            dto.Day = registeredClientAction.AgreedClientActionId.HasValue ? registeredClientAction.AgreedClientAction.Day
+                : registeredClientAction.PlannedStartDateTime.DayOfWeek;
             dto.Photo = new PictureDTO { PictureUri = FormatPictureToBase64(registeredClientAction.Photo) };
-            dto.Action = MapActionToDto(registeredClientAction.AgreedClientAction.Action);
+            dto.Action = MapActionToDto(registeredClientAction.Action);
             dto.ClientId = registeredClientAction.ClientId;
             dto.EmployeeId = registeredClientAction.EmployeeId;
+            dto.ActionId = registeredClientAction.ActionId;
 
             return dto;
         }
+
+        private RegisteredClientAction MapDtoToRegisteredAction(RegisteredActionDTO dto)
+        {
+            var action = new RegisteredClientAction();
+
+            if (dto.Id.HasValue)
+            {
+                action.Id = dto.Id.Value;
+            }
+
+            action.ActionId = dto.ActionId;
+            action.PlannedStartDateTime = dto.PlannedStartDateTime;
+            action.EmployeeId = dto.EmployeeId;
+            action.ActionFinishedDateTime = dto.ActionFinishedDateTime;
+            action.ActionStartedDateTime = dto.ActionStartedDateTime;
+            action.ClientId = dto.ClientId;
+            action.Comment = dto.Comment;
+            action.IsCanceled = dto.IsCanceled;
+            action.IsCompleted = dto.IsCompleted;
+            if (dto.Photo != null)
+            {
+                action.Photo = Base64ImageHelper.CreatePictureFromUri(dto.Photo.PictureUri);
+            }
+
+            return action;
+        }
+
 
         private ActionDTO MapActionToDto(Action action)
         {

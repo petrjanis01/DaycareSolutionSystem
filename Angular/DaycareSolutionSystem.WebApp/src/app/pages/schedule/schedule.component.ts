@@ -5,6 +5,8 @@ import { DatePipe } from '@angular/common';
 import { NotifiactionService } from 'src/app/services/notification.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RegisteredActionModalComponent } from './registered-action-modal/registered-action-modal.component';
+import { VisualHelperService } from 'src/app/services/visual-helper.service';
 
 const colors: any = {
   canceled: {
@@ -43,12 +45,12 @@ export class ScheduleComponent implements OnInit {
   constructor(private registeredActionsService: RegisteredActionsService, private clientsService: ClientsService,
     private employeesService: EmployeeService, private datePipe: DatePipe,
     private notifications: NotifiactionService, private spinner: NgxSpinnerService,
-    private modal: NgbModal) { }
+    private modal: NgbModal, private visualHelper: VisualHelperService) { }
 
   async ngOnInit() {
     await this.loadClients();
     this.loadEmployees();
-    this.loadRegisteredActions(this.curretlyViewedDate);
+    this.reloadRegisteredActions(this.curretlyViewedDate);
   }
 
   private async loadClients() {
@@ -72,7 +74,7 @@ export class ScheduleComponent implements OnInit {
     this.employees.unshift(pleaseSelectEmployee);
   }
 
-  private async loadRegisteredActions(date: Date) {
+  private async reloadRegisteredActions(date: Date) {
     let actions = await this.registeredActionsService.apiRegisteredActionsAllActionsMonthGet(date);
     this.registeredActions = actions;
 
@@ -124,7 +126,7 @@ export class ScheduleComponent implements OnInit {
     let date = new Date(this.curretlyViewedDate);
     date.setMonth(date.getMonth() - 1);
     this.curretlyViewedDate = date;
-    this.loadRegisteredActions(this.curretlyViewedDate);
+    this.reloadRegisteredActions(this.curretlyViewedDate);
     this.activeDayIsOpen = false;
   }
 
@@ -132,7 +134,7 @@ export class ScheduleComponent implements OnInit {
     let date = new Date(this.curretlyViewedDate);
     date.setMonth(date.getMonth() + 1);
     this.curretlyViewedDate = date;
-    this.loadRegisteredActions(this.curretlyViewedDate);
+    this.reloadRegisteredActions(this.curretlyViewedDate);
     this.activeDayIsOpen = false;
   }
 
@@ -189,8 +191,6 @@ export class ScheduleComponent implements OnInit {
       return;
     }
 
-    console.log('got here');
-
     for (let client of this.selectedClients) {
       let clientFilteredActions = this.registeredActions.filter(ra => ra.clientId === client.id && (this.selectedEmployee != null
         ? ra.employeeId === this.selectedEmployee.id : true));
@@ -205,15 +205,15 @@ export class ScheduleComponent implements OnInit {
   }
 
   public handleEvent(action: string, event: CalendarEvent) {
-    if (action === 'clicked') {
-      console.log('event clicked');
-      console.log(event);
-      // let modal = this.modal.open(AgreedActionModalComponent,
-      //   { windowClass: `${this.visualHelper.isDarkModeEnabled ? 'dark-modal' : ''}` });
-      // modal.componentInstance.agreedActionId = event.id;
-      // modal.componentInstance.onclose.subscribe((ev) => {
-      //   this.reloadAgreedActions();
-      // });
+    if (action === 'Clicked') {
+      let registeredAction = this.registeredActions.find(rc => rc.id === event.id);
+
+      let modal = this.modal.open(RegisteredActionModalComponent,
+        { windowClass: `${this.visualHelper.isDarkModeEnabled ? 'dark-modal' : ''}` });
+      modal.componentInstance.registeredAction = registeredAction;
+      modal.componentInstance.onclose.subscribe((ev) => {
+        this.reloadRegisteredActions(this.curretlyViewedDate);
+      });
     }
   }
 
@@ -255,5 +255,20 @@ export class ScheduleComponent implements OnInit {
 
       this.curretlyViewedDate = date;
     }
+  }
+
+  public addNewAction() {
+    let modal = this.modal.open(RegisteredActionModalComponent,
+      { windowClass: `${this.visualHelper.isDarkModeEnabled ? 'dark-modal' : ''}` });
+    modal.componentInstance.onclose.subscribe((ev) => {
+      this.reloadRegisteredActions(this.curretlyViewedDate);
+    });
+  }
+
+  public async generateActions() {
+    this.spinner.show();
+    await this.registeredActionsService.apiRegisteredActionsGenerateActionsForPeriodPost();
+    await this.reloadRegisteredActions(this.curretlyViewedDate);
+    this.spinner.hide();
   }
 }

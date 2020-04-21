@@ -3,15 +3,17 @@ using System;
 using DaycareSolutionSystem.Database.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DaycareSolutionSystem.Database.DataContext.Migrations
 {
     [DbContext(typeof(DssDataContext))]
-    partial class DssDataContextModelSnapshot : ModelSnapshot
+    [Migration("20200421180516_AdhocRegisteredActionSupport")]
+    partial class AdhocRegisteredActionSupport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -265,9 +267,6 @@ namespace DaycareSolutionSystem.Database.DataContext.Migrations
 
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uuid");
-
-                    b.Property<int?>("EstimatedDurationMinutes")
-                        .HasColumnType("integer");
 
                     b.Property<bool>("IsCanceled")
                         .HasColumnType("boolean");
