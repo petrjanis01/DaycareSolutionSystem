@@ -156,11 +156,14 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
             dto.IsCompleted = registeredClientAction.IsCompleted;
             dto.Comment = registeredClientAction.Comment;
             dto.PlannedStartDateTime = registeredClientAction.PlannedStartDateTime;
-            dto.EstimatedDurationMinutes = registeredClientAction.AgreedClientActionId.HasValue ? registeredClientAction.AgreedClientAction.EstimatedDurationMinutes
-                : registeredClientAction.EstimatedDurationMinutes.Value;
+            dto.EstimatedDurationMinutes = registeredClientAction.AgreedClientActionId.HasValue
+                    ? registeredClientAction.AgreedClientAction.EstimatedDurationMinutes
+                    : registeredClientAction.EstimatedDurationMinutes.Value;
             dto.ClientActionSpecificDescription = registeredClientAction.AgreedClientActionId.HasValue
-                ? registeredClientAction.AgreedClientAction.ClientActionSpecificDescription : string.Empty;
-            dto.Day = registeredClientAction.AgreedClientActionId.HasValue ? registeredClientAction.AgreedClientAction.Day
+                ? registeredClientAction.AgreedClientAction.ClientActionSpecificDescription
+                : string.Empty;
+            dto.Day = registeredClientAction.AgreedClientActionId.HasValue
+                ? registeredClientAction.AgreedClientAction.Day
                 : registeredClientAction.PlannedStartDateTime.DayOfWeek;
             dto.Photo = new PictureDTO { PictureUri = FormatPictureToBase64(registeredClientAction.Photo) };
             dto.Action = MapActionToDto(registeredClientAction.Action);
@@ -189,6 +192,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
             action.Comment = dto.Comment;
             action.IsCanceled = dto.IsCanceled;
             action.IsCompleted = dto.IsCompleted;
+            action.EstimatedDurationMinutes = dto.EstimatedDurationMinutes;
             if (dto.Photo != null)
             {
                 action.Photo = Base64ImageHelper.CreatePictureFromUri(dto.Photo.PictureUri);

@@ -1,5 +1,0 @@
-bg-service
-https://stackoverflow.com/questions/32179247/can-i-run-cordova-app-in-background
-
-user roles angular side
-https://medium.com/@ryanchenkie_40935/angular-authentication-using-route-guards-bf7a4ca13ae3
