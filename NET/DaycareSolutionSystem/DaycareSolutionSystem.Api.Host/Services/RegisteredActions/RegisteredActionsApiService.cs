@@ -147,7 +147,45 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
             DataContext.SaveChanges();
         }
 
-        public RegisteredClientAction UpdateRegisteredAction(RegisteredClientAction action)
+
+        public RegisteredActionDTO UpdateRegisteredAction(RegisteredActionDTO dto)
+        {
+            var registeredAction = DataContext.RegisteredClientActions.Find(dto.Id);
+
+            registeredAction.Comment = dto.Comment;
+            registeredAction.ActionStartedDateTime = dto.ActionStartedDateTime;
+
+            if (dto.ActionFinishedDateTime.HasValue)
+            {
+                registeredAction.ActionFinishedDateTime = dto.ActionFinishedDateTime;
+                registeredAction.IsCompleted = true;
+                dto.IsCompleted = true;
+            }
+
+            if (dto.Photo != null && string.IsNullOrEmpty(dto.Photo.PictureUri) == false)
+            {
+                var picture = Base64ImageHelper.CreatePictureFromUri(dto.Photo.PictureUri);
+                if (registeredAction.Photo != null)
+                {
+                    registeredAction.Photo.MimeType = picture.MimeType;
+                    registeredAction.Photo.BinaryData = picture.BinaryData;
+                }
+                else
+                {
+                    registeredAction.Photo = picture;
+                    DataContext.Pictures.Add(picture);
+                }
+            }
+
+            registeredAction.IsCanceled = dto.IsCanceled;
+
+            DataContext.SaveChanges();
+
+            return dto;
+        }
+
+
+        public RegisteredClientAction UpdateRegisteredActionPersistent(RegisteredClientAction action)
         {
             var queriedAction = DataContext.RegisteredClientActions.Find(action.Id);
 

@@ -89,7 +89,7 @@ export class RegisteredActionModalComponent implements OnInit {
     this.spinner.show();
     if (this.registeredAction) {
       this.updateDtoFromForm();
-      await this.registeredActionsService.apiRegisteredActionsRegisteredActionPut(this.registeredAction);
+      await this.registeredActionsService.apiRegisteredActionsRegisteredActionPersistentPut(this.registeredAction);
     } else {
       let dto = this.createDtoFromForm();
       await this.registeredActionsService.apiRegisteredActionsPost(dto);

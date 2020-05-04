@@ -13,11 +13,9 @@ RUN ng build --prod --base-href /manager_app/
 WORKDIR /app/DaycareSolutionSystem.MobileApp
 RUN npm install
 RUN npm install -g @ionic/cli
-RUN ionic build --prod -- --base-href /caregiver_app/
-
+RUN ionic build --prod 
 
 # run apache and copy builded web apps 
 FROM httpd:2.4
-COPY httpd-foreground /usr/local/bin/ 
 COPY --from=build /app/DaycareSolutionSystem.WebApp/dist/ /usr/local/apache2/htdocs/manager_app/
-COPY --from=build /app/DaycareSolutionSystem.MobileApp/www/ /usr/local/apache2/htdocs/caregiver_app/
+ COPY --from=build /app/DaycareSolutionSystem.MobileApp/www/ /usr/local/apache2/htdocs/

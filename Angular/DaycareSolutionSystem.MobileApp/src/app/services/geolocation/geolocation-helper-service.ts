@@ -12,7 +12,7 @@ import { ToastService } from '../toast.service';
 @Injectable({ providedIn: 'root' })
 export class GeolocationHelperService {
     private googleMapApiUrlBase = 'https://maps.googleapis.com/maps/api';
-    private apiKey = AppConfig.settings.googleMaps.apiKey;
+    private apiKey = AppConfig.settings.googleMapsApiKey;
 
     constructor(private http: HttpClient, private platform: Platform, private toast: ToastService) { }
 

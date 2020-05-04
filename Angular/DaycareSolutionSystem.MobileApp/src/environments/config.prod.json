@@ -1,4 +1,4 @@
 {
-    "apiBaseUrl": "http://localhost:57316",
+    "apiBaseUrl": "https://daycaress-api-test.azurewebsites.net/",
     "googleMapsApiKey": "AIzaSyCQsd5nCdDeiSvHmgbcSt8Fbk7AOLqPmZw"
 }

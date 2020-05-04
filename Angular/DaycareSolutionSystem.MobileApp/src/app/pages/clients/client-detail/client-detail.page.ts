@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Client } from 'src/app/services/clients/client';
 import { ClientsCacheService } from 'src/app/services/clients/clients-cache.service';
 import { ActivatedRoute } from '@angular/router';
@@ -8,6 +8,9 @@ import { ToastService } from 'src/app/services/toast.service';
 import { GeneralHelperService } from 'src/app/services/general-helper.service';
 import { IndividualPlanDTO } from 'src/app/api/generated/model/individualPlanDTO';
 import { VisualHelperService } from 'src/app/services/visual-helper.service';
+import { Platform } from '@ionic/angular';
+import { Observable, fromEvent } from 'rxjs';
+import { pluck } from 'rxjs/operators';
 
 @Component({
   selector: 'app-client-detail',
@@ -15,6 +18,8 @@ import { VisualHelperService } from 'src/app/services/visual-helper.service';
   styleUrls: ['./client-detail.page.scss'],
 })
 export class ClientDetailPage implements OnInit {
+  @ViewChild('imageInput', { static: false }) imageInput: ElementRef;
+
   public client: Client;
   public individualPlans: IndividualPlanDTO[];
   public lat: number;
@@ -28,7 +33,8 @@ export class ClientDetailPage implements OnInit {
     private clientsService: ClientsService,
     private toaster: ToastService,
     public generalHelper: GeneralHelperService,
-    public visualHelper: VisualHelperService
+    public visualHelper: VisualHelperService,
+    private platform: Platform
   ) { }
 
   async ngOnInit() {
@@ -49,6 +55,11 @@ export class ClientDetailPage implements OnInit {
   }
 
   public async changeClientProfilePicture() {
+    if (this.platform.is('capacitor') === false) {
+      this.imageInput.nativeElement.click();
+      return;
+    }
+
     let img = await this.imageHelper.getImageAsBase64FromDevice();
 
     if (img != null) {
@@ -63,5 +74,37 @@ export class ClientDetailPage implements OnInit {
         })
         .catch(() => this.toaster.showErrorToast('Changing image failed'));
     }
+  }
+
+  // https://stackoverflow.com/questions/39272970/angular-2-encode-image-to-base64
+  public processFile(ev: any) {
+    let files = ev.target.files;
+    let file: File = files[0];
+
+    if (files && file) {
+      let reader = new FileReader();
+
+      this.imageToBase64(reader, file)
+        .subscribe(base64image => {
+
+          if (base64image != null) {
+            let dto: PictureDTO = {
+              pictureUri: base64image
+            };
+
+            this.clientsService.apiClientsChangeProfilePicturePost(this.client.id, dto)
+              .then(async () => {
+                let client = await this.clientCache.reloadSingleClient(this.client.id);
+                this.client = client;
+              })
+              .catch(() => this.toaster.showErrorToast('Changing image failed'));
+          }
+        });
+    }
+  }
+
+  private imageToBase64(fileReader: FileReader, fileToRead: File): Observable<string> {
+    fileReader.readAsDataURL(fileToRead);
+    return fromEvent(fileReader, 'load').pipe(pluck('currentTarget', 'result'));
   }
 }

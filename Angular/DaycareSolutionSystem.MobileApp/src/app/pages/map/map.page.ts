@@ -6,9 +6,10 @@ import { GeolocationHelperService } from 'src/app/services/geolocation/geolocati
 import { Address } from 'src/app/services/geolocation/address';
 import { RegisteredActionBasicDTO } from 'src/app/api/generated/model/registeredActionBasicDTO';
 import { ClientWithNextActionDTO } from 'src/app/api/generated/model/clientWithNextActionDTO';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, Platform } from '@ionic/angular';
 import { MapMenuComponent } from './map-menu/map-menu.component';
 import { VisualHelperService } from 'src/app/services/visual-helper.service';
+import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator/ngx';
 
 @Component({
   selector: 'app-map',
@@ -31,7 +32,14 @@ export class MapPage implements OnInit {
     private clientsService: ClientsService,
     private geolocationHelper: GeolocationHelperService,
     private popoverController: PopoverController,
-    public visualHelper: VisualHelperService) { }
+    public visualHelper: VisualHelperService,
+    private platform: Platform,
+    private launchNavigator: LaunchNavigator
+  ) { }
+
+  public isMobileNativeApp(): boolean {
+    return this.platform.is('capacitor');
+  }
 
   async ngOnInit() {
     this.displaySelfMarker = true;
@@ -99,8 +107,20 @@ export class MapPage implements OnInit {
     this.displayedClientAction = null;
   }
 
-  public navigateInExternalApp() {
-    console.log('open external app');
+  public async navigateInExternalApp() {
+    let isAvailable = await this.launchNavigator.isAppAvailable(this.launchNavigator.APP.GOOGLE_MAPS);
+    let appToOpen;
+
+    if (isAvailable) {
+      appToOpen = this.launchNavigator.APP.GOOGLE_MAPS;
+    } else {
+      console.warn('Google Maps not available - falling back to user selection');
+      appToOpen = this.launchNavigator.APP.USER_SELECT;
+    }
+    this.launchNavigator.navigate('London, UK', {
+      app: appToOpen
+    });
+
   }
 
   public async presentPopover(ev: any) {

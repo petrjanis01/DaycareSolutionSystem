@@ -10,7 +10,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Schedule
 
         public Guid ClientId { get; set; }
 
-        public Guid EmployeeId { get; set; }
+        public Guid? EmployeeId { get; set; }
 
         public Guid ActionId { get; set; }
 

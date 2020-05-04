@@ -1,9 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { RegisteredActionDTO, RegisteredActionsService } from 'src/app/api/generated';
 import { ToastService } from 'src/app/services/toast.service';
 import { ImageHelperService } from 'src/app/services/image-helper.service';
 import { GeneralHelperService } from 'src/app/services/general-helper.service';
+import { Platform } from '@ionic/angular';
+import { Observable, fromEvent } from 'rxjs';
+import { pluck } from 'rxjs/operators';
 
 @Component({
   selector: 'app-client-action-detail',
@@ -11,7 +14,7 @@ import { GeneralHelperService } from 'src/app/services/general-helper.service';
   styleUrls: ['./client-action-detail.component.scss'],
 })
 export class ClientActionDetailComponent implements OnInit {
-
+  @ViewChild('imageInput', { static: false }) imageInput: ElementRef;
   @Input() action: RegisteredActionDTO;
 
   public actionEditable: RegisteredActionDTO;
@@ -24,7 +27,8 @@ export class ClientActionDetailComponent implements OnInit {
     private registeredActionsService: RegisteredActionsService,
     private toaster: ToastService,
     private imageHelper: ImageHelperService,
-    public generalHelper: GeneralHelperService
+    public generalHelper: GeneralHelperService,
+    private platform: Platform
   ) { }
 
   ngOnInit() {
@@ -63,11 +67,38 @@ export class ClientActionDetailComponent implements OnInit {
   }
 
   public async addPicture() {
+    if (this.platform.is('capacitor') === false) {
+      this.imageInput.nativeElement.click();
+      return;
+    }
+
     let image = await this.imageHelper.getImageAsBase64FromDevice();
 
     if (image != null) {
       this.actionEditable.photo.pictureUri = image;
     }
+  }
+
+  public processFile(ev: any) {
+    let files = ev.target.files;
+    let file: File = files[0];
+
+    if (files && file) {
+      let reader = new FileReader();
+
+      this.imageToBase64(reader, file)
+        .subscribe(base64image => {
+
+          if (base64image != null) {
+            this.actionEditable.photo.pictureUri = base64image;
+          }
+        });
+    }
+  }
+
+  private imageToBase64(fileReader: FileReader, fileToRead: File): Observable<string> {
+    fileReader.readAsDataURL(fileToRead);
+    return fromEvent(fileReader, 'load').pipe(pluck('currentTarget', 'result'));
   }
 
   private mapActionToEditable() {

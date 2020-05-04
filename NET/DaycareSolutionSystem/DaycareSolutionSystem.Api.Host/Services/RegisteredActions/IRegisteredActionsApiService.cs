@@ -9,7 +9,9 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
     {
         Dictionary<DateTime, List<RegisteredActionDO>> GetRegisteredActionsPerDay(int count, DateTime date, Guid? lastActionDisplayedId);
 
-        RegisteredClientAction UpdateRegisteredAction(RegisteredClientAction action);
+        public RegisteredClientAction UpdateRegisteredActionPersistent(RegisteredClientAction action);
+
+        public RegisteredActionDTO UpdateRegisteredAction(RegisteredActionDTO dto);
 
         void CreateRegisteredAction(RegisteredClientAction action);
 

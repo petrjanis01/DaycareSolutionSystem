@@ -1,7 +1,18 @@
 #!/bin/sh
 
+# create config files
+if [ ! -e /usr/local/apache2/htdocs/manager_app/assets/config.json ]; then
+    touch /usr/local/apache2/htdocs/manager_app/assets/config.json
+fi
+
+if [ ! -e /usr/local/apache2/htdocs/caregiver_app/assets/config.json ]; then
+    touch /usr/local/apache2/htdocs/caregiver_app/assets/config.json
+fi
+
+echo "{\n\t\"apiBaseUrl\": \"$(printenv API_BASE_URL)\"\n}" > /usr/local/apache2/htdocs/manager_app/assets/config.json
+echo "{\n\t\"googleMapsApiKey\": \"$(printenv MAP_KEY)\"\n}" > /usr/local/apache2/htdocs/manager_app/assets/config.json
 echo "{\n\t\"apiBaseUrl\": \"$(printenv API_BASE_URL)\"\n}" > /usr/local/apache2/htdocs/caregiver_app/assets/config.json
-echo "{\n\t\"apiBaseUrl\": \"$(printenv API_BASE_URL)\"\n}" > /usr/local/apache2/htdocs/caregiver_app/assets/config.json
+echo "{\n\t\"googleMapsApiKey\": \"$(printenv MAP_KEY)\"\n}" > /usr/local/apache2/htdocs/caregiver_app/assets/config.json
 
 # start Apache
 set -e

@@ -237,7 +237,7 @@ export class ScheduleComponent implements OnInit {
     this.spinner.show();
 
     movedAction.plannedStartDateTime = newStart;
-    let newAction = await this.registeredActionsService.apiRegisteredActionsRegisteredActionPut(movedAction);
+    let newAction = await this.registeredActionsService.apiRegisteredActionsRegisteredActionPersistentPut(movedAction);
 
     let action = this.registeredActions.find(rc => rc.id === newAction.id);
     let index = this.registeredActions.indexOf(action);

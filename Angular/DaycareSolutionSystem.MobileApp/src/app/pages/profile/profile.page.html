@@ -12,6 +12,7 @@
       </ion-avatar>
     </div>
     <div class="flex-center">
+      <input type="file" hidden #imageInput accept="image/*" (change)="processFile($event)">
       <ion-button fill="clear" size="small" (click)="changePhoto()">
         <ion-icon name="camera" slot="icon-only"></ion-icon>
         Change photo
@@ -24,10 +25,10 @@
       </ion-button>
     </div>
     <div class="flex-center">
-      <ion-button color="secondary" (click)="changePassword()">
+      <!-- <ion-button color="secondary" (click)="changePassword()">
         <ion-icon name="refresh" slot="icon-only"></ion-icon>
         Change password
-      </ion-button>
+      </ion-button> -->
     </div>
   </ng-container>
 </ion-content>

@@ -8,7 +8,7 @@ import { NotifiactionService } from './notification.service';
 @Injectable({ providedIn: 'root' })
 export class GeolocationHelperService {
     private googleMapApiUrlBase = 'https://maps.googleapis.com/maps/api';
-    private apiKey = AppConfig.settings.googleMaps.apiKey;
+    private apiKey = AppConfig.settings.googleMapsApiKey;
 
     constructor(private http: HttpClient, private notifications: NotifiactionService) { }
 

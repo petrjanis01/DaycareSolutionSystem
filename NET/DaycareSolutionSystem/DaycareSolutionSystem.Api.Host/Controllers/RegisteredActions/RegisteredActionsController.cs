@@ -68,8 +68,17 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
         [Route("registered-action")]
         public RegisteredActionDTO UpdateRegisteredAction(RegisteredActionDTO dto)
         {
+            dto = _registeredActionsApiService.UpdateRegisteredAction(dto);
+
+            return dto;
+        }
+
+        [HttpPut]
+        [Route("registered-action-persistent")]
+        public RegisteredActionDTO UpdateRegisteredActionPersistent(RegisteredActionDTO dto)
+        {
             var action = MapDtoToRegisteredAction(dto);
-            var updatedAction = _registeredActionsApiService.UpdateRegisteredAction(action);
+            var updatedAction = _registeredActionsApiService.UpdateRegisteredActionPersistent(action);
             var updatedDto = MapRegisteredActionToDto(updatedAction);
 
             return updatedDto;
@@ -183,9 +192,13 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.RegisteredActions
                 action.Id = dto.Id.Value;
             }
 
+            if (dto.EmployeeId.HasValue)
+            {
+                action.EmployeeId = dto.EmployeeId.Value;
+            }
+
             action.ActionId = dto.ActionId;
             action.PlannedStartDateTime = dto.PlannedStartDateTime;
-            action.EmployeeId = dto.EmployeeId;
             action.ActionFinishedDateTime = dto.ActionFinishedDateTime;
             action.ActionStartedDateTime = dto.ActionStartedDateTime;
             action.ClientId = dto.ClientId;

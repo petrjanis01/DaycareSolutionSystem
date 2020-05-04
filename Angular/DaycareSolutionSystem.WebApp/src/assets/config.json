@@ -1,6 +1,4 @@
 {
     "apiBaseUrl": "http://localhost:57316",
-    "googleMaps": {
-        "apiKey": "AIzaSyCQsd5nCdDeiSvHmgbcSt8Fbk7AOLqPmZw"
-    }
+    "googleMapsApiKey": "AIzaSyCQsd5nCdDeiSvHmgbcSt8Fbk7AOLqPmZw"
 }

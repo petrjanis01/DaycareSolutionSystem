@@ -5,11 +5,11 @@ import { APP_BASE_HREF } from '@angular/common';
 export class GeneralHelperService {
     constructor(@Inject(APP_BASE_HREF) private baseHref: string) { }
 
-    private weekday: Array<string> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    public weekdays: Array<string> = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     private gender: Array<string> = ['Male', 'Female'];
 
     public getDayNameByIndex(index: number): string {
-        return this.weekday[index];
+        return this.weekdays[index];
     }
 
     public getGenderString(index: number): string {

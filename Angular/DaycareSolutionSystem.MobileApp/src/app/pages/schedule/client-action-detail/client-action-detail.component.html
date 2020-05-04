@@ -72,6 +72,7 @@
     </ion-item>
 
     <ion-item lines="none">
+      <input type="file" hidden #imageInput accept="image/*" (change)="processFile($event)">
       <ion-button fill="clear" slot="end" (click)="addPicture()">
         <ion-icon name="camera" slot="icon-only"></ion-icon>
         <ng-container *ngIf="!actionEditable.photo.pictureUri">

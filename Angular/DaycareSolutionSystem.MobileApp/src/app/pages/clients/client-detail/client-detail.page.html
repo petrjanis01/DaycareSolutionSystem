@@ -15,6 +15,7 @@
       </ion-avatar>
     </div>
     <div class="flex-center">
+      <input type="file" hidden #imageInput accept="image/*" (change)="processFile($event)">
       <ion-button ion-button fill="clear" size="small" (click)="changeClientProfilePicture()">
         <ion-icon name="camera" slot="icon-only"></ion-icon>
         Change photo
@@ -37,7 +38,7 @@
 
     <ion-item lines="full" mode="md" *ngIf="client.address.city">
       <ion-label>Phone number</ion-label>
-      {{client.phoneNumber}}
+      <a *ngIf="client.phoneNumber" [href]="'tel:' + client.phoneNumber">{{client.phoneNumber}}</a>
     </ion-item>
 
     <ion-item lines="full" mode="md" *ngIf="client.address.city">
