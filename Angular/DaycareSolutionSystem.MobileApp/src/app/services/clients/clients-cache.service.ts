@@ -6,6 +6,7 @@ import { ImageHelperService } from '../image-helper.service';
 import { GeolocationHelperService } from '../geolocation/geolocation-helper-service';
 import { Address } from '../geolocation/address';
 import { GeneralHelperService } from '../general-helper.service';
+import { ToastService } from '../toast.service';
 
 @Injectable({ providedIn: 'root' })
 export class ClientsCacheService {
@@ -22,7 +23,8 @@ export class ClientsCacheService {
         private loadingController: LoadingController,
         private imageHelper: ImageHelperService,
         private geolocationHelper: GeolocationHelperService,
-        private helper: GeneralHelperService
+        private helper: GeneralHelperService,
+        private toasterService: ToastService
     ) { }
 
     public async loadClientsCache() {
@@ -35,12 +37,13 @@ export class ClientsCacheService {
         });
         await loading.present();
 
-        await this.loadDefaulProfilePicture();
-        let deviceCords = await this.geolocationHelper.getCurrentLocation();
+        try {
+            await this.loadDefaulProfilePicture();
+            let deviceCords = await this.geolocationHelper.getCurrentLocation();
+            let clientDtos = await this.clientsService.apiClientsGet(null);
+            let clients = new Array<Client>();
 
-        this.clientsService.apiClientsGet(null).then(async dtos => {
-            this.clients = new Array<Client>();
-            dtos.forEach(async dto => {
+            for (let dto of clientDtos) {
                 let client = await this.mapDtoToClient(dto);
                 await this.getCoordinatesIfNeeded(client);
                 await this.getAddressIfNeeded(client);
@@ -50,12 +53,16 @@ export class ClientsCacheService {
                     client.distanceFromDevice = Math.round(distance);
                 }
 
-                this.clients.push(client);
-            });
-        }).finally(() => {
+                clients.push(client);
+            }
+            this.clients = clients;
+
+        } catch {
+            this.toasterService.showErrorToast('Failed to load clients');
+        } finally {
             loading.dismiss();
             this.alreadyLoaded();
-        });
+        }
     }
 
     public async reloadSingleClient(id: string): Promise<Client> {
