@@ -3,13 +3,12 @@ import { ClientsCacheService } from 'src/app/services/clients/clients-cache.serv
 import { Client } from 'src/app/services/clients/client';
 import { ClientsService } from 'src/app/api/generated';
 import { GeolocationHelperService } from 'src/app/services/geolocation/geolocation-helper-service';
-import { Address } from 'src/app/services/geolocation/address';
 import { RegisteredActionBasicDTO } from 'src/app/api/generated/model/registeredActionBasicDTO';
 import { ClientWithNextActionDTO } from 'src/app/api/generated/model/clientWithNextActionDTO';
 import { PopoverController, Platform } from '@ionic/angular';
 import { MapMenuComponent } from './map-menu/map-menu.component';
 import { VisualHelperService } from 'src/app/services/visual-helper.service';
-import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator/ngx';
+import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
 
 @Component({
   selector: 'app-map',
@@ -108,15 +107,17 @@ export class MapPage implements OnInit {
   }
 
   public async navigateInExternalApp() {
+    console.log('called');
     let isAvailable = await this.launchNavigator.isAppAvailable(this.launchNavigator.APP.GOOGLE_MAPS);
     let appToOpen;
-
+    console.log(appToOpen);
     if (isAvailable) {
       appToOpen = this.launchNavigator.APP.GOOGLE_MAPS;
     } else {
       console.warn('Google Maps not available - falling back to user selection');
       appToOpen = this.launchNavigator.APP.USER_SELECT;
     }
+    console.log('opening app');
     this.launchNavigator.navigate('London, UK', {
       app: appToOpen
     });

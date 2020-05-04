@@ -16,6 +16,7 @@ import { SharedComponentsModule } from './shared-components/share-components.mod
 import { AuthGuardService } from './services/auth-guard.service';
 import { JsonDateInterceptor } from './api/json-date-interceptor';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
+import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
 
 export function initializeApp(appConfig: AppConfig) {
   return () => appConfig.load();
@@ -44,6 +45,7 @@ function trimLastSlashFromUrl(baseUrl: string) {
     StatusBar,
     SplashScreen,
     AuthGuardService,
+    LaunchNavigator,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: JsonDateInterceptor, multi: true },
     AppConfig,
