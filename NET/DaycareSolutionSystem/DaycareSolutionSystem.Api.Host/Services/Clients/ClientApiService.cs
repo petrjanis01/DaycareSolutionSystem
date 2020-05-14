@@ -4,6 +4,7 @@ using System.Linq;
 using DaycareSolutionSystem.Api.Host.Controllers.Clients;
 using DaycareSolutionSystem.Database.DataContext;
 using DaycareSolutionSystem.Database.Entities.Entities;
+using DaycareSolutionSystem.Entities.Enums;
 using DaycareSolutionSystem.Helpers;
 using Microsoft.AspNetCore.Http;
 
@@ -19,6 +20,14 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
         public List<Client> GetAgreedActionsLinkedClients(Guid? employeeId)
         {
             employeeId ??= GetCurrentUser().EmployeeId;
+
+            var employee = DataContext.Employees.Find(employeeId);
+            if (employee.EmployeePosition == EmployeePosition.Manager)
+            {
+                var allClients = DataContext.Clients.OrderBy(cl => cl.FirstName)
+                    .ThenBy(cl => cl.Surname).ToList();
+                return allClients;
+            }
 
             var clients = DataContext.AgreedClientActions
                 .Where(ca => ca.EmployeeId == employeeId)

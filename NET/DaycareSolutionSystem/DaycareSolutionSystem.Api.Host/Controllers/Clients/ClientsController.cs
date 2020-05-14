@@ -111,7 +111,6 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
             return dto;
         }
 
-        // TODO should Client be deleted?
         [HttpDelete]
         [Authorize(Roles = "Manager")]
         public void DeleteClient(Guid clientId)
@@ -235,7 +234,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Clients
         {
             var dto = new RegisteredActionBasicDTO();
             dto.Id = action.Id;
-            dto.Name = action.AgreedClientAction.Action.Name;
+            dto.Name = action.AgreedClientActionId.HasValue ? action.AgreedClientAction.Action.Name : action.Action.Name;
             dto.Date = action.PlannedStartDateTime;
             dto.Time = action.PlannedStartDateTime;
 

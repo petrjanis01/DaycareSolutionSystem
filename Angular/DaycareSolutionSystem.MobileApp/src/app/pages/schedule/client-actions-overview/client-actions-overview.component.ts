@@ -1,5 +1,5 @@
 import { Component, Input, EventEmitter, OnInit, Output } from '@angular/core';
-import { RegisteredActionsClientDTO } from 'src/app/api/generated';
+import { RegisteredActionsClientDTO, ClientsService } from 'src/app/api/generated';
 import { ClientsCacheService } from 'src/app/services/clients/clients-cache.service';
 import { Client } from 'src/app/services/clients/client';
 import { ModalController } from '@ionic/angular';
@@ -21,13 +21,20 @@ export class ClientActionsOverviewComponent implements OnInit {
   constructor(
     private clientCache: ClientsCacheService,
     private modalController: ModalController,
-    public visualHelper: VisualHelperService) { }
+    public visualHelper: VisualHelperService,
+    private clientsService: ClientsService) { }
 
   async ngOnInit() {
     await this.clientCache.loaded;
 
     let clientId = this.clientActions.clientId;
     this.client = this.clientCache.getClientById(clientId);
+
+    if (this.client == null) {
+      let dto = await this.clientsService.apiClientsSingleClientGet(clientId);
+      let client = await this.clientCache.mapDtoToClient(dto);
+      this.client = client;
+    }
   }
 
   public calculateEstimatedEndTime(date: Date, minutes: number): Date {

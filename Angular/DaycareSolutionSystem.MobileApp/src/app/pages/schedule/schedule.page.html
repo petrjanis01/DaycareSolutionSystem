@@ -4,21 +4,19 @@
   </ion-toolbar>
   <ion-toolbar>
     <div class="flex-center">
-      <ion-button slot="icon-only" [disabled]="!isPreviousBtnEnabled" fill="clear"
-        (click)="previousDayClicked()">
+      <ion-button slot="icon-only" [disabled]="!isPreviousBtnEnabled" fill="clear" (click)="previousDayClicked()">
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
 
       <div class="flex-align-center" style="font-size: 1.2em;" (click)="openDatePicker()">
         {{selectedDate|date}}
-        <ion-datetime *ngIf="minDate && maxDate" #datePicker hidden [(ngModel)]="selectedDate"
-          (ionChange)="selectedDateChange($event)" min="{{ionDateTimeConsumableMinDate}}"
+        <ion-datetime *ngIf="ionDateTimeConsumableMinDate && ionDateTimeConsumableMaxDate" #datePicker hidden
+          [(ngModel)]="selectedDate" (ionChange)="selectedDateChange($event)" min="{{ionDateTimeConsumableMinDate}}"
           max="{{ionDateTimeConsumableMaxDate}}">
         </ion-datetime>
       </div>
 
-      <ion-button slot="icon-only" fill="clear" [disabled]="!isNextBtnEnabled"
-        (click)="nextDayClicked()">
+      <ion-button slot="icon-only" fill="clear" [disabled]="!isNextBtnEnabled" (click)="nextDayClicked()">
         <ion-icon name="arrow-forward"></ion-icon>
       </ion-button>
     </div>
@@ -26,6 +24,7 @@
 </ion-header>
 
 <ion-content>
+  <p *ngIf="registeredActions && registeredActions.length == 0" style="text-align: center;">No registered actions</p>
   <ng-container *ngFor="let registeredAction of registeredActions">
     <ion-item-divider class="item-separator">
       <ion-label>

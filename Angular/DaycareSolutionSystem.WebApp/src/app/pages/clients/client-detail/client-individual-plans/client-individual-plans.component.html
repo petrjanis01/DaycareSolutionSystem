@@ -3,7 +3,7 @@
     <div class=" col-md-10" [@editOpenSlider]="editOpenCounter">
         <div class=" card" *ngIf="editOpenCounter == 0">
             <div class=" card-header row justify-content-between">
-                <h3 class="title" style="margin-top: 10px;">Individual plans</h3>
+                <h3 class="title" style="margin-top: 10px; margin-left: 10px">Individual plans</h3>
                 <button class="btn btn-icon btn-simple btn-danger ml-auto" style="margin-right: 10px;"
                     (click)="addPlan()">
                     <i class="tim-icons icon-simple-add"></i></button>
@@ -27,11 +27,11 @@
                                 <td>{{plan.validFrom  | date}}</td>
                                 <td>{{plan.validUntil  | date}}</td>
                                 <td style="display: flex;">
-                                    <button class="btn btn-icon btn-simple btn-danger ml-auto" style="margin-right: 5px"
-                                        (click)="openPlanEdit(plan.id)">
+                                    <button class="btn btn-icon btn-simple btn-danger ml-auto"
+                                        style="margin-right: 10px" (click)="openPlanEdit(plan.id)">
                                         <i class="tim-icons icon-pencil"></i>
                                     </button>
-                                    <button class="btn btn-icon btn-simple btn-danger"
+                                    <button class="btn btn-icon btn-simple btn-danger" style="margin-right: 10px"
                                         [disabled]="plan.actionsForDay.length > 0" (click)="deletePlan(plan.id)">
                                         <i class="tim-icons icon-trash-simple"></i>
                                     </button>

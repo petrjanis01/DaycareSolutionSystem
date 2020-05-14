@@ -112,9 +112,7 @@ export class SchedulePage implements OnInit {
     date.setDate(date.getDate() - 1);
     this.selectedDate = date.toISOString();
     this.reloadData();
-
-    let minDateCopy = new Date(this.minDate);
-    this.isPreviousBtnEnabled = date.setDate(date.getDate() - 1) < minDateCopy.setHours(0, 0, 0, 0);
+    this.setPreviousDayBtnEnablity(date);
   }
 
   public nextDayClicked() {
@@ -122,36 +120,40 @@ export class SchedulePage implements OnInit {
     date.setDate(date.getDate() + 1);
     this.selectedDate = date.toISOString();
     this.reloadData();
+    this.setNextDayBtnEnablity(date);
+  }
 
+  private setNextDayBtnEnablity(date: Date) {
     let maxDateCopy = new Date(this.maxDate);
-    this.isNextBtnEnabled = date.setDate(date.getDate() + 1) > maxDateCopy.setHours(0, 0, 0, 0);
+    this.isNextBtnEnabled = !(date.setDate(date.getDate()) > maxDateCopy.setHours(0, 0, 0, 0));
+  }
+
+  private setPreviousDayBtnEnablity(date: Date) {
+    let minDateCopy = new Date(this.minDate);
+    this.isPreviousBtnEnabled = !(date.setDate(date.getDate()) < minDateCopy.setHours(0, 0, 0, 0));
   }
 
   public async openDatePicker() {
     await this.datePicker.open();
   }
 
-  // TODO solve enabling/disabling btns
   public selectedDateChange(event: any) {
     if (event && event.detail && event.detail.value) {
       let date = event.detail.value;
       this.selectedDate = new Date(date).toISOString();
       this.reloadData();
-
-      let minDateCopy = new Date(this.minDate);
-      this.isPreviousBtnEnabled = new Date(date).setDate(date.getDate() - 1) < minDateCopy.setHours(0, 0, 0, 0);
-
-      let maxDateCopy = new Date(this.maxDate);
-      this.isNextBtnEnabled = new Date(date).setDate(date.getDate() + 1) > maxDateCopy.setHours(0, 0, 0, 0);
+      let selectedDate = new Date(this.selectedDate);
+      this.setNextDayBtnEnablity(selectedDate);
+      this.setPreviousDayBtnEnablity(selectedDate);
     }
   }
 
   public convertDateToIonDateTimeConsumableString(date: Date) {
     let year = date.getFullYear().toString();
-    let month = date.getMonth().toString();
+    let month = (date.getMonth() + 1).toString();
     let day = date.getDate().toString();
 
-    if (date.getMonth() < 10) {
+    if ((date.getMonth() + 1) < 10) {
       month = `0${month}`;
     }
 

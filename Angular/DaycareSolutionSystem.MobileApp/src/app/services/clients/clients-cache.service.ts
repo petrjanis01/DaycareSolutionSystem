@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
-import { ClientsService, ClientDTO, AddressDTO } from 'src/app/api/generated';
+import { ClientsService, ClientDTO, AddressDTO, CoordinatesDTO } from 'src/app/api/generated';
 import { Client } from './client';
 import { ImageHelperService } from '../image-helper.service';
 import { GeolocationHelperService } from '../geolocation/geolocation-helper-service';
@@ -63,6 +63,21 @@ export class ClientsCacheService {
             loading.dismiss();
             this.alreadyLoaded();
         }
+
+        let cords = await this.geolocationHelper.getCurrentLocation();
+        if (cords == null) {
+            return;
+        }
+
+        setInterval(() => this.recalculateDeviceClientDistance(), 60 * 1000);
+    }
+
+    private async recalculateDeviceClientDistance() {
+        let deviceCords = await this.geolocationHelper.getCurrentLocation();
+        for (let client of this.clients) {
+            let distance = this.geolocationHelper.getDistnaceBetween2Coordinates(deviceCords, client.address.coordinates);
+            client.distanceFromDevice = Math.round(distance);
+        }
     }
 
     public async reloadSingleClient(id: string): Promise<Client> {
@@ -81,7 +96,7 @@ export class ClientsCacheService {
         this.defaultProfilePicture = img;
     }
 
-    private async mapDtoToClient(dto: ClientDTO): Promise<Client> {
+    public async mapDtoToClient(dto: ClientDTO): Promise<Client> {
         let client = new Client();
         client.id = dto.id;
         client.firstName = dto.firstName;
@@ -103,7 +118,7 @@ export class ClientsCacheService {
         return client;
     }
 
-    private async getAddressIfNeeded(client: Client) {
+    public async getAddressIfNeeded(client: Client) {
         let address = new Address(client.address);
 
         let isAddressComplete = address.city == null || address.buildingNumber == null || address.postCode == null;
@@ -116,7 +131,7 @@ export class ClientsCacheService {
         }
     }
 
-    private async getCoordinatesIfNeeded(client: Client) {
+    public async getCoordinatesIfNeeded(client: Client) {
         let address = new Address(client.address);
 
         if (address.coordinates == null) {

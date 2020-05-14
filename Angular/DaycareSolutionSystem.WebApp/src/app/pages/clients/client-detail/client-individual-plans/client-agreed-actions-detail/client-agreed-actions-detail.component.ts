@@ -119,6 +119,7 @@ export class ClientAgreedActionsDetailComponent implements OnInit {
     let day = newStart.getDay();
     actionToMove.day = day as DayOfWeek;
 
+    console.log(actionToMove);
     await this.agreedActionsService.apiAgreedActionPut(actionToMove);
     await this.reloadAgreedActions();
     this.spinner.hide();

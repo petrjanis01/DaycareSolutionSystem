@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientsCacheService } from 'src/app/services/clients/clients-cache.service';
 import { Client } from 'src/app/services/clients/client';
-import { ClientsService } from 'src/app/api/generated';
+import { ClientsService, CoordinatesDTO } from 'src/app/api/generated';
 import { GeolocationHelperService } from 'src/app/services/geolocation/geolocation-helper-service';
 import { RegisteredActionBasicDTO } from 'src/app/api/generated/model/registeredActionBasicDTO';
 import { ClientWithNextActionDTO } from 'src/app/api/generated/model/clientWithNextActionDTO';
@@ -46,15 +46,21 @@ export class MapPage implements OnInit {
 
     await this.cache.loaded;
     await this.loadCLientsWithNextActions();
-    this.getMapStartingPostion();
-  }
-
-  private async getMapStartingPostion() {
     let cords = await this.geolocationHelper.getCurrentLocation();
     if (cords == null && this.clients[0]) {
       cords = this.clients[0].address.coordinates;
       this.displaySelfMarker = false;
+
+      this.mapStartLat = +cords.latitude;
+      this.mapStartLng = +cords.longitude;
+      return;
     }
+    this.getMapStartingPostion();
+    setInterval(() => this.getMapStartingPostion(), 60 * 1000);
+  }
+
+  private async getMapStartingPostion() {
+    let cords = await this.geolocationHelper.getCurrentLocation();
 
     this.mapStartLat = +cords.latitude;
     this.mapStartLng = +cords.longitude;
@@ -75,10 +81,23 @@ export class MapPage implements OnInit {
   private async processClients(clientsWithNextAction: ClientWithNextActionDTO[]) {
     let clients = new Array<Client>();
 
-    clientsWithNextAction.forEach(clientWithNextAction => {
+    let deviceCords = await this.geolocationHelper.getCurrentLocation();
+
+    for (let clientWithNextAction of clientsWithNextAction) {
       let client = this.cache.getClientById(clientWithNextAction.clientId);
+      if (client == null) {
+        let dto = await this.clientsService.apiClientsSingleClientGet(clientWithNextAction.clientId);
+        client = await this.cache.mapDtoToClient(dto);
+        await this.cache.getCoordinatesIfNeeded(client);
+        await this.cache.getAddressIfNeeded(client);
+
+        if (deviceCords != null) {
+          let distance = this.geolocationHelper.getDistnaceBetween2Coordinates(deviceCords, client.address.coordinates);
+          client.distanceFromDevice = Math.round(distance);
+        }
+      }
       clients.push(client);
-    });
+    }
 
     this.clients = clients;
     this.nextClientActions = clientsWithNextAction;
@@ -86,16 +105,16 @@ export class MapPage implements OnInit {
   }
 
   clientOnMapClicked(id: string) {
-    this.clients.forEach(client => {
-      if (client.id === id) {
-        this.displayedClient = client;
+    this.nextClientActions.forEach(action => {
+      if (action.clientId === id) {
+        this.displayedClientAction = action.nextAction;
         return;
       }
     });
 
-    this.nextClientActions.forEach(action => {
-      if (action.clientId === id) {
-        this.displayedClientAction = action.nextAction;
+    this.clients.forEach(client => {
+      if (client.id === id) {
+        this.displayedClient = client;
         return;
       }
     });
