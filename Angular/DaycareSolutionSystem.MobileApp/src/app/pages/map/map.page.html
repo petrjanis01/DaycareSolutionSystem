@@ -56,7 +56,7 @@
           <div *ngIf="isMobileNativeApp() == false" class="navigate" (click)="closeDetail()">
             <ion-icon name="close"></ion-icon>
           </div>
-          <div *ngIf="isMobileNativeApp()" class="navigate" (click)="navigateInExternalApp()">
+          <div *ngIf="isMobileNativeApp()" class="navigate" (click)="navigateInExternalApp(displayedClient.id)">
             <ion-icon name="navigate"></ion-icon>
           </div>
         </ion-col>

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AppConfig } from '../../config/app.config';
 import { map } from 'rxjs/operators';
 import { Address } from './address';
-import { Plugins } from '@capacitor/core';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { CoordinatesDTO } from 'src/app/api/generated';
 import { Platform } from '@ionic/angular';
 import { ToastService } from '../toast.service';
@@ -14,11 +14,16 @@ export class GeolocationHelperService {
     private googleMapApiUrlBase = 'https://maps.googleapis.com/maps/api';
     private apiKey = AppConfig.settings.googleMapsApiKey;
 
-    constructor(private http: HttpClient, private platform: Platform, private toast: ToastService) { }
+    constructor(
+        private http: HttpClient,
+        private platform: Platform,
+        private toast: ToastService,
+        private geolocation: Geolocation
+    ) { }
 
     public async getCurrentLocation(): Promise<CoordinatesDTO> {
         if (this.platform.is('capacitor')) {
-            let result = await Plugins.Geolocation.getCurrentPosition();
+            let result = await this.geolocation.getCurrentPosition();
 
             let coordinates: CoordinatesDTO = {
                 latitude: result.coords.latitude,

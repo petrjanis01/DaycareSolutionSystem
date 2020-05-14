@@ -17,6 +17,7 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { JsonDateInterceptor } from './api/json-date-interceptor';
 import { APP_BASE_HREF, PlatformLocation, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 export function initializeApp(appConfig: AppConfig) {
   return () => appConfig.load();
@@ -46,6 +47,7 @@ function trimLastSlashFromUrl(baseUrl: string) {
     SplashScreen,
     AuthGuardService,
     LaunchNavigator,
+    Geolocation,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: JsonDateInterceptor, multi: true },

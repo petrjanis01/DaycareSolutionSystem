@@ -9,6 +9,7 @@ import { PopoverController, Platform } from '@ionic/angular';
 import { MapMenuComponent } from './map-menu/map-menu.component';
 import { VisualHelperService } from 'src/app/services/visual-helper.service';
 import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
+import { LaunchNavigatorOptions } from 'plugins/uk.co.workingedge.phonegap.plugin.launchnavigator/uk.co.workingedge.phonegap.plugin.launchnavigator';
 
 @Component({
   selector: 'app-map',
@@ -135,22 +136,13 @@ export class MapPage implements OnInit {
     this.displayedClientAction = null;
   }
 
-  public async navigateInExternalApp() {
-    console.log('called');
-    let isAvailable = await this.launchNavigator.isAppAvailable(this.launchNavigator.APP.GOOGLE_MAPS);
-    let appToOpen;
-    console.log(appToOpen);
-    if (isAvailable) {
-      appToOpen = this.launchNavigator.APP.GOOGLE_MAPS;
-    } else {
-      console.warn('Google Maps not available - falling back to user selection');
-      appToOpen = this.launchNavigator.APP.USER_SELECT;
-    }
-    console.log('opening app');
-    this.launchNavigator.navigate('London, UK', {
-      app: appToOpen
-    });
+  public async navigateInExternalApp(clientId: string) {
+    let client = this.clients.find(cl => cl.id === clientId);
 
+    this.launchNavigator.navigate(`${client.address.coordinates.latitude} ${client.address.coordinates.longitude}`).then(
+      success => console.log('Launched navigator'),
+      error => console.log('Error launching navigator', error)
+    );
   }
 
   public async presentPopover(ev: any) {

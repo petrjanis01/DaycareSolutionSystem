@@ -39,8 +39,12 @@ export class ClientsCacheService {
 
         try {
             await this.loadDefaulProfilePicture();
+            console.log('location');
             let deviceCords = await this.geolocationHelper.getCurrentLocation();
+            console.log('loc done');
+            console.log(deviceCords);
             let clientDtos = await this.clientsService.apiClientsGet(null);
+            console.log('clients done');
             let clients = new Array<Client>();
 
             for (let dto of clientDtos) {
