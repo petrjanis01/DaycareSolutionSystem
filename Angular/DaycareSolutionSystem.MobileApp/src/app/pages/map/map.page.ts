@@ -25,6 +25,8 @@ export class MapPage implements OnInit {
   public displayedClientAction: RegisteredActionBasicDTO;
   public allClientsOnMap: boolean;
   public nearbyClientsCount: number;
+  public devicePositionLat: number;
+  public devicePositionLng: number;
 
   constructor(
     private cache: ClientsCacheService,
@@ -41,20 +43,26 @@ export class MapPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.displaySelfMarker = true;
     this.allClientsOnMap = false;
 
     await this.cache.loaded;
     await this.loadCLientsWithNextActions();
     let cords = await this.geolocationHelper.getCurrentLocation();
+
     if (cords == null && this.clients[0]) {
       cords = this.clients[0].address.coordinates;
       this.displaySelfMarker = false;
 
       this.mapStartLat = +cords.latitude;
       this.mapStartLng = +cords.longitude;
+      this.devicePositionLat = +cords.latitude;
+      this.devicePositionLng = +cords.longitude;
       return;
     }
+
+    this.mapStartLat = +cords.latitude;
+    this.mapStartLng = +cords.longitude;
+    this.displaySelfMarker = true;
     this.getMapStartingPostion();
     setInterval(() => this.getMapStartingPostion(), 60 * 1000);
   }
@@ -62,8 +70,10 @@ export class MapPage implements OnInit {
   private async getMapStartingPostion() {
     let cords = await this.geolocationHelper.getCurrentLocation();
 
-    this.mapStartLat = +cords.latitude;
-    this.mapStartLng = +cords.longitude;
+    this.devicePositionLat = +cords.latitude;
+    this.devicePositionLng = +cords.longitude;
+    console.log(this.devicePositionLat);
+    console.log(this.devicePositionLng);
   }
 
   private async loadCLientsWithNextActions() {

@@ -8,10 +8,8 @@ agm-map {
   background: #424242;
   width: 60px;
   height: 60px;
-  /* -width/2 */
-  margin-left: -30px;
-  /* -height + arrow */
-  margin-top: -75px;
+  left: -30px;
+  top: -30px;
   border-radius: 50%;
   padding: 0px;
 }
@@ -113,8 +111,6 @@ agm-map {
   width: 20px;
   height: 20px;
   position: relative;
-  top: 38px;
-  left: 38px;
   background: rgba(5, 124, 255, 1);
   border: 2px solid #fff;
   border-radius: 50%;
@@ -125,7 +121,8 @@ agm-map {
   width: 100px;
   height: 100px;
   position: absolute;
-  top: 0;
+  top: -40px;
+  left: -40px;
   display: block;
   background: rgba(5, 124, 255, 0.6);
   border-radius: 50%;

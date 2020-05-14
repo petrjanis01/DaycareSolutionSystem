@@ -17,7 +17,7 @@
     (click)="closeDetail()">
 
     <!-- Device postion marker -->
-    <agm-overlay *ngIf="displaySelfMarker" [latitude]="mapStartLat" [longitude]="mapStartLng">
+    <agm-overlay *ngIf="displaySelfMarker" [latitude]="devicePositionLat" [longitude]="devicePositionLng">
       <div class="marker">
         <div class="pin"></div>
         <div class="pin-effect"></div>
