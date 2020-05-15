@@ -9,7 +9,6 @@ import { PopoverController, Platform } from '@ionic/angular';
 import { MapMenuComponent } from './map-menu/map-menu.component';
 import { VisualHelperService } from 'src/app/services/visual-helper.service';
 import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
-import { LaunchNavigatorOptions } from 'plugins/uk.co.workingedge.phonegap.plugin.launchnavigator/uk.co.workingedge.phonegap.plugin.launchnavigator';
 
 @Component({
   selector: 'app-map',
