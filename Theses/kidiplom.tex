@@ -60,13 +60,13 @@
 %% použitím makra s uvedením jazyka jako nepovinného parametru.
 
 %% Název práce, česky a anglicky. Měl by se vysázet na jeden řádek.
-\title{Styl pro asdasda text závěrečné práce}
-\title[english]{A style for thesis}
+\title{Mobilní aplikace pro pracovníky pečovatelské služby}
+\title[english]{Mobile application for workers of the day care}
 
 %% Volitelný podnázev práce, česky a anglicky. Měl by se vysázet na
 %% jeden řádek. Výchozí je prázdný.
-\subtitle{Ukázkový asda text a dokumentace stylu v \LaTeX{}u}
-\subtitle[english]{Sample text and documentation of the \LaTeX{} style}
+%% \subtitle{Ukázkový asda text a dokumentace stylu v \LaTeX{}u}
+%% \subtitle[english]{Sample text and documentation of the \LaTeX{} style}
 
 %% Jméno autora práce. Makro nemá nepovinný parametr pro uvedení
 %% jazyka.
@@ -105,7 +105,7 @@
 
 %% Volitelné poděkování. Stručné! Výchozí je prázdné. Makro nemá
 %% nepovinný parametr pro uvedení jazyka.
-\thanks{jkasldhkasjhdjklahskjdhklaj}
+\thanks{Thanks}
 
 %% Cesta k souboru s bibliografií pro její sazbu pomocí BibLaTeXu
 %% (zvolenou nepovinným parametrem biblatex makra
@@ -116,6 +116,7 @@
 %% Další dodatečné styly (balíky) potřebné pro sazbu vlastního textu
 %% práce.
 \usepackage{lipsum}
+\usepackage{float}
 
 \begin{document}
 %% Sazba úvodních stran -- titulní, s bibliografickými údaji, s
@@ -124,316 +125,150 @@
 %% sazba není vypnutá).
 \maketitle
 
-%% Vlastní text závěrečné práce. Pro povinné závěry, před přílohami,
-%% použijte prostředí kiconclusions. Povinná je i příloha s obsahem
-%% přiloženého CD/DVD.
+\section{Úvod}
+\begin{figure}[hbt]
+  \includegraphics[width=14cm,height=20cm,keepaspectratio]{datovy_model}
+  \caption{Datový model}
+\end{figure}
+\newpage
 
-%% -------------------------------------------------------------------
+\section{Vývoj mobilních aplikací}
+Mobilní aplikace by uživateli měla co nejjednodušeji a nejrychleji umožnit dosáhnout jeho cíle. Tento fakt je potřeba mít na paměti v průběhu celého procesu vývoje. Proto je důležité, aby aplikace běžela plynule a měla jednoduché uživatelské rozhraní. U aplikací určených pro širokou veřejnost, je dobrý návrh a provedení UI, faktorem rozhodujícím o její úspěšnosti na trhu. Co se týče mobilního softwaru vyvíjeného za účelem korporátního použití je to otázka financí pro firmu, která se ho rozhodne používat. Jednodušší ovládaní znamená měně potřebného času a prostředků vynaložených na zaškolení zaměstnanců.
 
-\newcommand{\BibLaTeX}{\textsc{Bib}\LaTeX}
+Pro plynulý běh aplikace je důležité hned na začátku vývoje přesně určit za jakými účely bude používána. Tato specifikace společně s platformou na kterou by měl být vývoj cílen jsou rozhodujícími kriterii při výběru frameworku a způsobu vývoje.
 
-\noindent\textcolor{red}{\LARGE Upozornění: Následující text
-  dokumentace stylu, vyjma přílohy~\ref{sec:ObsahCD}, je rozpracovaná
-  a (značně) neúplná verze!!!}
+V dnešní době se na trhu s mobilními telefony vyskytují v převážné míře pouze dva operační systémy. Android, který podporuje zařízení od vícero výrobců. A iOS od firmy Apple, který je určen přímo pro hardware od toho výrobce. Ovšem tyto systémy mají spoustu rozdílných verzí, samotná zařízení mají rozdílné velikosti, funkce a vnitřní komponenty. Tohle je pravě to, co činí vývoj mobilních aplikací složitým a zdůrazňuje důležitost výběru správné metody. Aby bylo možné toto klíčové rozhodnutí udělat správně je potřeba se seznámit s detaily různých stylů vývoje a frameworky.
 
-\section{Styly pro psaní bakalářských a diplomových prací}
-Toto jsou styly pro psaní bakalářských a diplomových prací přes typografický systém \LaTeX{}, tedy \textbf{kistyles}.
+\subsection{Nativní vývoj}
+Standardní styl vývoje, který byl dříve i jediným možným způsobem. Při této metodě je aplikace tvořena odděleně pro každou platformu zvlášť. Stejný kód je tedy potřeba napsat dvakrát v různých programovacích jazycích a použít různá vývojová prostředí a nástroje. Nehledě na to, že Apple neumožňuje vývoj nativních aplikací na jiném operačním systému než MacOS. 
 
-\subsection{Požadavky a podprovaná prostředí}
-Sada balíku \textbf{kistyles} podporuje následující distribuce systému \LaTeX{}:
+Pokud by tedy výsledný software měl běžet na obou platformách, což je ve většině případů předpokladem. Firma by musela mít dva týmy, každý pro jednu část a poskytnout rozdílné vybavení. Nejenom, že tímto způsobem bude vývoj trvat dlouho, ale zároveň bude i drahý. Na druhou stranu výsledkem bude snadno udržovatelná a výkonná aplikace umožňující využívat všech funkcí zařízení. Knihovny, které jsou použity spravují samotní vlastníci OS. Je tedy možné rychle nebo úplně bez zásahu reagovat na nové verze systémů a změny v designu nativních komponent. 
+
+Výsledný produkt je potřeba šířit mezi uživatele. K tomuto účelu slouží takzvaný ''Store'' a každá platforma má svůj vlastní. Obě firmy se snaží vytvořit bezpečné prostředí pro uživatele a kontrolují aplikace sdílené pomocí této služby. Otevřená povaha Androidu ovšem umožňuje mít více než jedno centrální místo pro získání aplikace a proto se snaží řešit část bezpečnostních rizik už na straně kódu a knihoven. Apple je v tomto ohledu daleko přísnější a kontroluje každou aplikaci, která je do App Storu přidána. Někdy trvá i několik dní než prohlásí aplikaci nebo aktualizaci za důvěryhodnou. V tomto procesu se kontroluje hlavně jestli produkt opravdu dělá to co vydavatel tvrdí v popisu a splňuje všechny bezpečnostní normy. Tyto bezpečností aspekty za vývojáře do určité míry schopno pohlídat nativní vývojové prostředí a kompilátor. Tímto způsobem je tedy možné se vyhnout neschválení aplikace firmou Apple a bezpečnostních nedostatků na jiných platformách.
+
+Tento přístup je tedy vhodný pro specifické typy projektů:
 \begin{itemize}
-\item \TeX{} Live.
-\end{itemize}
-
-Jsou podporovány všechny výstupní ovladače, tedy jak \textbf{dvi}, tak \textbf{pdf} i \textbf{ps}. Funkčnost zmiňovaných distribucí byla ověřena na několika operačních systémech, mezi které patří:
-\begin{enumerate}
-\item Windows $8.1$,
-\item Archlinux,
-\item Debian.
-\end{enumerate}
-
-Důrazně se doporučuje používat aktuální verzi dané distribuce systému \LaTeX{}.
-
-%%%  Po přeložení programem CSLaTeX (třikrát) je potřeba použít
-%%%  program DVIPS a takto získaný PostScriptový soubor vytisknout
-%%%  na PostScriptové tiskárně nebo pomocí programu GhostScript.
-%%%
-%%%  Rovněž je možné použít program DVIPDFM a vytvořit z dokumentu
-%%%  soubor ve formátu PDF včetně hypertextových odkazů.
-
-\subsection{Přepínače}
-Styl kidiplom je z hlediska uživatele zastoupen ekvivalentně nazvanou třídou, kterou je třeba volat na záčátku dokumentu:
-\begin{kicode}{TeX}{}{Volání třídy \textbf{kidiplom}}
-\documentclass[
-  master=true,
-  font=sans,
-  printversion=false,
-  joinlists=true,
-  glossaries=true,
-  figures=true,
-  tables=true,
-  sourcecodes=true,
-  theorems=true,
-  bibencoding=utf8,
-  language=czech,
-  encoding=utf8,
-  field=inf,
-  index=true,
-  biblatex=true
-]{kidiplom}
-\end{kicode}
-
-Následuje přehled přepínačů, je vždy uvedeno jméno přepínač, včetně výchozí hodnoty. Přepínače uvádí tabulka \ref{tab:prepinace}.
-
-\begin{table}
-\begin{center}
-\caption{Seznam přepínačů}\label{tab:prepinace}
-\scalebox{0.95}{\begin{tabular}{>{\bfseries}l >{\ttfamily}c L{8cm}}
-{\normalfont Přepínač} & {\normalfont Výchozí hodnota} & {\normalfont Popis} \\
-\hline
-master & false & Povolí nebo zakáže režim diplomové práce. Výchozí režim je tedy bakalářská práce. \\
-
-field & ainfp & Specifikuje studijní obor:\newline
-\begin{description}
-\item[ainf] Aplikovaná informatika\,--\,prezenční,
-\item[ainfk] Aplikovaná informatika\,--\,kombinovaná,
-\item[inf] Informatika\,--\,prezenční,
-\item[infv] Informatika ve vzdělávání\,--\,kombinovaná,
-\item[binf] Bioinformatika\,--\,prezenční.
-\end{description} \\
-
-font & serif & Zapne či vypne podporu pěkného bezpatkového fontu. Možné hodnoty jsou:\newline
-\begin{description}
-\item[sans] Bezpatkové písmo (písmo Iwona).
-\item[serif] Patkové písmo (písmo Computer Modern).
-\end{description} \\
-
-%%  'encoding=kódování' pro kódování tohoto a vložených zdrojových
-%%  textů v kódování jiném než výchozím utf8
-encoding & utf8 & Kódování souboru dokumentu, doporučuje se ponechat výchozí hodnotu. \\
-
-bibencoding & utf8 & Kódování souboru bibliografie. Tato volba má smysl pouze, pokud je použita bibliografie skrze balíček \BibLaTeX{}. \\
-
-language & czech & Jazyk práce. \\
-
-printversion & false & Je-li zapnuto, pak budou odkazy vysázeny optimalizovaně pro knižní sazbu. Tuto volbu je nutno použít pro tisk práce. \\
-
-%%% Nepovinné argumenty `tables' a `figures' použijte pouze v případě,
-%%% že váš dokument obsahuje tabulky a obrázky a chcete vytvořit
-%%% jejich seznamy za obsahem.
-%%%
-%%% Argument `joinlists' způsobí zřetězení obsahu a seznamů tabulek a obrázků.
-%%% Není-li použít, všechny seznamy jsou uvedeny na samostatných stránkách.
-
-joinlists & true & Je-li zapnuto, pak seznamy obrázků, tabulek, vět a
-zdrojových kódů sázené za obsahem nebudou rozděleny na samostatné stránky. \\
-
-figures & true & Je-li zapnuto, pak v seznamech položek bude zahrnut seznam obrázků. \\
-
-tables & true & Je-li zapnuto, pak v seznamech položek bude zahrnut seznam tabulek. \\
-
-theorems & false & Je-li zapnuto, pak v seznamech bude zahrnut seznam teorémů. \\
-
-sourcecodes & false & Je-li zapnuto, pak v seznamech bude zahrnut seznam zdrojových kódů. \\
-
-glossaries & false & Je-li zapnuto, pak na konci dokumentu bude vysázen seznam zkratek. \\
-
-index & false & Zapíná podporu sazby rejstříku. \\
-
-biblatex & true & Zapne sazbu bibliografie přes balík \BibLaTeX{}.
-\end{tabular}}
-\end{center}
-\end{table}
-
-\subsection{Geometrie stránky}
-Tento styl používá list velikosti $A4$. Pro sazbu prací je třeba použít jednostrannou sazbu. Levý okraj je rozšířen s ohledem na vazbu výsledné knižní podoby práce.
+	\item Tam kde není potřeba, aby výsledná aplikace běžela na obou platformách.
+  	\item Je kladen důraz na výkon aplikace, nebo je to z podstaty požadavků nutnost.
+  	\item Hraje velkou roli bezpečnost a není žádoucí používaní knihoven a frameworků třetích stran. 
+  	\item Neklade se důraz na rychlost vydaní aplikace na trh a cenu produktu.
+ \end{itemize}
 
-\section{Sazba částí dokumentu}
-\subsection{Sazba úvodní strany či obsahu}
-Vysázení všech podstatných částí úvodu práce obstará makro \kiinlinecode{TeX}{!}{\\maketitle}. Pro správné vysázení všech částí a meta-informací je potřeba použí makra \kiinlinecode{TeX}{!}{\\title}, \kiinlinecode{TeX}{!}{\\author} a další. Jejich přehled lze najít ve zdrojovém souboru tohoto dokumentu. V případě použítí \textbf{pdf} výstupu se generuje i dodatečná hlavička souboru s meta-informacemi jako je autor dokumentu, název práce či dalšími.
+\subsubsection{Android}
+Aplikace pro Android mohou být napsány pomocí jazyků Kotlin, Java a C++. Nástroj Android SDK zkompiluje kód společně s daty a soubory obsahujícími zdrojové kódy do APK, což je archivní soubor s příponou .apk. APK soubor obsahuje všechny komponenty aplikace a zároveň je to soubor, který zařízení s operačním systémem Android používají k instalaci.
+\cite{1}
+\textit{(volný překlad)}
 
-\subsection{Závěry}
-Závěr práce by se měl poskytnout jak v původním jazyce práce, tak v jazyce anglickém. Pro sazbu závěru jsou k dispozici příslušná makra. Berte na vědomí, že v anglickém závěru se aktivuje plně anglická sazba se všemi konvencemi. Tedy je třeba používat anglické uvozovky a další správné typografické prvky.
+K vývoji pro platformu Android je tedy potřeba Android SDK a vhodné vývojové prostředí. Dle dokumentace je doporučovaným vývojovým prostředím Android studio. Velkou výhodou je, že tyto nástroje mohou běžet na jakémkoliv operačním systému.
 
-\begin{kicode}{TeX}{}{Sazba závěrů}
-% Tiskne český závěr práce.
-\begin{kiconclusions}
-Závěr práce v \uv{českém} jazyce.
-\end{kiconclusions}
+\subsubsection{iOS}
+iOS SDK je balíček nástrojů umožňujících vývoj mobilních aplikací na operační systém iOS. Nástroje umožňují vývojáři přistupovat k různým funkcím a službám iOS zařízení jako jsou hardwarové a softwarové atributy. Obsahuje také iPhone simulátory, které kopírují vzhled a pocit z užívání skutečných zařízení. Aby bylo možné aplikaci testovat a distribuovat ji přes App Store je potřeba zaplatit vývojářskou licenci. SDK společně s vývojovým prostředím Xcode pomáhá psát aplikace pro platformu iOS za použití oficialně podporovaných  jazyků, kterými jsou Swift a Objective-C. 
+\cite{2}
+\textit{(volný překlad)}
 
-% Tiskne anglický závěr práce.
-\begin{kiconclusions}[english]
-Thesis conclusions written in \uv{English}.
-\end{kiconclusions}
-\end{kicode}
+\subsection{Multiplatformní vývoj}
+Umožňuje vývoj na obě platformy současně a v některých případech pro ně používá i identický kód. Každý framework toto umožňuje trochu jiným způsobem. Základní myšlenka je ale taková, že na rozdíl od nativních aplikací, které komunikují přímo s operačním systémem a zařízením je u multiplatformních aplikací přidána abstraktní mezivrstva neboli nativní obálka. Mezivrstva zaručuje to, že se aplikace pro systém telefonu tváří jako nativní a zároveň umožňuje kódu přístup ke všem periferiím zařízení jako jsou kamera, určovaní polohy, gyroskop atd. Vzhled takto napsaných aplikací bude naprosto totožný s nativní verzí. Tato obálka ovšem zpomaluje chod aplikace, protože každý proces, který vyžaduje komunikaci se systémem přes ní musí projít a mezivrstva jej musí zpracovat. Toto zpomalení je možno považovat za zanedbatelné pokud není cílem vývoje například hra, aplikace s robustním uživatelským rozhraním nebo s velkým množství rychle vstupujících a ?vystupujících? dat. Celkově tato metoda v porovnaní s klasickým přístupem poskytuje levnější a většinou i rychlejší cestu k vývoji aplikace. 
 
-\subsection{Matematika}
-Pro sazbu matematiky je k dispozici sada standardních maker.
-$$\langle f \rangle, \lfloor g \rfloor,
-\lceil h \rceil, \ulcorner i \urcorner$$
+Na druhou stranu projekt může být vystaven riziku zastavení podpory pro zvolený framework, vrstva navíc znamená prostor pro více bezpečnostních nedostatků a každý vývojář musí být obeznámen s detaily fungování obou platforem. I přesto, že je tímto způsobem možné vyvíjet aplikaci na obě platformy za použití počítače s jakýmkoliv operační systémem, tak pro kompilaci a testování kódu bude v případě iOS nutné použít stroj s macOS. 
 
-$$\left\{\frac{x^2}{y^3}\right\}$$
 
-$$
-A_{m,n} =
- \begin{pmatrix}
-  a_{1,1} & a_{1,2} & \cdots & a_{1,n} \\
-  a_{2,1} & a_{2,2} & \cdots & a_{2,n} \\
-  \vdots  & \vdots  & \ddots & \vdots  \\
-  a_{m,1} & a_{m,2} & \cdots & a_{m,n}
- \end{pmatrix}
-$$
+\subsubsection{React Native}
+React Native je open-source framework, který umožňuje vývoj aplikací pro Android a iOS za použití Reactu a nativních možností platformy. Používá skriptovací jazyk JavaScript za pomocí kterého se přistupuje k API konkretní platformy, zároveň popisuje vzhled a chování  uživatelského rozhraní za použití komponent Reactu.
+\cite{3}
+\textit{(volný překlad)}
 
-$$
-M = \begin{bmatrix}
-       \frac{5}{6} & \frac{1}{6} & 0           \\[0.3em]
-       \frac{5}{6} & 0           & \frac{1}{6} \\[0.3em]
-       0           & \frac{5}{6} & \frac{1}{6}
-     \end{bmatrix}
-$$
+Důležitou vlastností je to, že výsledný kód je kompilován do nativního jazyku používaný platformou. Velkou výhodou je, že pokud žádná z poskytovaných knihoven neobsahuje danou funkcionalitu je možné vytvořit modul v některém z nativních jazyků a zaintegrovat jej do projektu. Za kvalitu framewoku mluví to, že je aktuálně nejpoužívanější ve své kategorii a jsou pomoci něj vytvořeny aplikace jako Facebook a Instagram, které denně používají miliony uživatelů.
 
-\subsection{Sazba literatury}
-Pro sazbu literatury má uživatel dvě možnosti. Může použít služeb balíků \BibLaTeX{}, který je pro \textbf{kistyles} zapnutý, či lze použít manuální sazbu bibliografie.
-\subsubsection{Sazba bibliografie přes \BibLaTeX{}}
-Při použití tohoto balíku se data o použité literatuře ukládají do dedikovaného textového souboru, ukázku najdete i v tomto stylu pod jménem \kiinlinecode{text}{!}{bibliografie.bib}.
+\subsubsection{Xamarin}
+Xamarin je opět platforma, která umožňuje multiplatformní vývoj tentokrát ale s rozdílem, že společně s mobilními verzí je možné tvořit i aplikaci pro Windows. Patří do rodiny nástrojů .NET čili kód je psán v programovacích jazycích C\# a F\#. Microsoft využívá už nabitých zkušeností vývojářů s jejich předešlým nástrojem WPF a architekturou Model-View-ViewModel. Většina kódu je sdílená, Microsoft uvádí až 90\% \cite{4}, ale je možné určité části vytvořit speciálně pro jednu platformu. V této části je struktura kódu a volaní systémového API velice podobná nativnímu vývoji, pouze za použití jiného jazyka. ?MONO?
 
-Formát daného souboru je nad rámec této dokumentace a je na každém uživateli, aby si jej nastudoval. Bibliografie se tiskne makrem \kiinlinecode{TeX}{!}{\\printbibliography}. Taktéž v preambuli dokumentu je třeba definovat, který soubor data bibliografie obsahuje, tedy například \kiinlinecode{TeX}{!}{\\bibliography\{bibliografie.bib\}}.
+\subsubsection{Capacitor}
+Nástroj, který umožňuje spuštění webových aplikací jako nativní. Takto vytvořené aplikace jsou také nazývaný jako hybridní. Na rozdíl od React Native se kód tvořený HTML, CSS a JavaScriptem nepřekládá. Namísto toho se uvnitř přidané abstraktní vrstvy otevírá takzvané web view. Web view je v podstatě vestavěný webový prohlížeč, který se stará o běh a zobrazení kódu, lze vidět na Obrázku2 !reference!.  
 
-Dokument, který využívá \BibLaTeX{} je následně nutné přeložit jak pomocí překladače zvoleného ovladače, tak pomocí aplikace \kiinlinecode{text}{!}{biber}. Více informací poskytne soubor \kiinlinecode{text}{!}{Makefile} z distribuce tohoto stylu.
+\begin{figure}[H]
+  	\centering
+ 	 \includegraphics[width=12cm,height=10cm,keepaspectratio]{hybridni_aplikace}
+ 	 \caption{\cite{5} Architektura hybridních aplikací}
+ 	 \label{fig:blah}
+\end{figure}
 
-Výhodou tohoto přístupu je, že bibliografie se vysází automaticky a (obvykle) není třeba manuální úprava formátování.
 
-\subsubsection{Manuální sazba bibliografie}
-Manuální sazba obnáší vysázení prostředí \kiinlinecode{text}{!}{thebibliography} ručně. To je nad rámec tohoto dokumentu. Ukázku tohoto přístupu lze samozřejmě nalézt ve zdrojovém souboru tohoto dokumentu nebo také \href{http://www.math.uiuc.edu/~hildebr/tex/bibliographies.html}{zde}.
 
-Pro aktivaci manuální sazby bibliografie je třeba volat třídu \kiinlinecode{text}{!}{kidiplom} s parametrem \kiinlinecode{text}{!}{biblatex=false}. Mějte, prosím, na paměti, že v tomto módu jsou makra \kiinlinecode{text}{!}{\\bibliography} a \kiinlinecode{text}{!}{\\printbibliography} nedostupná.
+Přístup k nativní API je poté zařízen přes pluginy volané z JavaScriptu, které propojují web view s nativní obálkou. Zde už je zpomalení poněkud výraznější a proto se tento způsob doporučuje pouze pro menší až středně velké projekty s nepříliš složitým uživatelským rozhraním, které by potencionálně mohlo na pozadí generovat veliké množství DOM elementů. Možnost z kterékoliv webové aplikace vytvořit nativní aplikaci je hlavní výhodou, ale tvoří problém s nekonzistentním designem uživatelského rozhraní a nepřipraveností webu pro běh na mobilním zařízení. Z tohoto důvodu je dobré používat tento nástroj v kombinaci s některým z framewoků, které jsou k tomu uzpůsobeny.
 
-\subsection{Drobná makra}
-Základní styl definuje hned několik maker pro usnadnění práce. Například makro \kiinlinecode{TeX}{!}{\\buno} vysází řetezec \uv{bez újmy na obecnosti}. Je k dispozici i verze s prvním velkým písmenem, \kiinlinecode{TeX}{!}{\\Buno}.
+\subsection{Progresivní webové aplikace(PWA)}
+Jsou webové aplikace plně využívající možností moderních webových prohlížečů. Posouvají tím možnosti jejich funkcionality a pocitu z užívaní na úroveň blížící se nativním a multiplatformním aplikacím. Mohou být ale řazeny mezi ostatní mobilní aplikace? Pokud jako definující vlastnosti mobilních aplikací označíme přístup k periferiím zařízení a systémové API, spuštění i bez přístupu k internetu a nutnosti zapnutí webového prohlížeče, provádění procesů na pozadí, potom ano.
 
-Je rovněž možno přidávat položky do seznamu zkratek. K tomu slouží makro \kiinlinecode{TeX}{!}{\\newacronym}, které lze použít například jednoduše jako \kiinlinecode{TeX}{!}{\\newacronym\{UPOL\}\{UPOL\}\{\\kitextunivcz\}}. Na danou zkratku se pak lze odkazovat jednoduše, \kiinlinecode{TeX}{!}{\\gls\{UPOL\}}.
+Prvním stavebním blokem této technologie jsou takzvané service workery. Service worker je skript, který běží na pozadí odděleně od webové stránky a umožňuje tak funkcionalitu, která nepotřebuje webovou stránku nebo interakci uživatele. \cite{6} \textit{(volný překlad)} Řeší tedy procesy na pozadí a zároveň ukládají kód stažený z webového serveru do aplikační cache a tím umožňují spustit aplikaci bez přístupu k internetu. Na zařízeních používající iOS jsou některé možnosti těchto skriptů omezeny, ale nejedná se o klíčovou funkcionalitu.
 
-Sazba uvozovek respektuje nastavení částí dokumentu, a proto se doporučuje používat makro \kiinlinecode{TeX}{!}{\\uv}. V anglické závěru práce toto platí taky, viz tato PDF ukázka.
+Druhou důležitou součástí jsou webové aplikační manifesty. Je to soubor ve formátu JSON, který určuje jak se bude aplikace chovat a vypadat po ''instalaci'' na zařízení. \cite{7} \textit{(volný překlad)} Instalací se v tomto ohledu myslí přidáním ikony na domovskou stránku zařízení. Po spuštění přes tuto ikonu se sice spustí výchozí webový prohlížeč a v něm teprve stránka, ale o tomto procesu uživatel vůbec neví. Prohlížeč totiž nemá žádný ze svých běžných nástrojových lišt a aplikace je otevřena přes celou obrazovku zařízení.
 
-Styl podporuje sazbu odstavců v tabulkách, více obsahuje tabulka \ref{tab:odstavce}.
+Přístup k periferiím zařízení je potom zařízen různou kombinací možností prohlížeče, HTML5 a JS. Zde je ovšem oproti nativním a multiplatformním aplikacím výběr omezenější.
 
-\begin{table}
-\begin{center}
-\caption{Seznam přepínačů}\label{tab:odstavce}
-\begin{tabular}{L{4cm}|R{4cm}|L{4cm}}
-\lipsum[23] & \lipsum[22] & \lipsum[21]
-\end{tabular}
-\end{center}
-\end{table}
+\subsection{Backend pro mobilní aplikace}
+Většina aplikací se neobejde bez serverové části. Buďto z důvodu získání dat nebo komunikace s jinými instancemi aplikace. Server by měl vykonávat většinu výpočetních operací a posílat pouze nezbytně nutná data, aby méně zatěžoval mobilní zařízení. Jako nejlepší postup se tedy může zdát vytvoření vlastní API přímo na míru konkrétní aplikace. Toto řešení zvyšuje výdaje za vývoj i údržbu systému. Zbytečným se stává obzvláště v situacích, kdy by měl server provádět pouze jednoduché operace jako ověření identity uživatele. Pro projekty této povahy je tedy vhodnější vytvářet aplikace bez nutnosti vlastního serveru za pomoci cloudových služeb. Tyto služby umožňují vytvoření databázové struktury a na tomto základě vystavení REST API, které může aplikace konzumovat.
+\newpage
 
-K dispozici jsou také makra pro sazbu \csharp{} (\kiinlinecode{TeX}{!}{\\csharp}) či \cpp{} (\kiinlinecode{TeX}{!}{\\cpp}).
+\section{Výběr technologií}
+Ještě před výběrem konkretních technologií a programovacích jazyků jsem se zamýšlel nad způsobem jak výsledný produkt předat potencionálnímu zákazníkovi. Rozhodnutí nakonec bylo tento problém kompletně eliminovat a celý systém konteinerizovat pomocí nástroje Docker. Kromě výsledných nativních aplikací u kterých to postrádá smysl. Při výběru technologií jsem takto nebyl vázán na prostředí ve kterém systém poběží.
 
-%% v případě tvorby rejstříku přeložit vygenerovaný soubor .idx
-%% programem Makeindex a v případě tvorby seznamu zkratek spustit
-%% program Makeglossaries s parametrem jméno souboru zdrojového textu
-%% bez přípony a následně opět (dvakrát) přeložit zdrojový text
-%% programem pdfLaTeX.
+\subsection{Klientské části}
+Základním a nejdůležitějším cílem bylo vytvořit aplikaci, která bude funkční na mobilních zařízeních s operačními systémy Android i iOS a zároveň ve webových prohlížečích. Protože jsem byl na vývoj sám a chtěl jsem vytvořit kvalitní aplikaci, nativní vývoj pro každou platformu s následným vytvořením webové verze nepřipadalo v úvahu. Webová aplikace s následným zabalením do nativní obálky je v dané situaci nejvíce vyhovujícím řešením. Jako nástroj pro převod jsem použil výše zmíněny Capacitor. 
 
-\subsection{Sazba rejstříku}
-Sazba rejstříku sestává z několika kroků:
+Posledním krokem bylo zvolit správný přístup k vývoji webové aplikace. Tradiční způsob tvoření webové stránky za použití HTML, CSS a JavaScriptu by bylo zdlouhavé a potencionálně nebezpečné. Aplikace by očividně obsahovala spoustu kódu v čistém JS, který nemá žádnou kontrolu datových typu, což ve větších projektech může způsobovat chyby, které není lehké odhalit. Další problém by nastal se samotným uživatelským rozhraním. Veškeré UI komponenty by museli být vytvořeny ručně a nebyla by zaručena konzistence se zásadami stylů platformy. Upravovat styl stránky pomocí CSS, tak aby fungovala na zařízeních všech velikostí je sice možné, ale zbytečně náročné. Z těchto důvodů jsem se rozhodl pro použití framework Angular a platformu Ionic, která je navíc výborně kompatibilní s pluginy Capacitoru.
 
-\begin{enumerate}
-\item Je třeba přes volbu \kiinlinecode{TeX}{!}{index=true} rejstříkování povolit.
-\item Použítím makra \kiinlinecode{TeX}{!}{\\index} rejstříkovat vybrané pojmy.
-\item Kompilovat s použitím utility \kiinlinecode{TeX}{!}{makeindex}. Pro specifika tohoto kroku si stačí prohlédnout soubor \kiinlinecode{text}{!}{Makefile}.
-\end{enumerate}
+\subsubsection{Angular}
+Angular je platforma a framework pro vývoj jednostránkových klientských aplikací za použití HTML a TypeScriptu. Samotný Angular je napsaný v TypeScriptu. Implementuje základní a volitelné funkce jako množinu TypeScriptových knihoven, které je možné importovat do aplikací. \cite{8} \textit{(volný překlad)} 
 
-Makro \kiinlinecode{TeX}{!}{\\index} je redefinováno tak, že sází klikací odkaz na výraz v rejstříku. Je doporučeno jej použít ihned za výrazem\index{výraz}.
+Jednostránkové klientské aplikace fungují tak, že při prvním přístupu na stránku se ke klientovi stáhnou všechny soubory potřebné k běhu aplikace. Při jakékoliv akci uživatele se stránkou už se nikdy nepřistupuje na webový server. Tento mechanizmus značně ulehčuje service workeru práci s cachovaním a následným spouštěním aplikace v offline režimu, v případě, že by bylo potřeba z aplikace vytvořit PWA.
 
-\textbf{Omezení redefinovaného makra \kiinlinecode{TeX}{!}{\\index}}: klikací odkaz nefunguje, pokud použijete konstrukci \kiinlinecode{TeX}{!}{\\index\{výraz|makro\}} (resp. \kiinlinecode{TeX}{!}{\\index\{výraz|(makro\}}), např. \kiinlinecode{TeX}{!}{\\index\{výraz|textit\}}.
+TypeScript je nadmnožina skriptovacího jazyku JavaScript a přidává do něj možnost typování proměnných, parametrů a návratových hodnot funkcí. Je to objektově orientovaný jazyk podporující funkcionální paradigma s možností asynchroního programování. Webové prohlížeče ovšem tomuto jazyku nerozumí a proto je potřeba provést proces zvaný transpilace, při kterém se všechny soubory projektu přeloží do souborů s příponou .js, které se navzájem referencují a index.html souboru, který je kořenem tohoto stromu závislostí.
 
-Rejstřík lze vysázet pomocí makra \kiinlinecode{TeX}{!}{\\printindex}.
+Základními stavebními bloky jsou komponenty a služby. Komponenty se skládají z náhledů a kódu na pozadí. Náhled je HTML kód doplněný o takzvané directivy, které umožňují například psát cykly a podmínky kódu jako atributy HTML tagů. Kód na pozadí je vždy třída, která může obsahovat veřejné metody a atributy, které je možné referencovat v náhledu. Služby obsahují funkcionalitu, která přímo nesouvisí s náhledy a je možné je do komponent injectovat jako závislosti. \cite{8} Architektura založená na používaní komponent velice jednoduše umožňuje znovu použitelnost kódu.
 
-\subsection{Sazba zdrojových kódů}
-Styl nabízí dva způsoby sazby zdrojových kódů:
+\subsubsection{Ionic}
+Platforma, která ulehčuje vývoj webových aplikací cílených na mobilní zařízení. Poskytuje vývojářům množství komponent, které se vzhledově přizpůsobují dle platformy na které běží. Projekty vytvořené pomocí nástrojů, které platforma nabízí jsou plně responzivní. Ionic rozšiřuje základní knihovnu Angularu o nové stavy životních cyklů komponent a navigační strategii, která umožňuje uchovávat si instance naposledy otevřených náhledů. Dohromady je díky nim možné implementovat chování navigačních tabů na které jsou uživatelé nativních aplikací zvyklí. 
 
-\begin{enumerate}
-\item Sazbu řádkových kódů, například \kiinlinecode{CSS}{!}{background-color: white;}. K tomu slouží makro formátu \kiinlinecode{TeX}{!}{\\kiinlinecode\{jazyk\}\{separátor\}\{kód\}}. Za separátor je vhodné volit jakýkoliv znak, který se nevyskytuje v samotném sázeném zdrojovém kódu. Za jazyk je nutno dosadit jeden z těchto: C, TeX, PHP, HTML, Lisp, SQL, TeX, Python, Java, TutorialD, text, csharp, cpp, JavaScript, CSS.
+\subsection{Server}
+Chtěl jsem mít plnou kontrolu nad tím jak serverová část zpracovává data a v jakém formátu je posílá na klienta. Vzhledem k zvolené technologii pro aplikaci bylo lepší co nejvíce zodpovědnosti za operace s daty předat serveru a odlehčit tak zařízením na kterých poběží. Proto jsem se rozhodl psát kód serveru sám a přímo na míru místo použití cloudových řešení jako Firebase. 
 
-\item Sazbu zdrojových kódu do separátních prostředí. Takto vytištěný kód se objeví v seznamu zdrojových kódů. Ukázka například zdrojový kód \ref{kod:cpp}. Ukázku sazby naleznete ve zdrojovém kódu tohoto dokumentu.
-\end{enumerate}
+Základem Angularu zvoleného pro tvorbu klientských částí je JavaScript. JS umí automaticky vytvářet objekty a kolekce z JSON souborů. Angular má navíc v základní knihovně velice dobře zpracovanou podporu pro vytváření HTTP požadavků. Jasnou volbou tedy bylo REST API, které funguje na základě protokolu HTTP. S přihlédnutí na budoucí rozšíření bylo žádoucí, aby vybraná technologie umožňovala případné rozšířením o gRPC služby založené na protokolu HTTP/2 kvůli plně duplexní komunikaci.
 
-\newacronym{UPOL}{UPOL}{\kitextunivcz}
+Dalšími faktory při výběru byly: dobrý vestavěný framework pro prací s databází, podpora pro ověřování identity uživatele pomocí JSON web tokenů, podpora nástroje Swagger pro dokumentaci, nezávislost na operačním systému a ideálně i vestavěná podpora pro Docker. Konečným výběrem tedy byl ASP .NET Core.
 
-\begin{definition}[Název definice]
-Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. \gls{UPOL}
-\end{definition}
+\subsubsection{.NET Core}
+.NET Core je open source framework pro operační systémy Windows, Linux a macOS. Je to multiplatformní nástupce .NET Frameworku. Projekt je primárně vyvíjen firmou Microsoft a vydáván pod MIT Licencí. \cite{9} \textit{(volný překlad)} Při práci s .NET Corem jsou používány jazyky C\#, F\# a VisualBasic.
 
-\begin{proof}[Název důkazu]
-Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. 
-\end{proof}
+ASP .NET Core slouží k vývoji webových aplikací a služeb s tímto vývojem spojeny.
+\newpage
 
-\begin{remark}[Pumpovací věta]
-Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. 
-\end{remark}
+\section{Server}
 
-\begin{example}[Pumpovací věta]
-Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. 
-\end{example}
+\newpage
 
-\begin{lemma}[Název definice]
-Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. 
-\end{lemma}
+\section{Klientské části}
 
-\begin{consequence}[Název důkazu]
-Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. 
-\end{consequence}
+\newpage
 
-\begin{theorem}[Pumpovací věta]
-Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. Abcd. 
-\end{theorem}
+\section{Nasazení}
 
+\newpage
 
-\begin{kicode}{cpp}{kod:cpp}{\cpp}
-int main("cs acsa") // komentar
-int main("cs acsa") // komentar
-int main("cs acsa") // komentar
-int main("cs acsa") // komentar
-int main("cs acsa") // komentar
-\end{kicode}
 
-\begin{kicode}{JavaScript}{}{JS}
-new object() // komentar
-\end{kicode}
+\begin{thebibliography}{9}
+ \bibitem{1} https://developer.android.com/guide/components/fundamentals
+ \bibitem{2} https://en.wikipedia.org/wiki/IOS_SDK
+ \bibitem{3} https://reactnative.dev/docs/intro-react-native-components
+ \bibitem{4} https://docs.microsoft.com/en-us/xamarin/get-started/what-is-xamarin
+ \bibitem{5} https://ionicframework.com/resources/articles/what-is-hybrid-app-development
+ \bibitem{6} https://developers.google.com/web/fundamentals/primers/service-workers#what_is_a_service_worker 
+  \bibitem{7} https://web.dev/add-manifest/
+  https://angular.io/guide/architecture
+  \bibitem{9} https://en.wikipedia.org/wiki/.NET_Core
+ \end{thebibliography}
 
-\begin{kicode}{csharp}{}{\csharp}
-public static int main("cs acsa") // komentar
-\end{kicode}
 
-\begin{kicode}{SQL}{}{SQL}
-SELECT * FROM table_1; /* komentar */
-\end{kicode}
-
-\begin{kicode}{TutorialD}{}{TutorialD}
-table_1 AND table_2;
-\end{kicode}
-
-%% Závěry práce. V jazyce práce a anglicky. Text pro jiný než
-%% nastavený jazyk práce (nepovinným parametrem language makra
-%% \documentclass, výchozí český) se zadává použitím makra s uvedením
-%% jazyka jako nepovinného parametru.
-\begin{kiconclusions}
-Závěr práce v \uv{českém} jazyce.
-\end{kiconclusions}
-
-\begin{kiconclusions}[english]
-Thesis conclusions in \uv{English}.
-\end{kiconclusions}
-
-%% Přílohy obsahu textu práce, za makrem \appendix.
-\appendix
-
-\section{První příloha}
-Text první přílohy
-
-\section{Druhá příloha}
-Text druhé přílohy
-
+\newpage
 %% Obsah přiloženého CD/DVD. Poslední příloha. Upravte podle vlastní
 %% práce!
 \section{Obsah přiloženého CD/DVD} \label{sec:ObsahCD}
