@@ -40,7 +40,6 @@ namespace DaycareSolutionSystem.Api.Host
                 options.UseNpgsql(Configuration.GetValue<string>("DssConnectionString")));
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
             services.AddSingleton<IRuntimeDatabaseValidator, RuntimeDatabaseValidator>();
 
             services.AddScoped<IJwtAuthenticationApiService, JwtAuthenticationApiService>();

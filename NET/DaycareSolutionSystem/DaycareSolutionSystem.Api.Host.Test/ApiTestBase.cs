@@ -25,7 +25,7 @@ namespace DaycareSolutionSystem.Api.Host.Test
         private DbContextOptions<DssDataContext> GetInMemoryDataContextOptions()
         {
             var options = new DbContextOptionsBuilder<DssDataContext>()
-                    .UseInMemoryDatabase(databaseName: "TestDatabse")
+                    .UseInMemoryDatabase(databaseName: "TestDatabase")
                     .Options;
 
             return options;

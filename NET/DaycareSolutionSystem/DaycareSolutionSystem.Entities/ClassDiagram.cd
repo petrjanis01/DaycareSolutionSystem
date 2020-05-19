@@ -56,7 +56,7 @@
   <Class Name="DaycareSolutionSystem.Database.Entities.Entities.RegisteredClientAction">
     <Position X="5" Y="1.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AQAAEAAEAAAAACAAgAAEAIAACAAAAhAAAAACAAACAQQ=</HashCode>
+      <HashCode>AQAAGAAEAAAAACAAgAAEAIAACAAAAhAAAAACAAASAQQ=</HashCode>
       <FileName>Entities\RegisteredClientAction.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

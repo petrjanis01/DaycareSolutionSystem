@@ -212,6 +212,10 @@ Většina aplikací se neobejde bez serverové části. Buďto z důvodu získá
 \section{Výběr technologií}
 Ještě před výběrem konkretních technologií a programovacích jazyků jsem se zamýšlel nad způsobem jak výsledný produkt předat potencionálnímu zákazníkovi. Rozhodnutí nakonec bylo tento problém kompletně eliminovat a celý systém konteinerizovat pomocí nástroje Docker. Kromě výsledných nativních aplikací u kterých to postrádá smysl. Při výběru technologií jsem takto nebyl vázán na prostředí ve kterém systém poběží.
 
+% mozna napsat vse jako swagger/codegen a EF core, MSUNIT
+\subsection{Docker}
+%% mozna preorganizovat uvod
+ 
 \subsection{Klientské části}
 Základním a nejdůležitějším cílem bylo vytvořit aplikaci, která bude funkční na mobilních zařízeních s operačními systémy Android i iOS a zároveň ve webových prohlížečích. Protože jsem byl na vývoj sám a chtěl jsem vytvořit kvalitní aplikaci, nativní vývoj pro každou platformu s následným vytvořením webové verze nepřipadalo v úvahu. Webová aplikace s následným zabalením do nativní obálky je v dané situaci nejvíce vyhovujícím řešením. Jako nástroj pro převod jsem použil výše zmíněny Capacitor. 
 
@@ -222,35 +226,185 @@ Angular je platforma a framework pro vývoj jednostránkových klientských apli
 
 Jednostránkové klientské aplikace fungují tak, že při prvním přístupu na stránku se ke klientovi stáhnou všechny soubory potřebné k běhu aplikace. Při jakékoliv akci uživatele se stránkou už se nikdy nepřistupuje na webový server. Tento mechanizmus značně ulehčuje service workeru práci s cachovaním a následným spouštěním aplikace v offline režimu, v případě, že by bylo potřeba z aplikace vytvořit PWA.
 
-TypeScript je nadmnožina skriptovacího jazyku JavaScript a přidává do něj možnost typování proměnných, parametrů a návratových hodnot funkcí. Je to objektově orientovaný jazyk podporující funkcionální paradigma s možností asynchroního programování. Webové prohlížeče ovšem tomuto jazyku nerozumí a proto je potřeba provést proces zvaný transpilace, při kterém se všechny soubory projektu přeloží do souborů s příponou .js, které se navzájem referencují a index.html souboru, který je kořenem tohoto stromu závislostí.
+TypeScript je nadmnožina skriptovacího jazyku JavaScript a přidává do něj možnost typování proměnných, parametrů a návratových hodnot funkcí. Je to objektově orientovaný jazyk podporující funkcionální paradigma s prvky asynchroního programování. Webové prohlížeče ovšem tomuto jazyku nerozumí a proto je potřeba provést proces zvaný transpilace, při kterém se všechny soubory projektu přeloží do souborů s příponou .js, které se navzájem referencují a index.html souboru, který je kořenem tohoto stromu závislostí.
 
-Základními stavebními bloky jsou komponenty a služby. Komponenty se skládají z náhledů a kódu na pozadí. Náhled je HTML kód doplněný o takzvané directivy, které umožňují například psát cykly a podmínky kódu jako atributy HTML tagů. Kód na pozadí je vždy třída, která může obsahovat veřejné metody a atributy, které je možné referencovat v náhledu. Služby obsahují funkcionalitu, která přímo nesouvisí s náhledy a je možné je do komponent injectovat jako závislosti. \cite{8} Architektura založená na používaní komponent velice jednoduše umožňuje znovu použitelnost kódu.
+Základními stavebními bloky jsou komponenty a služby. Komponenty se skládají z náhledů a kódu na pozadí. Náhled je HTML kód doplněný o takzvané directivy, které umožňují například psát cykly a podmínky jako atributy HTML tagů. Kód na pozadí je vždy třída, obsahující metody a atributy, které je možné referencovat v náhledu. Služby obsahují funkcionalitu, která přímo nesouvisí s náhledy a je možné je do komponent ''injectovat'' jako závislosti. \cite{8} Framework tedy automaticky nabízí podporu návrhového vzoru Dependecy injection a všechny služby jsou typu Singleton. Architektura založená na používaní komponent velice jednoduše umožňuje znovu použitelnost kódu.
 
 \subsubsection{Ionic}
-Platforma, která ulehčuje vývoj webových aplikací cílených na mobilní zařízení. Poskytuje vývojářům množství komponent, které se vzhledově přizpůsobují dle platformy na které běží. Projekty vytvořené pomocí nástrojů, které platforma nabízí jsou plně responzivní. Ionic rozšiřuje základní knihovnu Angularu o nové stavy životních cyklů komponent a navigační strategii, která umožňuje uchovávat si instance naposledy otevřených náhledů. Dohromady je díky nim možné implementovat chování navigačních tabů na které jsou uživatelé nativních aplikací zvyklí. 
+Platforma, která ulehčuje vývoj webových aplikací cílených na mobilní zařízení. Poskytuje vývojářům množství komponent, které se vzhledově přizpůsobují dle platformy na které běží. Projekty vytvořené pomocí nástrojů, které platforma nabízí jsou plně responzivní. Ionic rozšiřuje základní knihovnu Angularu o nové stavy životních cyklů komponent a navigační strategii, která umožňuje uchovávat si navigační zásobník instancí naposledy otevřených náhledů. Dohromady je díky nim možné implementovat chování navigačních tabů na které jsou uživatelé nativních aplikací zvyklí. 
 
 \subsection{Server}
 Chtěl jsem mít plnou kontrolu nad tím jak serverová část zpracovává data a v jakém formátu je posílá na klienta. Vzhledem k zvolené technologii pro aplikaci bylo lepší co nejvíce zodpovědnosti za operace s daty předat serveru a odlehčit tak zařízením na kterých poběží. Proto jsem se rozhodl psát kód serveru sám a přímo na míru místo použití cloudových řešení jako Firebase. 
 
-Základem Angularu zvoleného pro tvorbu klientských částí je JavaScript. JS umí automaticky vytvářet objekty a kolekce z JSON souborů. Angular má navíc v základní knihovně velice dobře zpracovanou podporu pro vytváření HTTP požadavků. Jasnou volbou tedy bylo REST API, které funguje na základě protokolu HTTP. S přihlédnutí na budoucí rozšíření bylo žádoucí, aby vybraná technologie umožňovala případné rozšířením o gRPC služby založené na protokolu HTTP/2 kvůli plně duplexní komunikaci.
+Základem Angularu zvoleného pro tvorbu klientských částí je JavaScript. JS umí automaticky vytvářet objekty a kolekce z JSON souborů. Angular má navíc v základní knihovně velice dobře zpracovanou podporu pro vytváření HTTP požadavků. Jasnou volbou tedy bylo REST API, které funguje na základě protokolu HTTP a standardním formátem pro přenos dat je právě JSON. S přihlédnutí na budoucí rozšíření bylo žádoucí, aby vybraná technologie umožňovala případné rozšířením o gRPC služby založené na protokolu HTTP/2 kvůli plně duplexní komunikaci.
 
 Dalšími faktory při výběru byly: dobrý vestavěný framework pro prací s databází, podpora pro ověřování identity uživatele pomocí JSON web tokenů, podpora nástroje Swagger pro dokumentaci, nezávislost na operačním systému a ideálně i vestavěná podpora pro Docker. Konečným výběrem tedy byl ASP .NET Core.
 
 \subsubsection{.NET Core}
 .NET Core je open source framework pro operační systémy Windows, Linux a macOS. Je to multiplatformní nástupce .NET Frameworku. Projekt je primárně vyvíjen firmou Microsoft a vydáván pod MIT Licencí. \cite{9} \textit{(volný překlad)} Při práci s .NET Corem jsou používány jazyky C\#, F\# a VisualBasic.
 
-ASP .NET Core slouží k vývoji webových aplikací a služeb s tímto vývojem spojeny.
+ASP .NET Core slouží k vývoji webových aplikací a služeb s tímto vývojem spojených.
 \newpage
-
 \section{Server}
+%% uvod
+
+\subsection{Databázový modul}
+Prvním krokem při vývoji serverové části bylo vytvoření modulu pro práci s databází. Stavebním blokem pro tento modul je Entity Framework Core. Zároveň jsem do tohoto modulu přidal nástroj, který generuje testovací data, který je možno explicitně spustit ve formě konzolové aplikace.
+
+\subsubsection{Datové třídy}
+ U tvorby tříd odrážejících strukturu datového modelu (ref obr. 1), bylo potřeba zvolit vhodné datové typy, vyřešit jak simulovat relace mezi jednotlivými tabulkami a rozdíl mezi povinnými a nepovinnými parametry:
+\begin{itemize}
+	\item Název tabulky určuje anotace (ref kod.1) na řádku 1. 
+	\item Jako identifikátor jsem zvolil datový typ Guid, který umožňuje přímo identifikovat určitý záznam v databázi.
+	\item Atributy s hodnotovými datovými typy jsou označeny jako nullable pokud nejsou povinné.
+	\item K atributům s referenčními datovými typy je přidána anotace Required pokud jsou povinné, (ref kod. 1) řádky 4 a 7.
+	\item V případě relace 1:N. Jsou relace simulovány kombinací atributu pro uložení cizího klíče a referencí na instanci třídy reprezentující jinou tabulku neboli navigační atribut pro stranu relace 1, (ref kod. 1) řádky 10 a 11. Pro stranu N bude navigační atribut kolekce těchto typů.
+\end{itemize}
+
+\begin{kicode}{csharp}{}{Kód reprezentující entitu.}
+[Table("User")]
+    public class User : EntityBase
+    {
+        [Required]
+        public string LoginName { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+
+        public Guid EmployeeId { get; set; }
+
+        public virtual Employee Employee { get; set; }
+    }
+\end{kicode}
+
+\subsubsection{Db Context}
+Datové třídy jsou spojeny ve třídě DbContext jejíž instance reprezentuje spojení s databází. Na úrovni této třídy je zároveň řešeno jaký databázový poskytovatel bude použit. Dle toho je potřeba integrovat správnou knihovnu. Tato integrace je naštěstí triviální a je možné připojení k serverům s jiným poskytovatelem libovolně měnit s minimem úsilí. Právě tato třída umožňuje ostatním modulům číst a zapisovat data do databáze. Zodpovědností modulu přistupujícího k datům je předat contextu connection string, díky kterému je možné spojení navázat. V celém projektu je pro práci s daty použit dotazovací jazyk LINQ s rozšíření, které umožňuje dotazování za pomocí lamba výrazů.
+
+Balíček EFCore Tool umožňuje za použití příkazové řádky vytvářet Migrace. Migrace je automaticky vygenerovaný kód lišící se dle momentálně použitého databázového poskytovatele popisující strukturu databáze danou DbContextem. Tento kód poté může být použit při volaní metody Migrate, která do aktuálně připojené instance databáze vytvoří onu strukturu. Tento přístup se nazývá Code first.
+
+Pro načítaní hodnot do navigačních atributů do objektů představujících záznamy v databázi je použita metoda Lazy loading. Na rozdíl od ostatních možných přístupů zaručuje, že data budou načtena vždy až to opravdu bude nutné a současně o to není potřeba explicitně žádat. Toho efektu jsem docílil označením všech klíčových atributů jako virtuálních, což umožňuje aby se na na jejich místě vytvořili proxy objekty.
+
+\subsection{Struktura API}
+%% uvod?
+\begin{figure}[H]
+  	\centering
+ 	 \includegraphics[width=14cm,height=10cm,keepaspectratio]{API_Diagram}
+ 	 \caption{Diagram struktury API}
+\end{figure}
+
+\subsubsection{API controllery}
+Pomocí controlleru se definuje celá struktura API. Obsahují metody, které jsou volány pomoci HTTP requestů. 
+
+\begin{kicode}{csharp}{}{Ukázka kódu controlleru}
+	[Route("api/[controller]")]
+	[ApiController]
+	[Authorize]
+    public class EmployeeController : DssBaseController
+    {
+        private readonly IEmployeeApiService _employeeApiService;
+
+        public EmployeeController(IEmployeeApiService employeeApiService)
+        {
+            _employeeApiService = employeeApiService;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Manager")]
+        public EmployeeDetailDTO CreateEmployee(EmployeeDetailDTO dto)
+        {
+            var employee = MapDetailDtoToEmployee(dto);
+            var createdEmployee = _employeeApiService.CreateEmployee(employee);
+            var createdDto = MapEmployeeToDetailDto(createdEmployee);
+
+            return createdDto;
+        }
+        ...
+\end{kicode}
+
+Proces životního cyklu z pohledu API začíná ve chvíli, kdy na nějaký z endpointů přijde požadavek. Který controller by ho měl zpracovat záleží na použité směrovací strategii a URI na kterou byl zaslán. S použitím výchozího směrování, jako jsem použil já a definice cesty v anotaci (ref. code 2) řádek 1 by tento controller obsluhoval všechny požadavky na  adrese: \textit{[základní\_adresa]}/employee/... Jestli je potřeba, aby byl požadavek opatřen platným tokenem určuje anotace Authorize. (ref. code 2) řádkem 3 je tedy dáno, že všechny  požadavky, které tímto controllerem budou obslouženy musí být takto zabezpečeny.   
+
+HTTP metod je dohromady 8, ale v projektu jsou použity pouze 4 z nich a při jejich použití jsem se držet konvencí: 
+\begin{itemize}
+	\item \textbf{GET} - je používána pro získání informací ze serveru. Měla by být používána pouze pro získání dat a neměla by na data mít žádný jiný efekt. \cite{10} \textit{(volný překlad)}
+	\item \textbf{POST} - používá se pro zaslání dat na server.\cite{10} \textit{(volný překlad)}
+	\item \textbf{PUT} - Nahrazuje všechny aktuální reprezentace daného zdroje nahrávaným  obsahem.\cite{10} \textit{(volný překlad)}
+	\item \textbf{DELETE} - Smaže všechny aktuální výskyty zdroje uvedeného v URI.\cite{10} \textit{(volný překlad)}
+\end{itemize}
+Metoda \textit{CreateEmployee} bude díky anotaci (ref. code 2) na řádku 13 data ukládat a reagovat pouze na POST requesty. 
+
+Posledním aspektem, který je potřeba zmínit je rozdělení rolí. V systému jsou role dvě: pracovník pečovatelské služby a vedoucí pracovník. Každá role má jiná práva a tím pádem může přistupovat k různým endpointům a získávat tak odlišná data. Pracovník pečovatelské služby je základní role s minimálními oprávněními pro vstup do systému, proto metody konzumovány tímto typem účtů není potřeba explicitně kontrolovat. Při přihlášení se do tokenu ukládá informace(claim - viz ref sekce zabezpečení) o této roli a ta je kontrolována, pokud je metoda označena stejně jako (ref. code 2) na řádku 14.
+
+Framework automaticky serializuje a deserializuje objekty z a do formátu JSON. Pro vývojáře je tento proces naprosto transparentní a muže rovnou pracovat s objekty jak jsou definovány v kódu. Z důvodu bezpečnosti, znovupoužitelnosti a možné budoucí rozšiřitelnosti kódu jsem se pro práci s objekty a daty rozhodl použít strategii řídící se následujícími pravidly: 
+\begin{itemize}
+	\item Návratový typ metody controlleru je vždy DTO obsahující jen ty nejnutnější údaje.
+	\item DTO objekty existují pouze v rozsahu controlleru(předchází problému kruhových závislostí).
+\end{itemize} 
+Lze pozorovat, že metoda (ref. code 2) na řádcích 15-22 se tohoto principu drží. Na (ref. obr.2) je toto demonstrováno mezi conrollerem a API službou mezi kterými se posílají pouze Domain Objects.
+
+\subsubsection{API služby}
+Všechny operace s databází jsou striktně prováděny pouze v této skupině tříd. Správnost databázových dotazů je totiž jediným místem, kde může dojít k sémantickým chybám. Tyto třídy proto implementují rozhraní obsahující všechny jejich veřejné metody, což činí případné Mockování v následném testování možným. Navíc díky dodržováni pravidel o DTO mohou být kdykoliv v budoucnu využity znovu v jiném modulu. 
+
+\subsubsection{DI a propagace konfigurace}
+Framework má zabudovanou automatickou podporu pro návrhový vzor Dependecy Injection(DI). Toho jsem využil pro distribuci DbContextu do API služeb a tech zase do controlleru. Výsledek procesu je vidět na (ref. code 2) řádcích 6-11. Controller závisí na\textit{EmployeeApiService}, která je reprezentována svým rozhraním a DI kontejner při volání tohoto konstruktoru automaticky poskytne její instanci jako parametr.
+
+ASP .NET Core má komplexní systém možností konfigurace, která zvládne konzumovat konfiguraci z mnoha různých zdrojů najednou, upřednostnit parametry s větší prioritou a následně je sloučit. Tohoto je využito například při nastavování proměnných prostředí při spouštění Docker kontejneru.
+
+\subsubsection{Zabezpečení}
+Všechny požadavky musí v hlavičce obsahovat platný token, jinak je API odmítne obsloužit. Tyto Json Web Tokeny vystavuje jediný nezabezpečený endpoint, který přímá jako parametry jméno a heslo uživatele. Hesla jsou v databázi uložena v hashované podobě, proto je nutno udělat to stejné a převést heslo pomocí hashovací funkce MD5. Pokud ověření proběhne v pořádku je vytvořen nový token, který je podepsán soukromým klíčem a jsou do něj zakódovány informace jako jméno uživatele, kdo je konzument a vydavatel tokenu a role. Tyto informace se nazývají claimy a je možné je z tokenu pomocí určitých nástrojů vyčíst. Jediná informace, která zaručuje bezpečnost je právě soukromý klíč. 
+
+\subsubsection{Swagger a automatická dokumentace}
+Pro účely dokumentace API jsem použil nástroj Swagger, který automaticky zpracuje její strukturu a poskytne jí v podobě uživatelského rozhraní a JSON souboru. V produkci je žádoucí tuto funkci vypnout nebo zabezpečit ověřením identity.
+
+\begin{figure}[H]
+  	\centering
+ 	 \includegraphics[width=14cm,height=10cm,keepaspectratio]{Swagger_UI}
+ 	 \caption{Ukázka automatické dokumentace pomocí Swaggeru}
+\end{figure}
+
+\subsection{Testování částí}
+Testování částí je úroveň testovaní softwaru, kde jsou testovány individuální komponenty nebo části. Smyslem je ověřit, zdali se každá část chová jak byla navržena. Část je nejmenší testovatelná jednotka jakéhokoliv softwaru.\cite{11} \textit{(volný překlad)}
+
+Testování částí jsem v systému použil pro testování metod API služeb, které provádí složitější databázové dotazy a operace nad těmito daty. Všechny tyto metody používají DbContext pro přístup do databáze. Tento přístup bylo potřeba nahradit testovací instancí databáze, která bude bude na začátku každého testu obsahovat prázdnou strukturu tabulek a po jeho skončení přestane existovat. Pro dosažení tohoto efektu byl DbContextu konfigurován pro používání databáze v paměti.
+
+Každý test se skládá z těchto stavů: 
+\begin{itemize}
+	\item \textbf{Arrange} - připraví strukturu dat, tak aby testovala přesnou funkcionalitu testované části.
+	\item \textbf{Act} - spustí kód testované části.
+	\item \textbf{Assert} - porovnává vrácené výsledky s očekávanými výsledky, pokud se liší vyvolá chybu.
+\end{itemize}
 
 \newpage
 
 \section{Klientské části}
+% uvod
+
+\subsection{Multiplatformní aplikace}
+%% ?uvod?
+
+\subsubsection{Komunikace se serverem}
+
+%% komunikace s api - swagger, interceptor datumy
+%% authentikace/login screen
+%% client casche, poloha, vzdalenost, dopocitani chybejici adresy google map api
+%% rozvrh - infinit loader, stavy, datepicker, detail, stopky
+%% mapa - navigace v google mapach, 
+%% clientsky detail, individualni plan
+%% uprava pro desktopy
+
+
+\subsection{Managerská webová aplikace}
+%% uvod
+%% kalendar a drag and drop
 
 \newpage
 
 \section{Nasazení}
+
+\subsection{Kontejnerizace}
+
+\subsection{Azure}
+
+\subsection{CI/CD}
 
 \newpage
 
@@ -265,6 +419,8 @@ ASP .NET Core slouží k vývoji webových aplikací a služeb s tímto vývojem
   \bibitem{7} https://web.dev/add-manifest/
   https://angular.io/guide/architecture
   \bibitem{9} https://en.wikipedia.org/wiki/.NET_Core
+  \bibitem{10} https://www.tutorialspoint.com/http/http_methods.htm
+  \bibitem{11} http://softwaretestingfundamentals.com/unit-testing/
  \end{thebibliography}
 
 
