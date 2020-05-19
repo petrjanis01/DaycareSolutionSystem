@@ -81,6 +81,7 @@ export class MapPage implements OnInit {
 
     if (this.allClientsOnMap === false) {
       clientsWithNextAction = await this.clientsService.apiClientsTodayScheduledClientsGet();
+      console.log('today');
     } else {
       clientsWithNextAction = await this.clientsService.apiClientsAllClientsNextActionsGet();
     }

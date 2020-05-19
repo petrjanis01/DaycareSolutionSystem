@@ -350,7 +350,7 @@ Framework má zabudovanou automatickou podporu pro návrhový vzor Dependecy Inj
 ASP .NET Core má komplexní systém možností konfigurace, která zvládne konzumovat konfiguraci z mnoha různých zdrojů najednou, upřednostnit parametry s větší prioritou a následně je sloučit. Tohoto je využito například při nastavování proměnných prostředí při spouštění Docker kontejneru.
 
 \subsubsection{Zabezpečení}
-Všechny požadavky musí v hlavičce obsahovat platný token, jinak je API odmítne obsloužit. Tyto Json Web Tokeny vystavuje jediný nezabezpečený endpoint, který přímá jako parametry jméno a heslo uživatele. Hesla jsou v databázi uložena v hashované podobě, proto je nutno udělat to stejné a převést heslo pomocí hashovací funkce MD5. Pokud ověření proběhne v pořádku je vytvořen nový token, který je podepsán soukromým klíčem a jsou do něj zakódovány informace jako jméno uživatele, kdo je konzument a vydavatel tokenu a role. Tyto informace se nazývají claimy a je možné je z tokenu pomocí určitých nástrojů vyčíst. Jediná informace, která zaručuje bezpečnost je právě soukromý klíč. 
+Všechny požadavky musí v hlavičce obsahovat platný token, jinak je API odmítne obsloužit. Tyto Json Web Tokeny vystavuje jediný nezabezpečený endpoint, který přímá jako parametry jméno a heslo uživatele. Hesla jsou v databázi uložena v hashované podobě, proto je nutno udělat to stejné a převést heslo pomocí hashovací funkce MD5. Pokud ověření proběhne v pořádku je vytvořen nový token, který je podepsán soukromým klíčem a jsou do něj zakódovány informace jako jméno uživatele, datum a čas expirace, kdo je konzument a vydavatel tokenu a role. Tyto informace se nazývají claimy a je možné je z tokenu pomocí kdykoliv vyčíst. Jediná informace, která zaručuje bezpečnost je právě soukromý klíč, kterým se ověřuje, že přijatý token byl vystaven právě jím.
 
 \subsubsection{Swagger a automatická dokumentace}
 Pro účely dokumentace API jsem použil nástroj Swagger, který automaticky zpracuje její strukturu a poskytne jí v podobě uživatelského rozhraní a JSON souboru. V produkci je žádoucí tuto funkci vypnout nebo zabezpečit ověřením identity.
@@ -358,7 +358,7 @@ Pro účely dokumentace API jsem použil nástroj Swagger, který automaticky zp
 \begin{figure}[H]
   	\centering
  	 \includegraphics[width=14cm,height=10cm,keepaspectratio]{Swagger_UI}
- 	 \caption{Ukázka automatické dokumentace pomocí Swaggeru}
+ 	 \caption{Ukázka grafické dokumentace pomocí nástroje Swagger}
 \end{figure}
 
 \subsection{Testování částí}
@@ -382,6 +382,9 @@ Každý test se skládá z těchto stavů:
 %% ?uvod?
 
 \subsubsection{Komunikace se serverem}
+Díky integraci automatické dokumentace v serverové části jsem získal popis struktury API jako soubor ve formátu JSON. V kombinaci s nástrojem Swagger codegen jsem soubor použil pro vygenerování celého modulu pro komunikaci se serverem. Šablonu pomocí které se jednotlivé služby generují bylo potřeba upravit, aby k jednotlivým dotazům do hlavičky přidával token z lokálního úložiště a ty byly tak z pohledu serveru autorizované. Pokud požadavek skončil chybou je o tom uživatel patřičně informován v podobě notifikace nebo návratem na přihlašovací obrazovku dle povahy chyby.
+
+Problém představoval převod ?datumů? z formátu ISO 8601 do datového typu datum v JavaScriptu. ISO 8601 je standardem pro reprezentaci ?datumů? ve formátu JSON, který je používán pro přenos dat mezi klientem a serverem. Tento formát na rozdíl od datového typu není závislí na časové zóně. Z tohoto důvodu byl přidán HTTP interceptor, který projde data každého požadavku a odpovědi a upraví v nich datumy, tak aby jejich hodnota byla korektní dle časové zóny klienta.
 
 %% komunikace s api - swagger, interceptor datumy
 %% authentikace/login screen

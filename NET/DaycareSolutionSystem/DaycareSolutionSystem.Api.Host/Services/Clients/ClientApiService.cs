@@ -128,13 +128,17 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
         {
             employeeId ??= GetCurrentUser()?.Employee.Id;
 
+            var today = DateTime.Today.Date;
+            var tomorrow = today.AddDays(1).Date;
+
             // Get all clients that has registered actions planned for today
             var clients = DataContext.RegisteredClientActions
-                .Where(ca => ca.PlannedStartDateTime.Date == DateTime.Today)
+                .Where(ca => ca.PlannedStartDateTime >= today
+                             && ca.PlannedStartDateTime < tomorrow)
                 .Where(ca => ca.EmployeeId == employeeId)
-                .Where(ca => ca.IsCanceled == false)
-                .Select(ca => ca.Client)
-                .Distinct().ToList();
+                  .Where(ca => ca.IsCanceled == false)
+                  .Select(ca => ca.Client)
+                  .Distinct().ToList();
 
             var clientActions = new List<RegisteredClientAction>();
             foreach (var client in clients)
@@ -142,6 +146,8 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
                 // Get all actions planned for today that hasn't been done or started yet
                 var futureClientActions =
                     DataContext.RegisteredClientActions.Where(ca => ca.ClientId == client.Id)
+                        .Where(ca => ca.PlannedStartDateTime >= today
+                                     && ca.PlannedStartDateTime < tomorrow)
                         .Where(ca => ca.ActionStartedDateTime.HasValue == false);
 
                 var nextClientAction = futureClientActions.OrderBy(ca => ca.PlannedStartDateTime).First();
@@ -156,6 +162,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
         // and individual plan is still valid creates registered action from agreed action and returns it.
         public List<RegisteredClientAction> GetAllNextRegisteredActions(Guid? employeeId = null)
         {
+            var now = DateTime.Now;
             employeeId ??= GetCurrentUser()?.Employee.Id;
 
             var clients = GetAgreedActionsLinkedClients(employeeId);
@@ -168,7 +175,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
                         .Where(ca => ca.ClientId == client.Id)
                         .Where(ca => ca.EmployeeId == employeeId)
                         .Where(ca => ca.IsCanceled == false)
-                        .Where(ca => ca.PlannedStartDateTime > DateTime.Now);
+                        .Where(ca => ca.PlannedStartDateTime > now);
 
                 if (futureRegisteredActions.Any() == false)
                 {
@@ -193,12 +200,13 @@ namespace DaycareSolutionSystem.Api.Host.Services.Clients
 
         private RegisteredClientAction FindNextAgreedClientAction(Client client, Guid employeeId)
         {
+            var today = DateTime.Today;
             var futureAgreedActions = DataContext.AgreedClientActions
                 .Where(ca => ca.IsValid)
                 .Where(ca => ca.EmployeeId == employeeId)
                 .Where(ca => ca.IndividualPlan.ClientId == client.Id)
-                .Where(ca => ca.IndividualPlan.ValidFromDate.Date <= DateTime.Today
-                             && ca.IndividualPlan.ValidUntilDate.Date >= DateTime.Today)
+                .Where(ca => ca.IndividualPlan.ValidFromDate.Date <= today
+                             && ca.IndividualPlan.ValidUntilDate.Date >= today)
                 .ToList();
 
             if (futureAgreedActions.Any() == false)
