@@ -18,6 +18,7 @@ import { JsonDateInterceptor } from './api/json-date-interceptor';
 import { APP_BASE_HREF, PlatformLocation, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 
 export function initializeApp(appConfig: AppConfig) {
   return () => appConfig.load();
@@ -48,6 +49,7 @@ function trimLastSlashFromUrl(baseUrl: string) {
     AuthGuardService,
     LaunchNavigator,
     Geolocation,
+    Diagnostic,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: JsonDateInterceptor, multi: true },

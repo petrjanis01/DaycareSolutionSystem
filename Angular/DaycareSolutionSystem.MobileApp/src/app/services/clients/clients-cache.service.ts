@@ -39,12 +39,8 @@ export class ClientsCacheService {
 
         try {
             await this.loadDefaulProfilePicture();
-            console.log('location');
             let deviceCords = await this.geolocationHelper.getCurrentLocation();
-            console.log('loc done');
-            console.log(deviceCords);
             let clientDtos = await this.clientsService.apiClientsGet(null);
-            console.log('clients done');
             let clients = new Array<Client>();
 
             for (let dto of clientDtos) {
@@ -73,7 +69,7 @@ export class ClientsCacheService {
             return;
         }
 
-        setInterval(() => this.recalculateDeviceClientDistance(), 60 * 1000);
+        setInterval(() => this.recalculateDeviceClientDistance(), 15 * 1000);
     }
 
     private async recalculateDeviceClientDistance() {

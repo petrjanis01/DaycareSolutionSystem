@@ -2178,26 +2178,25 @@
   <!-- CITATION DATA -->
   <!-- SECTION 0 -->
   <bcf:bibdata section="0">
-    <bcf:datasource type="file" datatype="bibtex">bibliografie.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1">1</bcf:citekey>
-    <bcf:citekey order="2">2</bcf:citekey>
-    <bcf:citekey order="3">3</bcf:citekey>
-    <bcf:citekey order="4">4</bcf:citekey>
-    <bcf:citekey order="5">5</bcf:citekey>
-    <bcf:citekey order="6">6</bcf:citekey>
-    <bcf:citekey order="7">7</bcf:citekey>
-    <bcf:citekey order="8">8</bcf:citekey>
+    <bcf:citekey order="2">1</bcf:citekey>
+    <bcf:citekey order="3">2</bcf:citekey>
+    <bcf:citekey order="4">3</bcf:citekey>
+    <bcf:citekey order="5">4</bcf:citekey>
+    <bcf:citekey order="6">5</bcf:citekey>
+    <bcf:citekey order="7">6</bcf:citekey>
+    <bcf:citekey order="8">7</bcf:citekey>
     <bcf:citekey order="9">8</bcf:citekey>
-    <bcf:citekey order="10">9</bcf:citekey>
-    <bcf:citekey order="11">10</bcf:citekey>
+    <bcf:citekey order="10">8</bcf:citekey>
+    <bcf:citekey order="11">9</bcf:citekey>
     <bcf:citekey order="12">10</bcf:citekey>
     <bcf:citekey order="13">10</bcf:citekey>
     <bcf:citekey order="14">10</bcf:citekey>
-    <bcf:citekey order="15">11</bcf:citekey>
-    <bcf:citekey order="16">12</bcf:citekey>
-    <bcf:citekey order="0" nocite="1">*</bcf:citekey>
+    <bcf:citekey order="15">10</bcf:citekey>
+    <bcf:citekey order="16">11</bcf:citekey>
+    <bcf:citekey order="17">12</bcf:citekey>
+    <bcf:citekey order="18">13</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">
@@ -2206,13 +2205,4 @@
     </bcf:sort>
   </bcf:sortingtemplate>
   <!-- DATALISTS -->
-  <bcf:datalist section="0"
-                name="none/global//global/global"
-                type="entry"
-                sortingtemplatename="none"
-                sortingnamekeytemplatename="global"
-                labelprefix=""
-                uniquenametemplatename="global"
-                labelalphanametemplatename="global">
-  </bcf:datalist>
 </bcf:controlfile>

@@ -20,6 +20,8 @@ import { Router } from '@angular/router';
 
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { IndividualPlanCreateUpdateDTO } from '../model/individualPlanCreateUpdateDTO';
 import { IndividualPlanDTO } from '../model/individualPlanDTO';
 
@@ -37,8 +39,9 @@ export class IndividualPlansService extends ApiBase{
         private httpClient: HttpClient,
         router: Router,
         notification: NotifiactionService,
+        modal: NgbModal,
         @Optional() configuration: Configuration) {
-        super(router, notification);
+        super(router, notification, modal);
     }
 
     /**

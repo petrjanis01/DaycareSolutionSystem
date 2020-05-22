@@ -16,7 +16,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { ApiBase } from 'src/app/api/api-base';
 import { BaseUrlService } from 'src/app/services/base-url.service';
-import { NavController } from '@ionic/angular';
+import { NavController, ModalController } from '@ionic/angular';
 import { ToastService } from 'src/app/services/toast.service';
 
 import { CustomHttpUrlEncodingCodec } from '../encoder';
@@ -38,8 +38,9 @@ export class ActionService extends ApiBase{
         baseUrlService: BaseUrlService,
          nav: NavController,
         toast: ToastService,
+         modal: ModalController,
         @Optional() configuration: Configuration) {
-        super(baseUrlService, nav, toast);
+        super(baseUrlService, nav, toast, modal);
     }
 
     /**

@@ -20,6 +20,8 @@ import { Router } from '@angular/router';
 
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { ActionDTO } from '../model/actionDTO';
 
 import { Configuration } from '../configuration';
@@ -36,8 +38,9 @@ export class ActionService extends ApiBase{
         private httpClient: HttpClient,
         router: Router,
         notification: NotifiactionService,
+        modal: NgbModal,
         @Optional() configuration: Configuration) {
-        super(router, notification);
+        super(router, notification, modal);
     }
 
     /**

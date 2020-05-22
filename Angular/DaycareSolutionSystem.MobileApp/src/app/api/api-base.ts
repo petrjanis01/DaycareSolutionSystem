@@ -1,6 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { BaseUrlService } from '../services/base-url.service';
-import { NavController } from '@ionic/angular';
+import { NavController, ModalController } from '@ionic/angular';
 import { ToastService } from '../services/toast.service';
 
 export class ApiBase {
@@ -8,7 +8,8 @@ export class ApiBase {
     constructor(
         private baseUrlService: BaseUrlService,
         private nav: NavController,
-        private toast: ToastService) { }
+        private toast: ToastService,
+        private modal: ModalController) { }
 
     protected get basePath(): string {
         return this.baseUrlService.getBaseUrl();
@@ -60,5 +61,6 @@ export class ApiBase {
     public async logOut() {
         localStorage.removeItem('token');
         this.nav.navigateRoot('/login');
+        this.modal.dismiss();
     }
 }

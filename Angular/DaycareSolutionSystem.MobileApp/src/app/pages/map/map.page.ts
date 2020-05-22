@@ -5,7 +5,7 @@ import { ClientsService, CoordinatesDTO } from 'src/app/api/generated';
 import { GeolocationHelperService } from 'src/app/services/geolocation/geolocation-helper-service';
 import { RegisteredActionBasicDTO } from 'src/app/api/generated/model/registeredActionBasicDTO';
 import { ClientWithNextActionDTO } from 'src/app/api/generated/model/clientWithNextActionDTO';
-import { PopoverController, Platform } from '@ionic/angular';
+import { PopoverController, Platform, AlertController } from '@ionic/angular';
 import { MapMenuComponent } from './map-menu/map-menu.component';
 import { VisualHelperService } from 'src/app/services/visual-helper.service';
 import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
@@ -35,7 +35,8 @@ export class MapPage implements OnInit {
     private popoverController: PopoverController,
     public visualHelper: VisualHelperService,
     private platform: Platform,
-    private launchNavigator: LaunchNavigator
+    private launchNavigator: LaunchNavigator,
+    private alertController: AlertController
   ) { }
 
   public isMobileNativeApp(): boolean {
@@ -44,6 +45,7 @@ export class MapPage implements OnInit {
 
   async ngOnInit() {
     this.allClientsOnMap = false;
+    this.displaySelfMarker = false;
 
     await this.cache.loaded;
     await this.loadCLientsWithNextActions();
@@ -51,29 +53,44 @@ export class MapPage implements OnInit {
 
     if (cords == null && this.clients[0]) {
       cords = this.clients[0].address.coordinates;
-      this.displaySelfMarker = false;
 
       this.mapStartLat = +cords.latitude;
       this.mapStartLng = +cords.longitude;
       this.devicePositionLat = +cords.latitude;
       this.devicePositionLng = +cords.longitude;
+
+      let alert = await this.alertController.create({
+        header: 'Warning',
+        message: 'Your device location is turned off or you didn\'t give application permission. '
+          + 'Some of the features may not work correctly.',
+        buttons: ['OK']
+      });
+
+      await alert.present();
+      setInterval(() => this.getMapStartingPostion(), 15 * 1000);
       return;
     }
 
-    this.mapStartLat = +cords.latitude;
-    this.mapStartLng = +cords.longitude;
-    this.displaySelfMarker = true;
-    this.getMapStartingPostion();
-    setInterval(() => this.getMapStartingPostion(), 60 * 1000);
+    if (cords != null) {
+      this.mapStartLat = +cords.latitude;
+      this.mapStartLng = +cords.longitude;
+      this.displaySelfMarker = true;
+      this.getMapStartingPostion();
+    }
+    setInterval(() => this.getMapStartingPostion(), 15 * 1000);
   }
 
   private async getMapStartingPostion() {
     let cords = await this.geolocationHelper.getCurrentLocation();
+    if (cords == null) {
+      this.displaySelfMarker = false;
+      return;
+    }
 
+    this.displaySelfMarker = true;
     this.devicePositionLat = +cords.latitude;
     this.devicePositionLng = +cords.longitude;
-    console.log(this.devicePositionLat);
-    console.log(this.devicePositionLng);
+    this.nearbyClientsCount = this.getNearbyClients().length;
   }
 
   private async loadCLientsWithNextActions() {
@@ -81,7 +98,6 @@ export class MapPage implements OnInit {
 
     if (this.allClientsOnMap === false) {
       clientsWithNextAction = await this.clientsService.apiClientsTodayScheduledClientsGet();
-      console.log('today');
     } else {
       clientsWithNextAction = await this.clientsService.apiClientsAllClientsNextActionsGet();
     }

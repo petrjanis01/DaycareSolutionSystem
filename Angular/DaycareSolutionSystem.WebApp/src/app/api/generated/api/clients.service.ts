@@ -20,6 +20,8 @@ import { Router } from '@angular/router';
 
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { ClientBasicsDTO } from '../model/clientBasicsDTO';
 import { ClientDTO } from '../model/clientDTO';
 import { ClientWithNextActionDTO } from '../model/clientWithNextActionDTO';
@@ -39,8 +41,9 @@ export class ClientsService extends ApiBase{
         private httpClient: HttpClient,
         router: Router,
         notification: NotifiactionService,
+        modal: NgbModal,
         @Optional() configuration: Configuration) {
-        super(router, notification);
+        super(router, notification, modal);
     }
 
     /**

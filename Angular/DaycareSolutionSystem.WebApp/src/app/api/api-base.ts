@@ -2,12 +2,14 @@ import { HttpHeaders } from '@angular/common/http';
 import { AppConfig } from './../config/app.config';
 import { NotifiactionService } from '../services/notification.service';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 export class ApiBase {
 
     constructor(
         private router: Router,
-        private notification: NotifiactionService) { }
+        private notification: NotifiactionService,
+        private modal: NgbModal) { }
 
     protected get basePath(): string {
         return AppConfig.settings.apiBaseUrl;
@@ -59,5 +61,6 @@ export class ApiBase {
     public async logOut() {
         localStorage.removeItem('token');
         this.router.navigate(['login']);
+        this.modal.dismissAll();
     }
 }

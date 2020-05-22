@@ -84,8 +84,5 @@
     <requires type="dynamic">
       <file>kidiplom.bcf</file>
     </requires>
-    <requires type="editable">
-      <file>bibliografie.bib</file>
-    </requires>
   </external>
 </requests>

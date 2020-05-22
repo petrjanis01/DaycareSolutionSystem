@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 {{#imports}}
 import { {{classname}} } from '../{{filename}}';
 {{/imports}}
@@ -42,8 +44,9 @@ export class {{classname}} extends ApiBase{
         private {{#useHttpClient}}httpClient: HttpClient{{/useHttpClient}},
         router: Router,
         notification: NotifiactionService,
+        modal: NgbModal,
         @Optional() configuration: Configuration) {
-        super(router, notification);
+        super(router, notification, modal);
     }
 
     /**

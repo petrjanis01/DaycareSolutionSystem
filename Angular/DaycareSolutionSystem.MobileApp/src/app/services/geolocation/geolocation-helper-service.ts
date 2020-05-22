@@ -7,6 +7,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { CoordinatesDTO } from 'src/app/api/generated';
 import { Platform } from '@ionic/angular';
 import { ToastService } from '../toast.service';
+import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 
 // https://medium.com/@shawinshawz/ionic-4-google-maps-geo-location-b49d7f1d1111
 @Injectable({ providedIn: 'root' })
@@ -18,11 +19,17 @@ export class GeolocationHelperService {
         private http: HttpClient,
         private platform: Platform,
         private toast: ToastService,
-        private geolocation: Geolocation
+        private geolocation: Geolocation,
+        private diagnostic: Diagnostic
     ) { }
 
     public async getCurrentLocation(): Promise<CoordinatesDTO> {
         if (this.platform.is('capacitor')) {
+            let isLocationAvailable = await this.diagnostic.isLocationEnabled();
+            if (isLocationAvailable === false) {
+                return null;
+            }
+
             let result = await this.geolocation.getCurrentPosition();
 
             let coordinates: CoordinatesDTO = {
