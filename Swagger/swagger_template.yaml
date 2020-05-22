@@ -1076,6 +1076,16 @@ components:
       - 1
       type: integer
       format: int32
+    UserDTO:
+      type: object
+      properties:
+        loginName:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
+      additionalProperties: false
     EmployeeDetailDTO:
       type: object
       properties:
@@ -1098,6 +1108,8 @@ components:
           "$ref": "#/components/schemas/Gender"
         employeePosition:
           "$ref": "#/components/schemas/EmployeePosition"
+        user:
+          "$ref": "#/components/schemas/UserDTO"
         id:
           type: string
           format: uuid

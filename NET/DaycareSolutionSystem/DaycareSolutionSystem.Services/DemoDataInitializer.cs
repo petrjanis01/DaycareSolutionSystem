@@ -14,7 +14,6 @@ namespace DaycareSolutionSystem.Helpers
     {
         private readonly DssDataContext _dataContext;
         private readonly ImageFetcher _imageFetcher;
-        private static readonly PasswordHasher PasswordHasher = new PasswordHasher();
 
         private static readonly string[] MaleNames = new[] { "Liam", "Noah", "William", "James", "Oliver", "Benjamin", "Lucas" };
         private static readonly string[] FemaleNames = new[] { "Emma", "Olivia", "Ava", "Isabella", "Sophia", "Charlotte", "Mia" };
@@ -112,7 +111,8 @@ namespace DaycareSolutionSystem.Helpers
                 client.FirstName = i < 5 ? MaleNames[i] : FemaleNames[i - 4];
                 client.Surname = i < 6 ? LastNames[i] : LastNames[i - 6];
                 client.Birthdate = new DateTime(1945 + i, 1 + i, 1 + i);
-                client.Email = $"{client.FullName}@fakeDomain.com";
+                var emailName = client.FullName.Replace(" ", "");
+                client.Email = $"{emailName}@fakeDomain.com";
                 client.PhoneNumber = $"+420{new string('1', 9)}";
 
                 clients.Add(client);
@@ -467,7 +467,7 @@ namespace DaycareSolutionSystem.Helpers
 
                 if (clientAction.IsCanceled)
                 {
-                    clientAction.Comment = "Reason for canceling action."
+                    clientAction.Comment = "Reason for canceling action.";
                 }
 
                 if (clientAction.IsCompleted)

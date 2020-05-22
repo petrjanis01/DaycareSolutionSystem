@@ -11,6 +11,7 @@
  */
 import { EmployeePosition } from './employeePosition';
 import { Gender } from './gender';
+import { UserDTO } from './userDTO';
 
 
 export interface EmployeeDetailDTO { 
@@ -21,6 +22,7 @@ export interface EmployeeDetailDTO {
     surname?: string;
     gender?: Gender;
     employeePosition?: EmployeePosition;
+    user?: UserDTO;
     id?: string;
     fullName?: string;
     profilePictureUri?: string;

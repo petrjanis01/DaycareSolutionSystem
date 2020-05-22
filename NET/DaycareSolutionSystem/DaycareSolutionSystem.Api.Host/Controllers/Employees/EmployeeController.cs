@@ -43,7 +43,8 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Employees
         public EmployeeDetailDTO CreateEmployee(EmployeeDetailDTO dto)
         {
             var employee = MapDetailDtoToEmployee(dto);
-            var createdEmployee = _employeeApiService.CreateEmployee(employee);
+            var user = MapDtoToUser(dto);
+            var createdEmployee = _employeeApiService.CreateEmployee(employee, user);
             var createdDto = MapEmployeeToDetailDto(createdEmployee);
 
             return createdDto;
@@ -161,6 +162,14 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Employees
             }
 
             return employee;
+        }
+
+        private User MapDtoToUser(EmployeeDetailDTO dto)
+        {
+            var user = new User();
+            user.LoginName = dto.User.LoginName;
+            user.Password = dto.User.Password;
+            return user;
         }
 
         private EmployeeBasicDTO MapEmployeeToBasicDto(Employee employee)

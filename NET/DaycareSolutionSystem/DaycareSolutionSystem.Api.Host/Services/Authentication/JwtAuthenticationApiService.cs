@@ -16,7 +16,6 @@ namespace DaycareSolutionSystem.Api.Host.Services.Authentication
 {
     public class JwtAuthenticationApiService : ApiServiceBase, IJwtAuthenticationApiService
     {
-        private readonly PasswordHasher _passwordHasher = new PasswordHasher();
         private readonly Microsoft.Extensions.Configuration.IConfiguration _config;
 
         public JwtAuthenticationApiService(DssDataContext dataContext, IHttpContextAccessor httpContextAccessor, Microsoft.Extensions.Configuration.IConfiguration config)
@@ -29,7 +28,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Authentication
         {
             var user = DataContext.Users.FirstOrDefault(u => u.LoginName == dto.Username);
 
-            if (user != null && _passwordHasher.HashPassword(dto.Password) == user.Password)
+            if (user != null && PasswordHasher.HashPassword(dto.Password) == user.Password)
             {
                 var userRole = user.Employee.EmployeePosition;
 

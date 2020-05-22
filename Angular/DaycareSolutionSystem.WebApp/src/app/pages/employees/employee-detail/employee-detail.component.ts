@@ -10,6 +10,7 @@ import { pluck } from 'rxjs/operators';
 import { DatepickerDateModel } from 'src/app/shared/datepicker-date-model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NotifiactionService } from 'src/app/services/notification.service';
+import { UserDTO } from 'src/app/api/generated/model/userDTO';
 
 @Component({
   selector: 'app-employee-detail',
@@ -32,6 +33,8 @@ export class EmployeeDetailComponent implements OnInit {
   public detailEditCounter = -1;
 
   public profilePicture: string;
+
+  public userForm: FormGroup;
 
   constructor(private employeeService: EmployeeService, private route: ActivatedRoute,
     private formBuilder: FormBuilder, public helper: GeneralHelperService,
@@ -60,6 +63,7 @@ export class EmployeeDetailComponent implements OnInit {
 
   public openGeneralInfoEdit() {
     this.createEditForm();
+    this.createUserForm();
     this.profilePicture = this.isEdit ? this.employee.profilePictureUri : this.helper.getAnonymousImgUrlFormatted();
     this.detailEditCounter++;
   }
@@ -73,6 +77,17 @@ export class EmployeeDetailComponent implements OnInit {
       phoneNumber: new FormControl(this.isEdit ? this.employee.phoneNumber : ''),
       email: new FormControl(this.isEdit ? this.employee.email : '', Validators.email),
       position: new FormControl(this.isEdit ? this.employee.employeePosition : 0),
+    });
+  }
+
+  private createUserForm() {
+    if (this.isEdit) {
+      return;
+    }
+
+    this.userForm = this.formBuilder.group({
+      loginName: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required)
     });
   }
 
@@ -135,6 +150,13 @@ export class EmployeeDetailComponent implements OnInit {
     dto.id = this.isEdit ? this.employee.id : null;
     dto.profilePictureUri = this.profilePicture.includes(this.helper.getAnonymousImgUrlFormatted()) ? null : this.profilePicture;
 
+    if (this.isEdit === false) {
+      let userDto: UserDTO = {};
+      userDto.loginName = this.userForm.value.loginName;
+      userDto.password = this.userForm.value.password;
+      dto.user = userDto;
+    }
+
     return dto;
   }
 
@@ -159,6 +181,14 @@ export class EmployeeDetailComponent implements OnInit {
 
   public selectImage(ev: any) {
     this.imageInput.nativeElement.click();
+  }
+
+  public isFormValid(): boolean {
+    if (this.isEdit) {
+      return this.editForm.valid;
+    }
+
+    return this.editForm.valid && this.userForm.valid;
   }
 
 }

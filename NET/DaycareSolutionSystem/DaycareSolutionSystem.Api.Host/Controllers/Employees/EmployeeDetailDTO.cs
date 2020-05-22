@@ -18,5 +18,7 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Employees
         public Gender Gender { get; set; }
 
         public EmployeePosition EmployeePosition { get; set; }
+
+        public UserDTO User { get; set; }
     }
 }

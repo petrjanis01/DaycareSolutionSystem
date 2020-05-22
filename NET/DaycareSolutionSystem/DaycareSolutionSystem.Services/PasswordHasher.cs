@@ -4,14 +4,14 @@ using System.Text;
 
 namespace DaycareSolutionSystem.Helpers
 {
-    public class PasswordHasher
+    public static class PasswordHasher
     {
-        public string HashPassword(string password)
+        public static string HashPassword(string password)
         {
             UTF8Encoding utf8 = new UTF8Encoding();
-            var md5 = new MD5CryptoServiceProvider();
+            var sha256 = SHA256.Create();
 
-            byte[] data = md5.ComputeHash(utf8.GetBytes(password));
+            byte[] data = sha256.ComputeHash(utf8.GetBytes(password));
 
             return Convert.ToBase64String(data);
         }

@@ -30,6 +30,7 @@ export class ClientDetailComponent implements OnInit {
 
     if (id === '0') {
       this.createNewClientDto();
+      this.isIndividualPlanCardVisible = false;
     } else {
       this.getExistingClient(id);
     }

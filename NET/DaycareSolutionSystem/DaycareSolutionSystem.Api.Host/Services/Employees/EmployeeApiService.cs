@@ -61,8 +61,13 @@ namespace DaycareSolutionSystem.Api.Host.Services.Employees
             return queriedEmployee;
         }
 
-        public Employee CreateEmployee(Employee employee)
+        public Employee CreateEmployee(Employee employee, User user)
         {
+            var hashedPassword = PasswordHasher.HashPassword(user.Password);
+            user.Password = hashedPassword;
+            user.EmployeeId = employee.Id;
+
+            DataContext.Users.Add(user);
             DataContext.Employees.Add(employee);
             DataContext.SaveChanges();
 
@@ -88,7 +93,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Employees
             var userId = GetCurrentUser().Id;
 
             var user = DataContext.Users.Find(userId);
-            user.Password = new PasswordHasher().HashPassword(newPassword);
+            user.Password = PasswordHasher.HashPassword(newPassword);
             DataContext.SaveChanges();
         }
     }

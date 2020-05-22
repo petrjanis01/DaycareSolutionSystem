@@ -21,3 +21,4 @@ export * from './registeredActionBasicDTO';
 export * from './registeredActionDTO';
 export * from './registeredActionsClientDTO';
 export * from './registeredActionsForDayDTO';
+export * from './userDTO';
