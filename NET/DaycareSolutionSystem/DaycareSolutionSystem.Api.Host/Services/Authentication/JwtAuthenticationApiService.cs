@@ -50,7 +50,7 @@ namespace DaycareSolutionSystem.Api.Host.Services.Authentication
                 var token = new JwtSecurityToken(
                     issuer: "DayCareSolutionSystem",
                     audience: "DayCareSolutionSystemMobileApp",
-                    expires: DateTime.Now.AddMinutes(30),
+                    expires: DateTime.Now.AddMinutes(60),
                     claims: authClaims,
                     signingCredentials: new Microsoft.IdentityModel.Tokens.SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );

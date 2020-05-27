@@ -68,6 +68,14 @@ export class EmployeeDetailComponent implements OnInit {
     this.detailEditCounter++;
   }
 
+  public getTitle(): string {
+    if (this.isEdit) {
+      return 'Employee edit';
+    }
+
+    return 'Create employee';
+  }
+
   private createEditForm() {
     this.editForm = this.formBuilder.group({
       firstName: new FormControl(this.isEdit ? this.employee.firstName : '', Validators.required),

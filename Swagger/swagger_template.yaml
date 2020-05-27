@@ -494,6 +494,29 @@ paths:
             text/json:
               schema:
                 "$ref": "#/components/schemas/EmployeeDetailDTO"
+  "/api/Employee/all-employees-except-current":
+    get:
+      tags:
+      - Employee
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/EmployeeBasicDTO"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/EmployeeBasicDTO"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/EmployeeBasicDTO"
   "/api/Employee/all-caregivers":
     get:
       tags:

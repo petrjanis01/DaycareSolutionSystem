@@ -89,6 +89,36 @@ export class EmployeeService extends ApiBase{
         return this.processErrors(result);
     }
 
+    public async apiEmployeeAllEmployeesExceptCurrentGet(): Promise<Array<EmployeeBasicDTO>> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+
+        let result = this.httpClient.get<Array<EmployeeBasicDTO>>(`${this.basePath}/api/Employee/all-employees-except-current`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: this.createAuthHeaders(headers),
+            }
+        ).toPromise();
+
+        return this.processErrors(result);
+    }
+
     public async apiEmployeeChangePasswordPut(newPassword?: string, ): Promise<any> {
 
 

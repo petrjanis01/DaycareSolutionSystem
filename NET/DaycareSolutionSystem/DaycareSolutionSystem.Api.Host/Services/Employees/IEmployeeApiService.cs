@@ -6,6 +6,8 @@ namespace DaycareSolutionSystem.Api.Host.Services.Employees
 {
     public interface IEmployeeApiService
     {
+        List<Employee> GetAllEmployees();
+
         List<Employee> GetAllEmployeesExceptCurrent();
 
         List<Employee> GetAllCaregivers();

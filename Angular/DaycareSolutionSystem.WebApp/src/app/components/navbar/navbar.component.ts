@@ -192,7 +192,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         return item.title;
       }
     }
-    return 'Dashboard';
+    return '';
   }
 
   open(content) {

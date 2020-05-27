@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RegisteredActionModalComponent } from './registered-action-modal/registered-action-modal.component';
 import { VisualHelperService } from 'src/app/services/visual-helper.service';
+import { GeneralHelperService } from 'src/app/services/general-helper.service';
 
 const colors: any = {
   canceled: {
@@ -38,6 +39,7 @@ export class ScheduleComponent implements OnInit {
 
   public selectedClients = new Array<ClientBasicsDTO>();
   public selectedEmployee: EmployeeBasicDTO;
+  public selectedEmployeeId = null;
 
   public curretlyViewedDate = new Date();
   public activeDayIsOpen = false;
@@ -45,7 +47,8 @@ export class ScheduleComponent implements OnInit {
   constructor(private registeredActionsService: RegisteredActionsService, private clientsService: ClientsService,
     private employeesService: EmployeeService, private datePipe: DatePipe,
     private notifications: NotifiactionService, private spinner: NgxSpinnerService,
-    private modal: NgbModal, private visualHelper: VisualHelperService) { }
+    private modal: NgbModal, private visualHelper: VisualHelperService,
+    private generalHelper: GeneralHelperService) { }
 
   async ngOnInit() {
     await this.loadClients();
@@ -68,7 +71,11 @@ export class ScheduleComponent implements OnInit {
 
   private async loadEmployees() {
     this.employees = await this.employeesService.apiEmployeeAllCaregiversGet();
-    let pleaseSelectEmployee: ClientBasicsDTO = {};
+    this.addEmptyEmployee();
+  }
+
+  private addEmptyEmployee() {
+    let pleaseSelectEmployee: EmployeeBasicDTO = {};
     pleaseSelectEmployee.fullName = 'Please select employee';
     pleaseSelectEmployee.id = null;
     this.employees.unshift(pleaseSelectEmployee);
@@ -79,6 +86,12 @@ export class ScheduleComponent implements OnInit {
     this.registeredActions = actions;
 
     this.reloadEvents(actions);
+  }
+
+  public getMonth(): string {
+    let month = this.curretlyViewedDate.getMonth();
+    let montName = this.generalHelper.months[month];
+    return montName;
   }
 
   private reloadEvents(actions: RegisteredActionDTO[]) {
@@ -148,7 +161,20 @@ export class ScheduleComponent implements OnInit {
     this.clients.splice(index, 1);
 
     this.selectedClients.push(client);
+    this.clients.sort((a, b) => this.compareClients(a, b));
     this.filterActions();
+  }
+
+  private compareClients(a: ClientDTO, b: ClientDTO): number {
+    if (a.id == null) {
+      return -1;
+    }
+
+    if (b.id == null) {
+      return 1;
+    }
+
+    return a.fullName.localeCompare(b.fullName);
   }
 
   public removeClient(id: string) {
@@ -157,6 +183,7 @@ export class ScheduleComponent implements OnInit {
     this.selectedClients.splice(index, 1);
 
     this.clients.push(client);
+    this.clients.sort((a, b) => this.compareClients(a, b));
     this.filterActions();
   }
 
@@ -164,16 +191,13 @@ export class ScheduleComponent implements OnInit {
     if (id == null) {
       return;
     }
-
     let employee = this.employees.find(c => c.id === id);
-
     this.selectedEmployee = employee;
     this.filterActions();
   }
 
   public removeEmployee(id: string) {
     this.selectedEmployee = null;
-
     this.filterActions();
   }
 

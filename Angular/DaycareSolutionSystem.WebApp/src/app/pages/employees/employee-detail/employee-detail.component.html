@@ -58,12 +58,12 @@
             <div class="card" *ngIf="detailEditCounter == 1">
                 <div class="card-header row justify-content-between">
                     <div class="col-md-5">
-                        <h3 class="title">Employee edit</h3>
+                        <h3 class="title">{{getTitle()}}</h3>
                     </div>
                     <div class="col-md3">
                         <button class="btn btn-danger" (click)="cancelEdit()">Cancel</button>
-                        <button style="margin-left: 10px; margin-right: 15px;" [disabled]="!isFormValid()" class=" btn btn-success"
-                            (click)="saveGeneralInfo()">Save</button>
+                        <button style="margin-left: 10px; margin-right: 15px;" [disabled]="!isFormValid()"
+                            class=" btn btn-success" (click)="saveGeneralInfo()">Save</button>
                     </div>
                 </div>
                 <div class="card-body" *ngIf="editForm" [formGroup]="editForm">
@@ -73,7 +73,7 @@
                             <div class="fileinput text-center">
                                 <input type="file" hidden #imageInput accept="image/*" (change)="processFile($event)">
                                 <div class="thumbnail">
-                                    <img [src]="profilePicture">
+                                    <img style="max-height: 250px;" [src]="profilePicture">
                                 </div>
                                 <div>
                                     <button class="btn-round btn btn-primary ng-star-inserted"

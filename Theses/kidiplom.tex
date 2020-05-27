@@ -26,13 +26,24 @@
 \maketitle
 
 \section{Úvod}
-Moderní technologie jako jsou mobilní aplikace se v dnešní době dostávají do všech odvětví...
+Moderní technologie, jako jsou mobilní aplikace, nacházejí v dnešní době uplatnění i v odvětvích jako je zdravotnictví a sociální služby. Tento vývoj událostí je zapříčiněn klesajícími výdaji potřebnými na integraci těchto systému do organizací a státními orgány, které vyžadují evidenci služeb v elektronické podobě. Poskytovatelé těchto služeb se musí těmto trendům přizpůsobovat a objevuje se tedy na trhu se softwarem zcela nová kategorie produktů. Otevírá se možnost pro modernizaci postupů a snaha o zjednodušení práce zaměstnanců těchto organizací. Mladší generace, která moderní technologie naplno využívá ve svém osobním životě, tento vývoj událostí vidí pozitivně. Na druhou stranu zaměstnanci, blížící se důchodovému věku, vnímají používání těchto technologií jako zbytečnou zátěž a překážku při vykonáváni své práce.
 
-% rozdil mezi ceskem a zahranicim ve zravotnictvi - moje zkusenost
-% proc jsem delal toto zamereni - proces od zacatku do konce
-% jen zjednodusena verze systemu- vyber urcite casti s cilem pouziti technologii
-% po schuzce s pracovnikem soc. sluzeb - informace a prevedeni do datoveho modelu, napady na zlepseni a jednodussi prace
-% popis celkoveho fungovani systemu a pravidla
+Již dva roky spolupracuji na vývoji systému, jehož cílovým zákazníkem jsou soukromé společnosti poskytující sociální služby v Holandsku. Zároveň jsem měl možnost seznámit se s fungováním sociálních služeb zde v České Republice a tak do určité míry pochopit rozdíly. Nejdůležitějším poznatkem bylo, že zde v ČR  používají tyto systémy pouze pro nejnutnější evidenci. V zahraničí používají daleko komplexnější aplikace a využívají všech jejich funkcí, které jim z mého pohledu hodně usnadňují práci. 
+
+Mým cílem tedy bylo prozkoumat stávající pracovní postup menší organizace pečovatelské služby zde v ČR. Navrhnout prototyp systému, který by umožnil evidenci nezbytně nutných informací a zároveň i integrovat určitá zlepšení, která by mohla ulehčit a zpříjemnit pracovníkům jejich administrativní povinnosti. Systém pochopitelně nemohl podporovat, z časových důvodu, úplně všechnu funkcionalitu, proto jsem se rozhodl soustředit hlavně na zaměstnance, kteří navštěvují klienty a jejich povinnosti. 
+
+Po schůzce s pracovníkem sociálních služeb jsem vypracoval datový model na obrázku ~\ref{fig:dataModel}, který reprezentuje klíčovou funkcionalitu systému a definuje pravidla pro jeho používání.
+
+Každý klient, kterému je aktuálně poskytována péče, má aktivní individuální plán. Tento plán je vytvářen na schůzce vedoucího pracovníka s klientem a udává pravidelnou týdenní péči, která bude klientovi poskytována. Tento pravidelný rozvrh je tvořen z \textit{AgreedClientActions}, které vychází ze základních akcí. Základní akce představují  standardní úkony, které organizace nabízí, čili jejich výčet je v podstatě kompletní nabídka služeb. Základní akce mají svůj popis, jak by se měly vykonávat a ten je dán směrnicemi. \textit{AgreedClientAction} má poté detailnější popis, který je zaměřen na specifické potřeby klienta. Z tohoto pevně daného rozvrhu se poté generují jednotlivé registrované akce, ke kterým zaměstnanci píší poznámky a evidují, jaký časový úsek jim vykonávání úkonu zabralo, z důvodu fakturace. Zbytek datového modelu slouží pro ukládaní dat o zaměstnancích a jejich přihlašovacích údajích, dat o klientech včetně jejich adresy. 
+
+\begin{figure}[H]
+  	\centering
+ 	 \includegraphics[width=14cm,height=11cm]{datamodel}
+ 	 \caption{Datový model systému}
+ 	 \label{fig:dataModel}
+\end{figure}
+
+ V reálné organizaci má každý klient jednoho klíčového pracovníka, který jej pravidelně navštěvuje. Z jakýchkoliv důvodů se ale může stát, že klíčového pracovníka bude muset někdo zastoupit. V tomto případě si musí zaměstnanci mezi sebou vyměnit všechny údaje o klientovi a detailní poznámky, jak úkony u něj vykonávat. K vykonání sjednaného úkonu je potřeba, aby si zastupující zaměstnanec našel adresu místa, kde má klientovi službu poskytnout, což může způsobit velké časové prodlevy. Všechny poznámky a informace o klientovi si zaměstnanci vedou v papírové podobě. K evidenci času stráveného u klienta používají čtečky čárových kódů. Při prvním načtení kódu akce se spustí časomíra a při opětovném načtení se zastaví. Výše uvedené důvody jsem viděl jako nejlepší příležitost, jak pracovníkům zjednodušit jejich práci, díky používání mnou vytvořené aplikace. 
 \newpage
 
 \section{Vývoj mobilních aplikací}
@@ -97,7 +108,6 @@ Nástroj, který umožňuje spuštění webových aplikací jako nativních. Tak
 \end{figure}
 
 
-
 Přístup k nativní API je poté zařízen přes pluginy volané z JavaScriptu, které propojují web view s nativní obálkou. Zde už je zpomalení poněkud výraznější a proto se tento způsob doporučuje pouze pro menší až středně velké projekty s nepříliš složitým uživatelským rozhraním, které by potencionálně mohlo na pozadí generovat veliké množství DOM elementů. Možnost vytvořit, z kterékoliv webové aplikace nativní aplikaci je hlavní výhodou, ale tvoří problém s nekonzistentním designem uživatelského rozhraní a nepřipraveností webu pro běh na mobilním zařízení. Z tohoto důvodu je dobré používat tento nástroj v kombinaci s některým z framewoků, které jsou k tomu uzpůsobeny.
 
 \subsection{Progresivní webové aplikace(PWA)}
@@ -117,7 +127,11 @@ Většina aplikací se neobejde bez serverové části. Buď z důvodu získán�
 Ještě před výběrem konkretních technologií a programovacích jazyků jsem se zamýšlel nad způsobem, jak výsledný produkt předat potencionálnímu zákazníkovi. Rozhodnutí nakonec bylo, tento problém kompletně eliminovat, celý systém kontejnerizovat pomocí nástroje Docker, kromě výsledných nativních aplikací, u kterých to postrádá smysl. Při výběru technologií jsem tak nebyl vázán na prostředí, ve kterém systém poběží.
 
 \subsection{Docker}
-TODO
+Docker je open-source platforma určená pro vývoj, nasazování a spouštění aplikací. Umožňuje zabalit a spustit aplikaci ve volně izolovaném prostředí nazývaném kontejner. Kontejnery nejsou náročné na výkon stroje, na kterém jsou spuštěny, protože není potřeba dodatečné načítání hypervizoru, ale jsou spouštěny přímo v rámci kernelu tohoto stroje.
+TODO citace
+
+
+Kontejnery odstraňují problémy s nekompatibilitou jednotlivých prostředí, protože obsahují všechny závislosti, které program v nich spouštěný potřebuje pro svůj běh.
  
 \subsection{Klientské části}
 Základním a nejdůležitějším cílem bylo vytvořit aplikaci, která bude funkční v mobilních zařízeních s operačními systémy Android i iOS a zároveň ve webových prohlížečích. Protože jsem byl na vývoj sám a chtěl jsem vytvořit kvalitní aplikaci, nativní vývoj pro každou platformu s následným vytvořením webové verze nepřipadal v úvahu. Webová aplikace s následným zabalením do nativní obálky je v dané situaci nejvíce vyhovujícím řešením. Jako nástroj pro převod jsem použil výše zmíněný Capacitor. 
@@ -125,6 +139,7 @@ Základním a nejdůležitějším cílem bylo vytvořit aplikaci, která bude f
 Posledním krokem bylo zvolit správný přístup k vývoji webové aplikace. Tradiční způsob tvoření webové stránky za použití HTML, CSS a JavaScriptu by bylo zdlouhavé a potencionálně nebezpečné. Aplikace by očividně obsahovala spoustu kódu v čistém JS, který nemá žádnou kontrolu datových typů, což ve větších projektech může způsobovat chyby, které není lehké odhalit. Další problém by nastal se samotným uživatelským rozhraním. Veškeré UI komponenty by museli být vytvořeny ručně a nebyla by zaručena konzistence se zásadami stylů platformy. Upravovat styl stránky pomocí CSS, tak aby fungovala na zařízeních všech velikostí je sice možné, ale zbytečně náročné. Z těchto důvodů jsem se rozhodl použít framework Angular a platformu Ionic, která je navíc výborně kompatibilní s pluginy Capacitoru.
 
 \subsubsection{Angular}
+\label{sec:angular}
 Angular je platforma a framework pro vývoj jednostránkových klientských aplikací za použití HTML a TypeScriptu. Samotný Angular je napsaný v TypeScriptu. Implementuje základní a volitelné funkce jako množinu TypeScriptových knihoven, které je možné importovat do aplikace. \cite{8} \textit{(volný překlad)} 
 
 Jednostránkové klientské aplikace fungují tak, že při prvním přístupu na stránku se do klientova zařízení stáhnou všechny soubory potřebné k běhu aplikace. Při jakékoliv další akci uživatele se stránkou už se nikdy nepřistupuje na webový server. Tento mechanizmus značně ulehčuje service workeru práci s cachovaním a následným spouštěním aplikace v offline režimu, v případě, že by bylo potřeba z aplikace vytvořit PWA.
@@ -267,13 +282,13 @@ Pro účely dokumentace API jsem použil nástroj Swagger, který automaticky zp
 \end{figure}
 
 \subsubsection{Generování akcí}
-\label{sec:security}
-Dle datového modelu(ref. dat model) a jeho popisu v(ref uvod) je vidět, že jednotlivé akce, které pracovníci plní vycházejí z pevně daného rozvrhu. Tyto akce nejsou v databázi uložené všechny a ani být nemohou, protože individuální plán může mít libovolné datum expirace a dat by tedy bylo potencionálně velké množství. Proto jsem se rozhodl akce generovat postupně v době potřeby. Na straně serveru jsem vytvořil patřičnou funkcionalitu a zpřístupnil ji jako API endpoint pro jehož volání je nutná managerská role. Díky tomuto je možné akce generovat automaticky. Automatizovaný mechanizmus jsem neimplementoval, protože je úzce spjat s prostředím na kterém by systém běžel i přesto, že jsem použil Docker. Pro prostředí se systémem Windows by bylo vhodné použít například WCF službu \cite{11}. U cloudových řešení záleží na službách nabízených poskytovatelem. Akce je možné generovat kdykoliv v rámci webové aplikace pro vedoucí pracovníky na období dalšího měsíce.
+\label{sec:actionGenerating}
+Dle datového modelu (ref. dat model) a jeho popisu v (ref uvod) je vidět, že jednotlivé akce, které pracovníci plní, vycházejí z pevně daného rozvrhu. Tyto akce nejsou v databázi všechny uloženy a ani být nemohou, protože individuální plán může mít libovolné datum expirace a dat by tedy bylo potencionálně velké množství. Z těchto důvodů jsem se rozhodl akce generovat postupně až v době potřeby. Na straně serveru jsem vytvořil patřičnou funkcionalitu a zpřístupnil ji jako API endpoint, pro jehož volání je nutná role vedoucího pracovníka. Díky tomuto je možné akce generovat automaticky. Automatizovaný mechanizmus jsem neimplementoval, protože je úzce spjat s prostředím, na kterém by systém běžel. Pro prostředí se systémem Windows by bylo vhodné použít například WCF službu \cite{11}. U cloudových řešení záleží na službách nabízených poskytovatelem. Akce je možné generovat kdykoliv, v rámci webové aplikace pro vedoucí pracovníky, na období dalšího měsíce.
 
 \subsection{Testování částí}
 Testování částí je úroveň testování softwaru, kde jsou testovány individuální komponenty nebo části. Smyslem je ověřit, zdali se každá část chová, jak byla navržena. Část je nejmenší testovatelná jednotka jakéhokoliv softwaru.\cite{12} \textit{(volný překlad)}
 
-Testoval jsem metody API služeb, které provádí složitější databázové dotazy a operace nad těmito daty. Všechny tyto metody používají DbContext pro přístup do databáze. Tento přístup bylo potřeba nahradit testovací instancí databáze, která bude bude na začátku každého testu obsahovat prázdnou strukturu tabulek a po jeho skončení přestane existovat. Pro dosažení tohoto efektu byl DbContext konfigurován pro používání databáze v paměti. Každý test se skládá z těchto stavů: 
+Testoval jsem metody API služeb, které provádí složitější databázové dotazy a operace nad těmito daty. Všechny tyto metody používají DbContext pro přístup do databáze. Tento přístup bylo potřeba nahradit testovací instancí databáze, která bude na začátku každého testu obsahovat prázdnou strukturu tabulek a po jeho skončení přestane existovat. Pro dosažení tohoto efektu byl DbContext konfigurován pro používání databáze v paměti. Každý test se skládá z těchto stavů: 
 \begin{itemize}
 	\item \textbf{Arrange} - připraví strukturu dat, tak aby testovala přesnou funkcionalitu testované části.
 	\item \textbf{Act} - spustí kód testované části.
@@ -307,12 +322,13 @@ $$\left\{\frac{x^2}{y^3}\right\}$$
  Tento výpočet se spouští každých 60 vteřin a aktualizuje, tak informace o vzdálenosti v celé aplikaci.
 
 \subsubsection{Přihlašovací obrazovka}
-Po spuštění aplikace je uživatel přesměrován na přihlašovací obrazovku. Uživatel se musí ověřit vůči serveru přihlašovacím jménem a heslem. Aplikace pošle požadavek na na přihlašovací endpoint (viz. sekce ~\ref{sec:security}). Pokud jsou údaje správné uloží si vrácený token do lokálního úložiště prohlížeče a přesměruje uživatele na obrazovku s rozvrhem akcí. V opačném případě uvědomí uživatele, že jsou přihlašovací údaje neplatné.
+Po spuštění aplikace je uživatel přesměrován na přihlašovací obrazovku. Uživatel se musí  vůči serveru ověřit přihlašovacím jménem a heslem. Aplikace pošle požadavek na přihlašovací endpoint (viz. sekce ~\ref{sec:security}), pokud jsou údaje správné, uloží si vrácený token do lokálního úložiště prohlížeče a přesměruje uživatele na obrazovku s rozvrhem akcí. V opačném případě uvědomí uživatele, že jsou přihlašovací údaje neplatné.
   
-Přesměrovaní na přihlašovací obrazovku nemusí být nutností při každém spuštění aplikace. Před samotným přesměrováním se kontroluje, jestli je v lokálním úložišti uložený token. Prvním požadavkem na server je validována platnost tokenu. Pokud je tedy token validní není potřeba uživatele znovu obtěžovat s přihlašovacím procesem.
+Při každém spuštění aplikace nemusí dojít k přesměrování na přihlašovací obrazovku. Před samotným přesměrováním se kontroluje, zdali je v lokálním úložišti přítomný token a prvním požadavkem na server je validována platnost tokenu. Pokud je tedy token validní, není potřeba uživatele znovu obtěžovat s přihlašovacím procesem.
 
 \subsubsection{Rozvrh akcí}
-Základní obrazovka reprezentující úkony, které by měl přihlášený pracovník provádět nebo už provedl pro konkrétního klienta, lze vidět na obrázku ~\ref{fig:schedule_screen}. Výchozí nastavení obrazovky je takové, že ve vrchním panelu je aktuální datum, reprezentující od kdy budou data zobrazována. 
+\label{sec:schedule}
+Základní obrazovku reprezentující úkony, které by měl přihlášený pracovník provádět nebo už provedl pro konkrétního klienta, lze vidět na obrázku ~\ref{fig:schedule_screen}. Výchozí nastavení obrazovky je takové, že ve vrchním panelu je aktuální datum, od kdy budou data zobrazována. 
 
 \begin{figure}[H]
   	\centering
@@ -321,40 +337,40 @@ Základní obrazovka reprezentující úkony, které by měl přihlášený prac
  	 \label{fig:schedule_screen}
 \end{figure}
 
-Data jsou načítána po dávkách deseti akcí, aby se předešlo dlouhému čekání na odpověď serveru a následného vykreslení. Při pohybu směrem dolů, jsou načítána další data a tento proces je signalizován animací naspodu obrazovky, která je vidět pokud se uživatel nachází za koncem vykreslených dat.
+Data jsou načítána po dávkách deseti akcí, aby se předešlo dlouhému čekání na odpověď serveru i následného vykreslení. Při pohybu směrem dolů jsou automaticky načítána další data a tento proces je signalizován animací naspodu obrazovky, která je vidět pouze, pokud se uživatel nachází za koncem vykreslených dat.
 
-Jednotlivé akce(v kontextu systému jsou nazvány jako registrované akce !ref datovy model!) se mohou nacházet ve čtyřech stavech. Zelený stav znamená, že akce byla dokončena a existují pro ní časové údaje o jejím začátku a konci. Aktuálně probíhající akce jsou značeny žlutě. Pokud z jakýchkoliv důvodu nebyl pracovník úkol schopen splnit nebo byl předem zrušen například samotným klientem je červený. Všechny ostatní jsou modré. Po kliku na akci bude uživatel přesměrován do modálního okna reprezentujícího její detail(viz. sekce ~\ref{sec:actionDetail}).
+Jednotlivé akce (v kontextu systému jsou nazvány jako registrované akce !ref datovy model!) se mohou nacházet ve čtyřech stavech. Zelený stav znamená, že akce byla dokončena a existují pro ní časové údaje o jejím začátku a konci. Aktuálně probíhající akce jsou značeny žlutě. Pokud z jakýchkoliv důvodu nebyl pracovník schopen úkol splnit nebo byl předem zrušen, například samotným klientem, je červený. Všechny ostatní jsou modré. Po kliku na akci bude uživatel přesměrován do modálního okna reprezentujícího její detail (viz. sekce ~\ref{sec:actionDetail}).
 
-V případě, že je přihlášený uživatel vedoucí pracovník, kterému systém neumožňuje přiřadit klienty akce na úrovni individuálních plánu ani jednotlivých jednoúčelových akcí. Nebude obrazovka obsahovat žádná data, pouze hlášku upozorňující na absenci akcí v databázi.
+V případě, že je přihlášený uživatel vedoucí pracovník, kterému systém neumožňuje přiřadit akce na úrovni individuálních plánů ani jednotlivých jednoúčelových akcí, nebude obrazovka obsahovat žádná data, pouze hlášku upozorňující na absenci akcí v databázi.
 
 \begin{figure}[H]
   	\centering
  	 \includegraphics[width=14cm,height=14cm,keepaspectratio]{datepicker}
- 	 \caption{Komponenta pro výběr data(iOS-vlevo, Android)}
+ 	 \caption{Komponenta pro výběr data (iOS-vlevo, Android)}
  	 \label{fig:datepicker}
 \end{figure}
 
-Pro prohlížení historických dat nebo rychlejší přesun mezi daty slouží datumový filtr v horní části obrazovky. Tento filtr je možné ovládat buď pomocí šipek, které posunou datum o jeden den nebo výběrem data z komponenty(obrázek ~\ref{fig:datepicker}), kterou lze otevřít kliknutím na datum. Data která je možno vybrat oběma způsoby jsou omezena plánovaným datem první a poslední akce přiřazené přihlášenému zaměstnanci. Na této komponentě je zároveň vidět rozdíl v jejím stylu zobrazení na odlišných platformách, tak aby více zapadala do celkového designu platformy. Styly mnou nebyly v samotném kódu aplikace jakkoliv upravovány. 
+Pro prohlížení historických dat nebo rychlejší přesun mezi daty slouží datumový filtr v horní části obrazovky. Tento filtr je možné ovládat, buď pomocí šipek, které posunou datum o jeden den nebo výběrem data z komponenty (obrázek ~\ref{fig:datepicker}), kterou lze otevřít kliknutím na datum. Data, která je možno vybrat oběma způsoby, jsou omezena plánovaným datem první a poslední akce přiřazené přihlášenému zaměstnanci. Na této komponentě je zároveň vidět rozdíl v jejím stylu zobrazení na odlišných platformách, tak aby více zapadala do celkového designu platformy, což je důsledek použití knihovny Ionic.
 
 \subsubsection{Detail akce}
 \label{sec:actionDetail}
-Modální okno s detailem akce(obrázek ~\ref{fig:actionDetail}) slouží pro podání detailních informací o akci pracovníkovi pečovatelské služby a evidenci jeho práce.
+Modální okno s detailem akce (obrázek ~\ref{fig:actionDetail}) slouží pro podání detailních informací o akci pracovníkovi pečovatelské služby a evidenci jeho práce.
 
 \begin{figure}[H]
   	\centering
  	 \includegraphics[width=14cm,height=14cm,keepaspectratio]{actionDetail}
- 	 \caption{Modální okno s detailem akce(iOS-vlevo, Android)}
+ 	 \caption{Modální okno s detailem akce (iOS-vlevo, Android)}
  	 \label{fig:actionDetail}
 \end{figure}
 
-Každá registrovaná akce je založena na akci všeobecné, která má svůj pracovní postup a ten je zobrazován jako první informace v tomto okně. S tímto postupem musí být pracovníci obeznámeni a zde slouží pouze jako upomínka. Opravdu důležitou informací je specifický popis akce, který se může lišit pro každého klienta a dokonce i podle dne ve kterém je akce vykonávána.
+Každá registrovaná akce je založena na akci všeobecné, která má svůj pracovní postup a ten je zobrazován jako první informace v tomto okně. S tímto postupem musí být pracovníci obeznámeni a zde slouží pouze jako upomínka. Opravdu důležitou informací je specifický popis akce, který se může lišit pro každého klienta a dokonce i podle dne, ve kterém je akce vykonávána.
 
-Pro účely fakturace a celkově sledování pracovníku slouží stopovaní trvání akce. Po stisknutí tlačítka pro zahájení akce se spustí stopky a aktuální čas je uložen do databáze. Aplikaci nebo zařízení je tedy možné vypnout a čas na stopkách po návratu zůstane validní. Po zastavení je akce označena za dokončenou.
+Pro účely fakturace a sledování časové náročnosti úkonu slouží stopovaní trvání akce. Po stisknutí tlačítka pro zahájení akce se spustí stopky a aktuální čas je uložen do databáze. Aplikaci nebo zařízení je tedy možné vypnout a čas na stopkách po návratu zůstane validní. Po zastavení je akce označena za dokončenou.
 
-Akci je možné zrušit pomocí přepínače a uživatel je upozorněn, že je nutno vyplnit komentář a udat tak důvod proč úkon nemohl být proveden. Poslední funkcí tohoto okna je možnost přidání obrázku k akci. Tyto informace na rozdíl od stopování času musí být explicitně uloženy pomocí tlačítka. Způsob přidání obrázku záleží jestli je aplikace spuštěna jako webová nebo nativní verze. Ve webové verzi je výběr fotky umožněn přes HTML input typu soubor, který akceptuje pouze obrázky. V případě nativní verze se otevře výběrové menu ve kterém může uživatel zvolit, jestli si přeje obrázek vyfotit, nebo vybrat z galerie. 
+Akci je možné zrušit pomocí přepínače a uživatel je upozorněn, že je nutno vyplnit komentář a udat důvod, proč nemohl být úkon proveden. Poslední funkcí tohoto okna je možnost přidání obrázku k akci. Způsob jakým je realizováno přidávání obrázku záleží na tom, jestli je aplikace spuštěna jako webová nebo nativní verze. Ve webové verzi je výběr fotky umožněn přes HTML vstup souborového typu, který akceptuje pouze obrázky. V případě nativní verze se otevře výběrové menu, ve kterém může uživatel zvolit, jestli si přeje obrázek vyfotit nebo vybrat z galerie. Obrázek a komentář na rozdíl od stopování času musí být explicitně uloženy pomocí tlačítka. 
 
 \subsubsection{Mapa s klienty}
-Obrazovka s mapou ukazující jednotlivé klienty a aktuální polohou zařízení slouží pro rychlou orientaci (obrázek ~\ref{fig:mapClients}) při dojíždění za klienty. Pro korektní běh všech funkcí musí být povoleno sledovaní lokace zařízení a v případě nativní verze i zapnutá lokalizace telefonu. Pro zobrazení mapy jsem použil komponentu založenou na standardní Google mapě určenou pro použití ve webových stránkách, která pouze poskytuje rozhraní pro lepší manipulaci v rámci Angularu. Vzhled ukazatelů klientů a aktuální polohy jsou vytvořené pomocí HTML a CSS a vložené do mapy na určité zeměpisné souřadnice.
+Obrazovka s mapou zobrazující jednotlivé klienty a aktuální polohou zařízení, slouží pro rychlou orientaci (obrázek ~\ref{fig:mapClients}) při dojíždění za klienty. Pro korektní běh všech funkcí musí být povoleno sledovaní lokace zařízení a v případě nativní verze i zapnutá lokalizace telefonu. Pro zobrazení mapy jsem použil komponentu založenou na standardní Google mapě určenou pro použití ve webových stránkách, která pouze poskytuje rozhraní pro lepší manipulaci v rámci použitého frameworku. Vzhled ukazatelů klientů a aktuální polohy jsou vytvořené pomocí HTML a CSS a vložené do mapy na určité zeměpisné souřadnice.
 
 \begin{figure}[H]
   	\centering
@@ -363,39 +379,37 @@ Obrazovka s mapou ukazující jednotlivé klienty a aktuální polohou zařízen
  	 \label{fig:mapClients}
 \end{figure}
 
-Výchozí nastavení filtru zobrazených klientů je takové, že zobrazí pouze ty klienty u kterých má aktuální den přihlášený uživatel naplánované a nezrušené akce. Je zde možné vidět i klienty o které se zaměstnanec pravidelně nestará, ale pouze za předpokladu, že byla vedoucím pracovníkem vytvořena jednoúčelová akce. Tento filtr je možné ovládat pomocí přepínače v otevíracím menu v pravém horním rohu. Po kliknutí na klienta se zobrazí detail, který obsahuje kromě základních údajů o klientovi a jeho adresy i nejbližší naplánovanou akci. 
+Výchozí nastavení filtru zobrazených klientů je takové, že zobrazí pouze ty klienty, u kterých má, v aktuální den, přihlášený uživatel naplánované akce. Je zde možné vidět i klienty, o které se zaměstnanec pravidelně nestará, ale pouze za předpokladu, že byla vedoucím pracovníkem vytvořena jednoúčelová akce. Tento filtr je možné ovládat pomocí přepínače v otevíracím menu v pravém horním rohu. V případě, že je filtr nastaven na zobrazení všech klientů, jsou na mapě zobrazeni všichni pravidelní klienti. Zde je hledání nejbližší akce poněkud složitější, protože může nastat případ, že akce ještě není vygenerována z rozvrhu. Na straně serveru je z tohoto důvodu implementován mechanizmus, který najde nejbližší akci dle rozvrhu a simuluje generování patřičné akce. Pro aplikaci je tato akce naprosto neviditelná a dostane stejná data, jako by akce už existovala. Toto je možné pouze v případě zobrazení v detailu na mapě, kde jsou data o akci určena pouze pro čtení. Detail lze zobrazit kliknutím na klienta a obsahuje kromě základních údajů o klientovi a jeho adrese i nejbližší naplánovanou akci. 
 
-V případě, že je filtr nataven na zobrazení všech klientů jsou na mapě zobrazení všichni pravidelní klienti. Zde je hledání nejbližší akce poněkud složitější, protože může nastat případ, kdy není akce ještě není vygenerována z rozvrhu. Na straně serveru je z tohoto důvodu mechanizmus, který najde nejbližší akci dle rozvrhu a simuluje generování patřičné akce. Pro aplikaci je tato akce naprosto transparentní a dostane stejná data jako by akce už existovala. Toto je možné pouze v případě zobrazení v detailu na mapě, kde jsou data o akci určena pouze pro čtení a ne pro úpravu jako je to v případě rozvrhu.
-
-Menu obsahující ovládání filtru obsahuje i výčet klientů ve vzdálenosti jednoho kilometru od zařízení. Společně s jejich jménem je zobrazena i vzdálenost od zařízení v metrech. Jejich počet signalizuje podbarvené číslo vedle ikony menu.
+Menu s ovládáním filtru obsahuje i výčet klientů, jejichž adresa je vzdálená maximálně jeden kilometr od aktuální polohy zařízení. Společně s jejich jménem je zobrazena i vzdálenost od zařízení v metrech. Jejich počet signalizuje podbarvené číslo vedle ikony menu.
 
 \begin{figure}[H]
   	\centering
  	 \includegraphics[width=14cm,height=14cm,keepaspectratio]{external_navig}
- 	 \caption{Navigace v externí aplikaci(iOS-vlevo, Android)}
+ 	 \caption{Navigace v externí aplikaci (iOS-vlevo, Android)}
  	 \label{fig:externalNavig}
 \end{figure}
 
-Ikona navigace v pravém horním rohu detailu klienta umožňuje přesměrování do externí aplikace určené pro navigaci. Pokud je na zařízení nainstalována více než jedna aplikace tohoto charakteru zobrazí se okno s výběrem. Data o klientově adrese jsou automaticky předána externí aplikaci. Na obrázku ~\ref{fig:externalNavig} je ukázka výchozí mapové aplikace pro obě platformy otevřené přes tuto funkcionalitu.
+Ikona navigace v pravém horním rohu detailu klienta umožňuje přesměrování do externí aplikace určené pro navigaci. Pokud je na zařízení nainstalována více než jedna aplikace tohoto charakteru, zobrazí se okno s výběrem. Data o klientově adrese jsou automaticky předána externí aplikaci. Na obrázku ~\ref{fig:externalNavig} je ukázka výchozí mapové aplikace pro obě platformy otevřené pomocí této funkcionality.
 
 \subsubsection{Informace o klientech}
-Úvodní obrazovka sekce o klientech poskytuje přehled všech pravidelných klientů. V případě, že je přihlášen vedoucí pracovník jsou zde zobrazeni všichni klienti, uložení v systému. Kliknutí na kartu s klientem zobrazí přesměrování na detail klienta obsahující všechny jeho informace(obrázek ~\ref{fig:clientDetail}).
+Úvodní obrazovka sekce o klientech poskytuje přehled všech pravidelných klientů. V případě, že je přihlášen vedoucí pracovník, jsou zde zobrazeni všichni klienti, uložení v systému. Kliknutí na kartu s klientem zobrazí přesměrování na detail klienta, obsahující všechny jeho informace (obrázek ~\ref{fig:clientDetail}).
 
 \begin{figure}[H]
   	\centering
  	 \includegraphics[width=14cm,height=14cm,keepaspectratio]{client_detail}
- 	 \caption{Obrazovka s detailem klienta(iOS-vlevo, Android)}
+ 	 \caption{Obrazovka s detailem klienta (iOS-vlevo, Android)}
  	 \label{fig:clientDetail}
 \end{figure}
 
-Jedinou upravitelnou informací na detailu je foto klienta. Klient má pouze jednoho klíčového pracovníka a tím pádem je tato fotka nejvíce relevantní pro zaměstnance, který má na tuto kartu přístup. Změnu jakýchkoliv osobních údajů by měl obstarávat vedoucí pracovník. 
+Jedinou upravitelnou informací na detailu je fotografie klienta. Klient má pouze jednoho klíčového pracovníka a tím pádem je tato fotka nejvíce relevantní pro zaměstnance, který má na tuto kartu přístup. Změnu jakýchkoliv osobních údajů by měl obstarávat vedoucí pracovník. 
 
-Při kliknutí na telefonní číslo v nativní aplikaci je uživatel přesměrován do výchozí aplikace pro volání s předvyplněným číslem. Ve webovém prohlížeči na počítači je uživatel dotázán jakým programem si přeje tuto událost obsloužit a v případně prohlížeče Google Chrome je možné tuto informaci poslat do mobilu, který je propojen s uživatelským účtem v prohlížeči.
+Při kliknutí na telefonní číslo klienta na mobilním zařízení je uživatel přesměrován do výchozí aplikace pro volání s předvyplněným číslem. Ve webovém prohlížeči na počítači je uživatel dotázán jakým programem si přeje tuto událost obsloužit. V případně prohlížeče Google Chrome je možné tuto informaci poslat do telefonu, který je propojen s uživatelským účtem v prohlížeči.
 
 Detail mimo jiné obsahuje pravidelný rozvrh akcí rozdělený podle jednotlivých individuálních plánů a mapu s ukazatelem na bydliště klienta a možnosti prohlížení pomocí Google Street View.
 
 \subsubsection{Úprava pro velké obrazovky}
-Celý styl aplikace a použité komponenty byly původně cíleny pro použití na mobilním zařízení, proto bylo potřeba udělat pár kosmetických úprav, které jsou vidět na obrázku ~\ref{fig:bigScreen}. 
+Celý styl aplikace a použité komponenty byly původně cíleny pro použití na mobilním zařízení, proto bylo potřeba udělat pár kosmetických úprav, aby aplikaci bylo možné použít i na velkých obrazovkách. Tyto úpravy jsou vidět na obrázku ~\ref{fig:bigScreen}. 
 
 \begin{figure}[H]
   	\centering
@@ -404,20 +418,93 @@ Celý styl aplikace a použité komponenty byly původně cíleny pro použití 
  	 \label{fig:bigScreen}
 \end{figure}
 
-Menu v levé části obrazovky nahradilo navigační ''taby'', které nejsou pro použití na velkých monitorech příliš vhodné. Položky menu si ale zachovávají funkcionalitu navigačního zásobníku, která je použita v sekci s klienty. Na všechny stránky s reprezentací dat pod sebou jsem použil grid, který automaticky mění počet položek v řádku z jedné na více podle toho jaké velikosti je okno prohlížeče.
+Menu v levé části obrazovky nahradilo navigační ''taby'', které nejsou pro použití na velkých monitorech příliš vhodné. Položky menu si ale zachovávají funkcionalitu navigačního zásobníku, která je použita v sekci s klienty. Na všechny stránky s reprezentací dat pod sebou jsem použil grid, který automaticky mění počet položek v řádku z jedné na vícero, podle toho jaké velikosti je okno prohlížeče.
 
-\subsection{Managerská webová aplikace}
-%% uvod
-%% kalendar a drag and drop
+\subsection{Webová aplikace pro vedoucí pracovníky}
+Tato část systému slouží pro vkládání dat do systému a jejich editaci. Mohou se do ní přihlásit pouze zaměstnanci s rolí vedoucího pracovníka a je určena především k používaní na počítači. Jako základ vzhledu této aplikace jsem použil šablonu \cite{14}. Aplikace se připojuje ke stejnému serveru a proto jsem byl schopen použít stejné postupy při tvorbě modulu pro komunikaci se serverem a zabezpečení jako u multiplatformní aplikace.
+
+\subsubsection{Plánování akcí}
+K vizualizaci registrovaných akcí jsem použil komponentu kalendáře (obrázek ~\ref{fig:scheduleVisual}). Tento kalendář slouží k rychlejší orientaci vedoucích pracovníků nad aktuálním stavem probíhající práce v organizaci. Barevné označení akcí je stejné jako v případě rozvrhu v aplikaci pro mobilní pečovatele (viz ~\ref{sec:schedule}).
+
+\begin{figure}[H]
+  	\centering
+ 	 \includegraphics[width=14cm,height=14cm,keepaspectratio]{schedule_mngr}
+ 	 \caption{Vizualizace registrovaných akcí}
+ 	 \label{fig:scheduleVisual}
+\end{figure}
+
+O jaké akce se konkrétně jedná je možno zjistit kliknutím na konkrétní datum, což způsobí otevření vyčtu všech akcí na tento den. Toto zobrazení je demonstrováno na obrázku ~\ref{fig:scheduleVisual}, kde jsou takhle zobrazeny akce pro dvacátý pátý den v měsíci. Akce je možné rychle přesouvat na jiný den přetažením myší do jiného polička dne. Pro detailnější úpravu je potřeba na akci přímo kliknout, což otevře modální okno s formulářem se všemi potřebnými údaji. Tato editace slouží hlavně pro případy, kdy je potřeba změnit pracovníka, sdělit pracovníkovi důležité informace pomocí komentáře nebo po kontaktování klientem akci zrušit nebo přesunout. Akce, které právě probíhají nebo jsou dokončeny, není možné přesunout. Pomocí tlačítka nad kalendářovou komponentou je možné vytvářet jednoúčelové akce, zmíněné dříve, které nevychází z pravidelného rozvrhu.
+
+\begin{figure}[H]
+  	\centering
+ 	 \includegraphics[width=14cm,height=14cm,keepaspectratio]{schedule_filters}
+ 	 \caption{Filtry akcí}
+ 	 \label{fig:scheduleFilter}
+\end{figure}
+
+V případě, že v systému bude hodně akcí, stává se tento způsob vizualizace velice nepřehledný a je potřeba data v kalendáři patřičně filtrovat. K tomuto účelu slouží výběrové komponenty pro klienty a zaměstnance (obrázek ~\ref{fig:scheduleFilter}). Zaměstnanec může být vybrán pouze jeden, ale klientů do filtru může být přidáno neomezeně. Ihned po změně hodnoty v jakémkoliv z filtrů se data v kalendáři patřičně upraví.
+
+Stránka také umožňuje generování registrovaných akcí z rozvrhu (viz ~\ref{sec:actionGenerating}), které je možné spustit tlačítkem nacházejícím se pod komponentou kalendáře.
+
+\subsubsection{Klienti}
+Hlavní stránka této sekce obsahuje výčet všech klientů uložených v systému a je možné je filtrovat dle jména. Tento filtr se na zobrazená data aplikuje vždy při změně textu ve vyhledávacím vstupu. Vedle filtru se nachází tlačítko, které uživatele přesměruje na formulář sloužící k přidání nového klienta. Po kliknutí na kartu s fotografií a jménem klienta se zobrazí detailní informace o klientovi. 
+
+Osobní údaje je možné editovat pomocí formuláře, který je vidět na obrázku ~\ref{fig:clientGeneralInfo}. Tyto data není možné uložit, pokud není celý formulář validní. Validní se stává ve chvíli, kdy jsou vyplněny vstupy pro jméno, pohlaví, datum narození a je zadána adresa. Adresu je možné zadat dvěma způsoby. První způsob je vybráním zeměpisných souřadnic kliknutím přímo do mapy. Pokud se na vybraném místě nachází validní adresa, je automaticky vyplněna i do formuláře vedle mapy. Druhý způsob je vyplnění formuláře pro adresu. Tato adresa může být zobrazena na mapě kliknutím na tlačítko pro její validaci pod formulářem. Kontaktní udaje jsou nepovinné, ale vstupní pole pro email, musí být validní emailová adresa, pokud není prázdné. Výběr nového profilového obrázku je realizován pomocí HTML vstupu, který akceptuje pouze obrázky, stejně jako v celé této aplikaci. Identický formulář je použit i pro přidávání nového klienta.
+
+Pro všechny výběry datumových údajů, jako je zde datum narození, je napříč celou aplikací použit kalendář založený na Boostrapu \cite{15}, což je sada nástrojů obsahující šablony pro webové komponenty.
+
+\begin{figure}[H]
+  	\centering
+ 	 \includegraphics[width=14cm,height=14cm,keepaspectratio]{client_general_info}
+ 	 \caption{Formulář pro editaci osobních údajů klienta}
+ 	 \label{fig:clientGeneralInfo}
+\end{figure}
+
+Všechny klientovi individuální plány jsou obsaženy v tabulce pod kartou s osobními údaji. Plány, které už v sobě mají nějaké položky rozvrhu (klientem odsouhlasené akce) nemohou být smazány, protože tyto položky jsou úzce spojeny s jednotlivými úkony prováděnými pracovníky a slouží pro fakturaci. Pokud je třeba nějaký plán ukončit, je nutné mu změnit koncové datum jeho platnosti na aktuální datum, tím je zamezeno generování nových akcí dle rozvrhu, který tento plán obsahuje. Toto datum lze změnit v editačním formuláři.
+
+\begin{figure}[H]
+  	\centering
+ 	 \includegraphics[width=14cm,height=14cm,keepaspectratio]{schedule_visual}
+ 	 \caption{Vizualizace týdenního rozvrhu}
+ 	 \label{fig:scheduleVisual}
+\end{figure}
+
+Jednotlivé položky rozvrhu lze upravovat v detailu individuálního plánu a jsou vizualizovány pomocí kalendářové komponenty zobrazující jednotlivé dny v týdnu a časovou osu. Jak je vidět na obrázku \ref{fig:scheduleVisual}, jednotlivé položky jsou vertikálně roztaženy dle doby jejich trvání. Lze je pomocí myši přetahovat po kalendáři a měnit tak jejich den a čas. Pro editaci více specifických údajů je nutné na položku kliknout, což otevře modální okno. Toto okno nabízí i možnost jejího smazání. Ze stejných důvodů, jako u individuálních plánů, její smazání na úrovni databáze není možné, poroto je pouze označena jako nevalidní. Takto označená položka bude ignorována při generování akcí a přestane být viditelná pro uživatele v kalendářové komponentě.
+
+Pro přidávání nových položek do rozvrhu slouží výčet všech základních akcí po levé straně kalendářové komponenty. Tyto akce mohou být přesunuty na libovolné místo v kalendáři, což způsobí otevření modálního okna, velice podobnému oknu používanému pro editaci, s přednastavenými hodnotami pro den, základní akce a čas začátku akce.
+
+\subsubsection{Zaměstnanci}
+Hlavní stránka této sekce je identická s hlavní stránkou klientské sekce, ale obsahuje výčet všech zaměstnanců uložených systému. Jejich editace a přidávání je také obdobné. Jediným rozdílem je to, že při vkládání nového zaměstnance do systému, je nutné vyplnit údaje, kterými se bude do systému přihlašovat a jeho roli.
+
+\subsubsection{Základní akce}
+Tato sekce obsahuje tabulku se všemi základními akcemi. Tyto akce je možné libovolně přidávat a upravovat. Jejich mazání je ovšem omezeno. Pokud jsou s touto akcí asociovány jakékoliv položky rozvrhu nebo jednoúčelové akce, není ji možné smazat a uživatel je o tom informován v podobě notifikace.
+\newpage
+
+
+\section{Nasazení systému}
+V dnešní době jsou velmi oblíbené cloudové služby, které usnadňují šíření softwarových produktů bez nutnosti pořizování vlastního hardwaru, tvorby infrastruktury a následných výdajů za jejich spravování. Touto cestou jsem se snažil vydat i já.
+
+Obě webové aplikace jsou vytvořené pomocí frameworku Angular a tím pádem jsou to jednostránkové klientské aplikace (viz sekce ~\ref{sec:angular}). Tento přístup ovšem způsobuje problém se spuštěním aplikace přímo z počítače bez pomoci webového serveru, Docker kontejneru nebo vývojářských nástrojů. Problém je zapříčiněn tím, že webový prohlížeč nedovolí stránce stáhnout potřebné soubory kvůli požadavku na jiný původ dat, neboli porušení CORS \cite{16} pravidel. Hlavní motivací pro nahrání webových aplikací a API do cloudu tedy bylo, abych byl schopen bez komplikací prezentovat webové části systému a také abych mohl aplikaci otestovat v terénu.
+
+V této fázi práce už jsem měl připravené soubory a skripty potřebné pro vytvoření Docker kontejnerů. Z tohoto důvodu jsem si jako platformu pro sdílení webových verzí svých aplikací vybral Azure \cite{17}, který poskytuje služby pro hostování webových aplikací spouštěných pravě v Docker kontejnerech.
+
+Mnou lokálně připravené šablony pro kontejnery, takzvané obrazy, bylo potřeba někam nahrát, aby si je vytvořené cloudové služby na portálu Azure měli odkud stáhnout a k tomuto účelu slouží repozitáře těchto obrazů. Konkrétně jsem použil Docker Hub \cite{18}. Poté už stačilo pouze nastavit službám přístupová práva do těchto repozitářů.
+
+\subsection{Continuous integration a Continuous delivery}
+CI (continuous integration) a CD (continuous delivery) je proces, který umožňuje nepřetržité dodávání aplikací k testování. Je to v podstatě podmínka iterativního vývoje. CI a CD umožňují vývojovým týmům častěji a spolehlivěji provádět změny kódů, přičemž CI je filosofie kódování a sada postupů a CD automatizuje doručování aplikací do vybraných infrastrukturních prostředí. \cite{19}
+
+CI v mém případě představuje sestavení Docker obrazů s novou verzí kódu a v tomto procesu zároveň i spuštění unit testů. Tento proces se automaticky spouští s každou novou verzí kódu nahranou do repozitáře na Git Hubu\cite{20}, který jsem použil za účelem verzování kódu. Po dokončení celého procesu se nové verze obrazů nahrají na Docker Hub, což způsobí spuštění CD mechanizmu nakonfigurovaného v cloudových službách.
+
+Celý ten proces jsem konfiguroval z důvodu, abych nemusel ručně nahrávat nové verze do cloudových služeb při sebemenší úpravě a také, abych měl průběžnou kontrolu, že mé změny v kódu jsou validní v rámci unit testů.
 
 \newpage
 
-%deployment???%
+\section{Závěr}
+Výsledek splnil můj hlavní cíl. Vytvoření multiplatformní aplikace, která je schopna fungovat na všech hlavních platformách. Způsob zvoleného vývoje dovoluje aplikaci v nativní podobě přístup ke všem funkcím zařízení, což umožňuje její doplnění o jakoukoliv funkcionalitu. Aplikace by dle mého názoru mohla pomoci i při předávání informací mezi pracovníky a zjednodušení elektronické evidence jejich provedených úkonů. Výsledný systém podporuje všechnu nezbytnou funkcionalitu, kterou by pracovníci organizace, podle jejichž potřeb byl systém navrhován, potřebovali při vykonávání jejich práce.
 
-% zaver
-% moznost na navazani prace a rozsireni (refresh tokeny nebo predat zodpovednost jinam)
-% splneni cile s multiplatformitou a zjednoduseni prace se systemem
-% pridana hodnota- kombinace technologii a vsech postupu
+Když jsem s touto prací začínal, měl jsem zkušenosti pouze s implementací částí podobných systémů. Díky této práci jsem si byl do určité míry schopen vyzkoušet, jak reálně funguje celý proces vývoje od specifikace požadavků se zákazníkem až po výsledné nasazení produktu. Jako největší přidanou hodnotu výsledku celého procesu vidím hlavně v pečlivém nastudování všech možných variant přístupů k vývoji a zkombinování moderních technologií s různým zaměřením do funkčního celku.
+
+Systém má samozřejmě i své nedostatky. Ať už je to návrh a provedení uživatelského rozhraní, které není vždy v souladu s doporučenými postupy. V některých místech neefektivní implementace nebo řešení zabezpečení, které bych k dnešnímu dni řešil spíše předáním zodpovědnosti za něj některé z cloudových služeb s tímto zaměřením. 
 
 \begin{thebibliography}{9}
     \bibitem{1} \url{https://developer.android.com/guide/components/fundamentals}
@@ -433,6 +520,13 @@ Menu v levé části obrazovky nahradilo navigační ''taby'', které nejsou pro
     \bibitem{11} \url{https://docs.microsoft.com/cs-cz/dotnet/framework/wcf/how-to-host-a-wcf-service-in-a-managed-application}
     \bibitem{12} \url{http://softwaretestingfundamentals.com/unit-testing/}
     \bibitem{13} \url{https://en.wikipedia.org/wiki/Haversine\_formula}
+    \bibitem{14} \url{https://www.creative-tim.com/product/black-dashboard-angular}
+    \bibitem{15} \url{https://getbootstrap.com/}
+    \bibitem{16} \url{https://cs.wikipedia.org/wiki/CORS}
+    \bibitem{17} \url{https://azure.microsoft.com/cs-cz/}
+    \bibitem{18} \url{https://hub.docker.com/}
+    \bibitem{19} \url{https://www.ackee.cz/blog/glossary/cicd/}
+    \bibitem{20} \url{https://github.com/}
 \end{thebibliography}
 
 

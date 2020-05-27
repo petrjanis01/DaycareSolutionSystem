@@ -69,7 +69,7 @@
         <div class="card" *ngIf="detailEditCounter == 1">
             <div class="card-header row justify-content-between">
                 <div class="col-md-5">
-                    <h3 class="title">Client edit</h3>
+                    <h3 class="title">{{getTitle()}}</h3>
                 </div>
                 <div class="col-md3">
                     <button class="btn btn-danger" (click)="cancelEdit()">Cancel</button>
@@ -84,7 +84,7 @@
                         <div class="fileinput text-center">
                             <input type="file" hidden #imageInput accept="image/*" (change)="processFile($event)">
                             <div class="thumbnail">
-                                <img [src]="client.profilePicture.pictureUri">
+                                <img style="max-height: 250px;" [src]="client.profilePicture.pictureUri">
                             </div>
                             <div>
                                 <button class="btn-round btn btn-primary ng-star-inserted"

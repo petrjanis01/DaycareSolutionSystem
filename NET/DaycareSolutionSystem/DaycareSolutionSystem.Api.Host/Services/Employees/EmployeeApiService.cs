@@ -16,6 +16,13 @@ namespace DaycareSolutionSystem.Api.Host.Services.Employees
         {
         }
 
+        public List<Employee> GetAllEmployees()
+        {
+          var employees = DataContext.Employees.ToList();
+            return employees;
+        }
+
+
         public List<Employee> GetAllEmployeesExceptCurrent()
         {
             var currentEmployeeId = GetCurrentUser().EmployeeId;

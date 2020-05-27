@@ -23,6 +23,24 @@ namespace DaycareSolutionSystem.Api.Host.Controllers.Employees
 
         [HttpGet]
         [Authorize(Roles = "Manager")]
+        public EmployeeBasicDTO[] GetAllEmployeesBasics()
+        {
+            var employees = _employeeApiService.GetAllEmployees();
+
+            var dtos = new List<EmployeeBasicDTO>();
+
+            foreach (var employee in employees)
+            {
+                var dto = MapEmployeeToBasicDto(employee);
+                dtos.Add(dto);
+            }
+
+            return dtos.ToArray();
+        }
+
+        [HttpGet]
+        [Route("all-employees-except-current")]
+        [Authorize(Roles = "Manager")]
         public EmployeeBasicDTO[] GetAllEmployeesBasicsExceptCurrent()
         {
             var employees = _employeeApiService.GetAllEmployeesExceptCurrent();

@@ -10,7 +10,8 @@ export class GeneralHelperService {
 
     public weekdays: Array<string> = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     public genders: Array<string> = ['Male', 'Female'];
-    public positions: Array<string> = ['Caregiver', 'Manager']
+    public positions: Array<string> = ['Caregiver', 'Manager'];
+    public months: Array<string> = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     public getDayNameByIndex(index: number): string {
         return this.weekdays[index];

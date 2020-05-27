@@ -68,6 +68,14 @@ export class ClientGeneralInfoComponent implements OnInit {
     this.lngClient = this.address.coordinates.longitude;
   }
 
+  getTitle(): string {
+    if (this.isEdit) {
+      return 'Client edit';
+    }
+
+    return 'Create client'
+  }
+
   public async openGeneralInfoEdit() {
     this.createDetailEditFormGroup();
 
