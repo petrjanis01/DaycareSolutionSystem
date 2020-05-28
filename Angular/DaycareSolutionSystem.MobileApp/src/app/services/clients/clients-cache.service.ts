@@ -69,7 +69,7 @@ export class ClientsCacheService {
             return;
         }
 
-        setInterval(() => this.recalculateDeviceClientDistance(), 15 * 1000);
+        setInterval(() => this.recalculateDeviceClientDistance(), 30 * 1000);
     }
 
     private async recalculateDeviceClientDistance() {

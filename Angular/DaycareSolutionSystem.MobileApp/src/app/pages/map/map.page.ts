@@ -67,7 +67,7 @@ export class MapPage implements OnInit {
       });
 
       await alert.present();
-      setInterval(() => this.getMapStartingPostion(), 15 * 1000);
+      setInterval(() => this.getMapStartingPostion(), 30 * 1000);
       return;
     }
 
@@ -77,7 +77,7 @@ export class MapPage implements OnInit {
       this.displaySelfMarker = true;
       this.getMapStartingPostion();
     }
-    setInterval(() => this.getMapStartingPostion(), 15 * 1000);
+    setInterval(() => this.getMapStartingPostion(), 30 * 1000);
   }
 
   private async getMapStartingPostion() {

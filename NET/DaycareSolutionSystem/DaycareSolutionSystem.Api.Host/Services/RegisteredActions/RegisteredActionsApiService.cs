@@ -43,28 +43,19 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
             fromDate = fromDate.HasValue ? fromDate : DateTime.Today;
             untilDate = untilDate.HasValue ? untilDate : DateTime.Today.AddMonths(1);
 
-            var agreedActions = GetValidAgreedActions(fromDate.Value).ToList();
             var oldRegisteredActions = DataContext.RegisteredClientActions.ToList();
             var newRegisteredActions = new List<RegisteredClientAction>();
 
             while (fromDate <= untilDate)
             {
-                // add actions from newly valid plan to collection
-                var oldIds = agreedActions.Select(ac => ac.Id);
-                var newAgreedActions = GetValidAgreedActions(fromDate.Value)
-                    // only that day
-                    .Where(ac => ac.Day == fromDate.Value.DayOfWeek)
-                    .Where(ac => oldIds.Contains(ac.Id) == false);
-
-                agreedActions.AddRange(newAgreedActions);
-
-                var actionsInDay = agreedActions.Where(ac => ac.Day == fromDate.Value.DayOfWeek).ToList();
+                var actionsInDay = GetValidAgreedActions(fromDate.Value)
+                    .Where(ac => ac.Day == fromDate.Value.DayOfWeek).ToList();
 
                 foreach (var action in actionsInDay)
                 {
                     // when registered action hasn't been created from agreed action
                     if (oldRegisteredActions.Where(ac => ac.PlannedStartDateTime.Date == fromDate.Value.Date)
-                            .FirstOrDefault(ac => ac.AgreedClientActionId == action.Id) != null)
+                            .FirstOrDefault(ac => ac.AgreedClientActionId == action.Id) == null)
                     {
                         var newAction = CreateRegisteredActionFromAgreedAction(action, fromDate.Value);
                         newRegisteredActions.Add(newAction);
@@ -75,12 +66,14 @@ namespace DaycareSolutionSystem.Api.Host.Services.RegisteredActions
             }
 
             DataContext.RegisteredClientActions.AddRange(newRegisteredActions);
+            DataContext.SaveChanges();
         }
 
         private RegisteredClientAction CreateRegisteredActionFromAgreedAction(AgreedClientAction agreedClientAction, DateTime date)
         {
             var registeredAction = new RegisteredClientAction();
 
+            registeredAction.ActionId = agreedClientAction.ActionId;
             registeredAction.IsCanceled = false;
             registeredAction.ClientId = agreedClientAction.IndividualPlan.ClientId;
             registeredAction.PlannedStartDateTime = date.Add(agreedClientAction.PlannedStartTime);

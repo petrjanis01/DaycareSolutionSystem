@@ -264,7 +264,6 @@ namespace DaycareSolutionSystem.Helpers
 
         private void CreateIndividualPlansWithAgreedClientActions()
         {
-            // TODO create more demo data
             var individualPlans = new List<IndividualPlan>();
             var agreedClientActions = new List<AgreedClientAction>();
             var firstDayOfCurrentYear = new DateTime(DateTime.Today.Year, 1, 1);
@@ -437,13 +436,13 @@ namespace DaycareSolutionSystem.Helpers
             var registeredClientActions = new List<RegisteredClientAction>();
             var startDate = agreedClientAction.IndividualPlan.ValidFromDate;
 
-            if (startDate > DateTime.Today.AddDays(30))
+            if (startDate > DateTime.Today.AddDays(10))
             {
                 return registeredClientActions;
             }
 
             var endDate = agreedClientAction.IndividualPlan.ValidUntilDate > DateTime.Today.AddDays(30)
-                ? DateTime.Today.AddDays(30)
+                ? DateTime.Today.AddDays(10)
                 : agreedClientAction.IndividualPlan.ValidUntilDate;
 
             var random = new Random();

@@ -88,6 +88,14 @@ export class ScheduleComponent implements OnInit {
     this.reloadEvents(actions);
   }
 
+  getYear(): string {
+    let year = this.curretlyViewedDate.getFullYear();
+    if (year == null) {
+      return '';
+    }
+    return year.toString();
+  }
+
   public getMonth(): string {
     let month = this.curretlyViewedDate.getMonth();
     let montName = this.generalHelper.months[month];
