@@ -22,7 +22,6 @@ namespace DaycareSolutionSystem.Api.Host
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://localhost:57316/");
                 });
     }
 }

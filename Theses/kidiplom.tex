@@ -14,8 +14,8 @@
 \author{Petr Janiš}
 \supervisor{Mgr. Radek Janoštík}
 \yearofsubmit{2020}
-\annotation{Na základě poznatků získaných při schůzce se zaměstnancem pečovatelské služby jsem navrhl a implementoval systém pro pracovníky fiktivní organizace s tímto zaměřením. Zaměřoval jsem se především na správnou metodu vývoje multiplatformní aplikace. Výsledkem je systém, který by pracovníkům měl pomoci s výkonem jejich práce. }
-\annotation[english]{TODO}
+\annotation{Na základě poznatků získaných při schůzce se zaměstnancem pečovatelské služby jsem navrhl a implementoval systém pro pracovníky fiktivní organizace s tímto zaměřením. Zaměřoval jsem se především na správnou metodu vývoje multiplatformní aplikace. Výsledkem je systém, který by pracovníkům měl pomoci s vykonáváním jejich práce.}
+\annotation[english]{I have implemented a system for caregivers of a fictional organization. This system is based on information I gathered during a meeting with an employee of a social service organization. During development, I focused primarily on the correct way of developing a cross-platform mobile application. The final product is a system that should help caregivers with their work.}
 \keywords{ sociální služby, multiplatformní aplikace, Angular, Ionic, .NET, REST API, Docker}
 \keywords[english]{social services, crossplatform application, Angular, Ionic, .NET, REST API, Docker}
 \thanks{Chtěl bych poděkovat Mgr. Radkovi Janoštíkovi za objektivní připomínky a rady při tvorbě této práce.}
@@ -48,7 +48,7 @@ Každý klient, kterému je aktuálně poskytována péče, má aktivní individ
 \newpage
 
 \section{Vývoj mobilních aplikací}
-Mobilní aplikace by měla uživateli, co nejjednodušeji a nejrychleji umožnit dosáhnout jeho cíle. Tento fakt je potřeba mít na paměti v průběhu celého procesu vývoje. Je důležité, aby aplikace běžela plynule a měla jednoduché uživatelské rozhraní(UI). U aplikací určených pro širokou veřejnost, je dobrý návrh a provedení UI, faktorem rozhodujícím o jejich úspěšnosti na trhu. Co se týče mobilního softwaru vyvíjeného za účelem korporátního použití, je to otázka finanční náročnosti pro firmu, která se ho rozhodne používat. Jednodušší ovládaní znamená měně potřebného času a prostředků vynaložených na zaškolení zaměstnanců.
+Mobilní aplikace by měla uživateli, co nejjednodušeji a nejrychleji umožnit dosáhnout jeho cíle. Tento fakt je potřeba mít na paměti v průběhu celého procesu vývoje. Je důležité, aby aplikace běžela plynule a měla jednoduché uživatelské rozhraní (UI). U aplikací určených pro širokou veřejnost, je dobrý návrh a provedení UI, faktorem rozhodujícím o jejich úspěšnosti na trhu. Co se týče mobilního softwaru vyvíjeného za účelem korporátního použití, je to otázka finanční náročnosti pro firmu, která se ho rozhodne používat. Jednodušší ovládaní znamená měně potřebného času a prostředků vynaložených na zaškolení zaměstnanců.
 
 Pro plynulý běh aplikace je důležité hned na začátku vývoje přesně určit
  za jakým účelem bude používána. Tato specifikace společně s platformou, 
@@ -88,7 +88,7 @@ Na druhou stranu projekt může být vystaven riziku zastavení podpory pro zvol
 
 
 \subsubsection{React Native}
-React Native je open-source framework, který umožňuje vývoj aplikací pro Android a iOS za použití Reactu a nativních možností platformy. Používá skriptovací jazyk JavaScript(JS), za pomocí kterého se přistupuje k API konkretní platformy. Zároveň popisuje vzhled a chování  uživatelského rozhraní za použití komponent Reactu.
+React Native je open-source framework, který umožňuje vývoj aplikací pro Android a iOS za použití Reactu a nativních možností platformy. Používá skriptovací jazyk JavaScript (JS), za pomocí kterého se přistupuje k API konkretní platformy. Zároveň popisuje vzhled a chování  uživatelského rozhraní za použití komponent Reactu.
 \cite{3}
 \textit{(volný překlad)}
 
@@ -175,7 +175,7 @@ Prvním krokem při vývoji serverové části bylo vytvoření modulu pro prác
 	\item Jako identifikátor jsem zvolil datový typ Guid, který umožňuje přímo identifikovat určitý záznam v databázi.
 	\item Atributy s hodnotovými datovými typy jsou označeny jako nullable, pokud nejsou povinné.
 	\item K atributům s referenčními datovými typy je přidána anotace Required, pokud jsou povinné, kód ~\ref{code:EntityClass} řádky 4 a 7.
-	\item V případě relace 1:N. Pro stranu 1 je simulována kombinací atributu pro uložení cizího klíče a referencí na instanci třídy reprezentující jinou tabulku (navigační atribut), kód ~\ref{code:EntityClass} řádky 10 a 12. Pro stranu N bude navigační atribut kolekce těchto typů.
+	\item V případě relace 1 : N. Pro stranu 1 je simulována kombinací atributu pro uložení cizího klíče a referencí na instanci třídy reprezentující jinou tabulku (navigační atribut), kód ~\ref{code:EntityClass} řádky 10 a 12. Pro stranu N bude navigační atribut kolekce těchto typů.
 \end{itemize}
 
 \begin{kicode}{csharp}{code:EntityClass}{Objekt reprezentující databázovou tabulku.}
@@ -282,7 +282,7 @@ Pro účely dokumentace API jsem použil nástroj Swagger, který automaticky zp
 
 \subsubsection{Generování akcí}
 \label{sec:actionGenerating}
-Dle datového modelu (ref. dat model) a jeho popisu v (viz ~\ref{sec:intro}) je vidět, že jednotlivé akce, které pracovníci plní, vycházejí z pevně daného rozvrhu. Tyto akce nejsou v databázi všechny uloženy a ani být nemohou, protože individuální plán může mít libovolné datum expirace a dat by tedy bylo potencionálně velké množství. Z těchto důvodů jsem se rozhodl akce generovat postupně až v době potřeby. Na straně serveru jsem vytvořil patřičnou funkcionalitu a zpřístupnil ji jako API endpoint, pro jehož volání je nutná role vedoucího pracovníka. Díky tomuto je možné akce generovat automaticky. Automatizovaný mechanizmus jsem neimplementoval, protože je úzce spjat s prostředím, na kterém by systém běžel. Pro prostředí se systémem Windows by bylo vhodné použít například WCF službu \cite{13}. U cloudových řešení záleží na službách nabízených poskytovatelem. Akce je možné generovat kdykoliv, v rámci webové aplikace pro vedoucí pracovníky, na období dalšího měsíce.
+Dle datového modelu viz ~\ref{fig:dataModel} a jeho popisu v (viz ~\ref{sec:intro}) je vidět, že jednotlivé akce, které pracovníci plní, vycházejí z pevně daného rozvrhu. Tyto akce nejsou v databázi všechny uloženy a ani být nemohou, protože individuální plán může mít libovolné datum expirace a dat by tedy bylo potencionálně velké množství. Z těchto důvodů jsem se rozhodl akce generovat postupně až v době potřeby. Na straně serveru jsem vytvořil patřičnou funkcionalitu a zpřístupnil ji jako API endpoint, pro jehož volání je nutná role vedoucího pracovníka. Díky tomuto je možné akce generovat automaticky. Automatizovaný mechanizmus jsem neimplementoval, protože je úzce spjat s prostředím, na kterém by systém běžel. Pro prostředí se systémem Windows by bylo vhodné použít například WCF službu \cite{13}. U cloudových řešení záleží na službách nabízených poskytovatelem. Akce je možné generovat kdykoliv, v rámci webové aplikace pro vedoucí pracovníky, na období dalšího měsíce.
 
 \subsection{Testování částí}
 Testování částí (unit testing) je úroveň testování softwaru, kde jsou testovány individuální komponenty nebo části. Smyslem je ověřit, zdali se každá část chová, jak byla navržena. Část je nejmenší testovatelná jednotka jakéhokoliv softwaru. \cite{14} \textit{(volný překlad)}
@@ -310,7 +310,7 @@ Problém představoval převod časových údajů z formátu ISO 8601 \cite{15} 
 \subsubsection{Klientská cache}
 HTTP požadavek na API může být časově náročná operace. Proto jsem se rozhodl, při zapínání aplikace načíst a zpracovat nejčastěji používaná data a následně se na ně na všech stránkách pouze odkazovat. Konkrétně jde o data klientů. 
 
-Je důležité zmínit, že jsou načítaní pouze klienti, kteří jsou přihlášenému zaměstnanci přiřazeni pomocí individuálního plánu (ref. data model). Zaměstnanec by totiž neměl být schopen zobrazovat osobní data klientů, o které se nestará. Jediná výjimka je, pokud je zaměstnanci přiřazena jednoúčelová registrovaná akce, poté se zobrazí jen ty nejnutnější informace, které potřebuje ke splnění této akce.
+Je důležité zmínit, že jsou načítaní pouze klienti, kteří jsou přihlášenému zaměstnanci přiřazeni pomocí individuálního plánu (viz-datový model ~\ref{fig:dataModel}). Zaměstnanec by totiž neměl být schopen zobrazovat osobní data klientů, o které se nestará. Jediná výjimka je, pokud je zaměstnanci přiřazena jednoúčelová registrovaná akce, poté se zobrazí jen ty nejnutnější informace, které potřebuje ke splnění této akce.
 
 Při tomto načítání se kontroluje, v jakém stavu jsou údaje o klientově adrese. Systém totiž umožňuje uložení bydliště, buď pouze jako souřadnice zeměpisné šířky a délky nebo jako objekt popisující adresu v řetězcích. V různých místech aplikace jsou potřeba oba údaje, proto je případné chybějící údaje třeba doplnit. Za tímto účelem je použita Google Maps Geocoding API. 
 
@@ -336,13 +336,13 @@ Základní obrazovku reprezentující úkony, které by měl přihlášený prac
 \begin{figure}[H]
   	\centering
  	 \includegraphics[width=14cm,height=14cm,keepaspectratio]{schedule_screen}
- 	 \caption{Obrazovka s rozvrhem akcí(iOS- vlevo, Android)}
+ 	 \caption{Obrazovka s rozvrhem akcí (iOS- vlevo, Android)}
  	 \label{fig:schedule_screen}
 \end{figure}
 
 Data jsou načítána po dávkách deseti akcí, aby se předešlo dlouhému čekání na odpověď serveru i následného vykreslení. Při pohybu směrem dolů jsou automaticky načítána další data a tento proces je signalizován animací naspodu obrazovky, která je vidět pouze, pokud se uživatel nachází za koncem vykreslených dat.
 
-Jednotlivé akce (v kontextu systému jsou nazvány jako registrované akce (!ref datovy model!) se mohou nacházet ve čtyřech stavech. Zelený stav znamená, že akce byla dokončena a existují pro ni časové údaje o jejím začátku a konci. Aktuálně probíhající akce jsou značeny žlutě. Pokud z jakýchkoliv důvodu nebyl pracovník schopen úkol splnit nebo byl předem zrušen, například samotným klientem, je červený. Všechny ostatní jsou modré. Po kliku na akci bude uživatel přesměrován do modálního okna reprezentujícího její detail (viz. sekce ~\ref{sec:actionDetail}).
+Jednotlivé akce (v kontextu systému jsou nazvány jako registrované akce viz-datový model ~\ref{fig:dataModel}) se mohou nacházet ve čtyřech stavech. Zelený stav znamená, že akce byla dokončena a existují pro ni časové údaje o jejím začátku a konci. Aktuálně probíhající akce jsou značeny žlutě. Pokud z jakýchkoliv důvodu nebyl pracovník schopen úkol splnit nebo byl předem zrušen, například samotným klientem, je červený. Všechny ostatní jsou modré. Po kliku na akci bude uživatel přesměrován do modálního okna reprezentujícího její detail (viz. sekce ~\ref{sec:actionDetail}).
 
 V případě, že je přihlášený uživatel vedoucí pracovník, kterému systém neumožňuje přiřadit akce na úrovni individuálních plánů ani jednotlivých jednoúčelových akcí, nebude obrazovka obsahovat žádná data, pouze hlášku upozorňující na absenci akcí v databázi.
 
@@ -511,13 +511,13 @@ Systém má samozřejmě i své nedostatky. Ať už je to návrh a provedení u�
 \end{kiconclusions}
 
 \begin{kiconclusions}[english]
-Final product fullfilled my main goal. Creation of cross platform aplication, which is able to function on all main platforms. Chosen method of development allows application in native form to access all functions of the device, which allows application to be extended with any new functionality. In my opinion application could help with distributing information among employees and could simplify process of creating records about their work in electronic form. Information system that I've created was designed to suit the needs of real organization. This system supports all of necessary functions, that are needed for the employees of the organization.
+The final product fulfilled my main goal. Creation of cross-platform application, which is able to function on all main platforms. The chosen method of development allows application in native form to access all functions of the device, which allows the application to be extended with any new functionality. In my opinion, the application could help with distributing information among employees and could simplify the process of creating records about their work in electronic form. The information system that I've created was designed to suit the needs of a real organization. This system supports all of the necessary functions, that are needed for the employees of the organization.
 
 
-When I've started working on this theses, I've had experience only with implementation of parts of similar systems. Thanks to this theses I was able to try how the whole process of software development works in real life scenario. This process started with gathering of customer requirement specification and ended with software deployment. In my opinion the most valuable part of my work is research of all possible approaches to development and combining modern technologies from different categories into functional unit.
+When I've started working on these theses, I've had experience only with the implementation of parts of similar systems. Thanks to these theses I was able to try how the whole process of software development works in the real-life scenario. This process started with the gathering of customer requirement specifications and ended with software deployment. In my opinion, the most valuable part of my work is the research of all possible approaches to development and combining modern technologies from different categories into a functional unit.
 
 
-System have it own flaws, that includes: design and execution of the user interface that violates rules given by guidelines, not entirely efficient implementation of some parts of the system, solution of security for which can be used cloud services
+The system has its own flaws, that include: design and execution of the user interface that violates rules given by guidelines, not entirely efficient implementation of some parts of the system, solution of security for which can be used cloud services.
 \end{kiconclusions}
 
 \appendix
@@ -554,5 +554,40 @@ iOS SDK - Wikipedia. [online]. Dostupné z: \url{https://en.wikipedia.org/wiki/I
 \newpage
 
 \section{Obsah přiloženého CD/DVD} \label{sec:ObsahCD}
+\begin{description}
+
+\item[\texttt{multiplatform\_app/}] \hfill \\
+	\item[asda]
+  Instalátor \textsc{Instalator} programu, popř.~program
+  \textsc{Program}, spustitelné přímo z~CD/DVD. / Kompletní adresářová
+  struktura webové aplikace \textsc{Webovka} (v~ZIP archivu) pro
+  zkopírování na webový server. Adresář obsahuje i~všechny runtime
+  knihovny a~další soubory potřebné pro bezproblémový běh instalátoru
+  a~programu z~CD/DVD / pro bezproblémový provoz webové aplikace na
+  webovém serveru.
+
+\item[\texttt{doc/}] \hfill \\
+  Text práce ve formátu PDF, vytvořený s~použitím závazného stylu KI
+  PřF UP v~Olomouci pro závěrečné práce, včetně všech příloh,
+  a~všechny soubory potřebné pro bezproblémové vygenerování PDF
+  dokumentu textu (v~ZIP archivu), tj.~zdrojový text textu, vložené
+  obrázky, apod.
+
+\item[\texttt{src/}] \hfill \\
+  Kompletní zdrojové texty programu \textsc{Program} / webové aplikace
+  \textsc{Webovka} se všemi potřebnými (příp.~převzatými) zdrojovými
+  texty, knihovnami a~dalšími soubory potřebnými pro bezproblémové
+  vytvoření spustitelných verzí programu / adresářové struktury pro
+  zkopírování na webový server.
+
+\item[\texttt{readme.txt}] \hfill \\
+  Instrukce pro instalaci a~spuštění programu \textsc{Program}, včetně
+  všech požadavků pro jeho bezproblémový provoz. / Instrukce pro
+  nasazení webové aplikace \textsc{Webovka} na webový server, včetně
+  všech požadavků pro její bezproblémový provoz, a~webová adresa, na
+  které je aplikace nasazena pro účel testování při tvorbě posudků
+  práce a~pro účel obhajoby práce.
+
+\end{description}
 
 \end{document}
