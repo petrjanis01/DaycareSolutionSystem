@@ -1,0 +1,43 @@
+.login-background-img {
+  width: 100%;
+  height: 100%;
+  background-size: contain !important;
+}
+
+.login-background-shade {
+  width: 100%;
+  height: 100%;
+  background: rgba($color: gray, $alpha: 0.5);
+}
+
+// split pane width
+@media (max-width: 992px) {
+  .login-form {
+    width: 70% !important;
+  }
+}
+
+.login-form {
+  width: 30%;
+}
+
+.login-input {
+  margin-top: 10px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 2px grey solid;
+  border-radius: 4px;
+}
+
+.login-btn {
+  margin-top: 10px;
+  height: 30px;
+  width: 50%;
+  border-radius: 4px;
+  color: white;
+  background-color: rgb(26, 178, 255);
+}
+
+.login-btn:hover {
+  background-color: rgb(102, 179, 255);
+}

@@ -1,0 +1,15 @@
+<div class="login-background-img" #loginBg>
+    <div class="login-background-shade flex-center flex-align-center">
+        <div class="login-form" (keyup.enter)="login()">
+            <ion-input class="login-input" type="text" [(ngModel)]="username" placeholder="Username" clearInput>
+            </ion-input>
+
+            <ion-input class="login-input" type="password" [(ngModel)]="password" placeholder="Password" clearInput>
+            </ion-input>
+
+            <div class="flex-row" style="justify-content: center;">
+                <button class="login-btn" (click)="login()">LOGIN</button>
+            </div>
+        </div>
+    </div>
+</div>

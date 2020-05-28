@@ -1,0 +1,21 @@
+version: '3.4' 
+services:
+  dss_api:
+    image: dss_api:latest
+    depends_on:
+      - "local_db"
+    ports:
+      - "57316:80"
+    restart: always
+    environment:
+      DssConnectionString: "Host=local_db;Port=5432;Database=local-db;Username=postgres;Password=postgres;"
+  local_db:
+    image: postgres:latest
+    ports:
+      - "5432"
+    restart: always
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "local-db"
+     

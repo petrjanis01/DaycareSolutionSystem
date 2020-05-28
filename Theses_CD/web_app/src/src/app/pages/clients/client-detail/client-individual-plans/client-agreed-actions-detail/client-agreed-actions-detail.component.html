@@ -1,0 +1,29 @@
+<ngx-spinner></ngx-spinner>
+<div class="card ">
+    <div class="card-body">
+        <div class="row">
+            <button class="btn btn-icon btn-simple btn-danger ml-auto" style="margin-right: 5px; margin-bottom: 10px;"
+                (click)="close()">
+                <i class="tim-icons icon-simple-remove"></i>
+            </button>
+        </div>
+        <div class="row" *ngIf="externalEvents && events">
+            <div class="col-md-2" mwlDroppable>
+                <h5>Actions</h5>
+                <ul>
+                    <li *ngFor="let event of externalEvents" mwlDraggable [dropData]="{event: event}"
+                        dragActiveClass="drag-active">
+                        <a href="javascript:;">
+                            {{ event.title}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-10">
+                <mwl-calendar-week-view class="no-dates" [viewDate]="viewDate" [events]="events"
+                    (eventClicked)="handleEvent('clicked', $event.event)" (eventTimesChanged)="eventDropped($event)">
+                </mwl-calendar-week-view>
+            </div>
+        </div>
+    </div>
+</div>

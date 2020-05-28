@@ -1,0 +1,22 @@
+<ng-container *ngIf="client">
+  <ion-card *ngIf="!visualHelper.isSideMenuVisibe" class="flex-row" (click)="navigateToDetail()">
+    <ion-avatar style="margin: 10px;">
+      <img [src]="client.profilePicture">
+    </ion-avatar>
+
+    <h3 class="client-name-header">
+      {{client.fullName}}
+    </h3>
+  </ion-card>
+
+  <ion-card *ngIf="visualHelper.isSideMenuVisibe" class="flex-column" style="align-items: center;"
+    (click)="navigateToDetail()">
+    <ion-avatar style="margin-top: 10px;">
+      <img [src]="client.profilePicture">
+    </ion-avatar>
+
+    <h3>
+      {{client.fullName}}
+    </h3>
+  </ion-card>
+</ng-container>

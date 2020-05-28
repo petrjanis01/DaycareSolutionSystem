@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Clients</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="clients">
+    <ion-row>
+      <ion-col *ngFor="let client of clients" [size]="visualHelper.getClientCardGridSize()">
+        <client-card [client]="client"></client-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

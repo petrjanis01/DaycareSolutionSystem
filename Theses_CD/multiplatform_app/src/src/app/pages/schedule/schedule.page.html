@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Schedule</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <div class="flex-center">
+      <ion-button slot="icon-only" [disabled]="!isPreviousBtnEnabled" fill="clear" (click)="previousDayClicked()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+
+      <div class="flex-align-center" style="font-size: 1.2em;" (click)="openDatePicker()">
+        {{selectedDate|date}}
+        <ion-datetime *ngIf="ionDateTimeConsumableMinDate && ionDateTimeConsumableMaxDate" #datePicker hidden
+          [(ngModel)]="selectedDate" (ionChange)="selectedDateChange($event)" min="{{ionDateTimeConsumableMinDate}}"
+          max="{{ionDateTimeConsumableMaxDate}}">
+        </ion-datetime>
+      </div>
+
+      <ion-button slot="icon-only" fill="clear" [disabled]="!isNextBtnEnabled" (click)="nextDayClicked()">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <p *ngIf="registeredActions && registeredActions.length == 0" style="text-align: center;">No registered actions</p>
+  <ng-container *ngFor="let registeredAction of registeredActions">
+    <ion-item-divider class="item-separator">
+      <ion-label>
+        {{registeredAction.date | date}}
+        <ng-container *ngIf="isToday(registeredAction.date)">
+          (today)
+        </ng-container>
+      </ion-label>
+    </ion-item-divider>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col [size]="visualHelper.getBasicDataGridSize()"
+          *ngFor="let clientActions of registeredAction.registeredActionsClient">
+          <client-actions-overview [clientActions]="clientActions" (detailModalClosed)="reloadData()">
+          </client-actions-overview>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
+
+  <ion-infinite-scroll *ngIf="registeredActions" (ionInfinite)="loadMoreData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

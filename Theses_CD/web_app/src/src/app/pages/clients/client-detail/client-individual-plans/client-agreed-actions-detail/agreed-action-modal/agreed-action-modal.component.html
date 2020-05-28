@@ -1,0 +1,56 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Agreed action edit</h4>
+
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body" *ngIf="editForm" [formGroup]="editForm">
+    <div class="form-group">
+        <label>Action</label>
+        <select class="form-control" formControlName="action">
+            <option *ngFor="let action of actions;" [ngValue]="action.id" style="color: black">
+                {{action.name}}
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Employee</label>
+        <select class="form-control" formControlName="employee">
+            <option *ngFor="let employee of employees;" [ngValue]="employee.id" style="color: black">
+                {{employee.fullName}}
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Day</label>
+        <select class="form-control" formControlName="day">
+            <option *ngFor="let day of helper.weekdays; let i = index" [ngValue]="i" style="color: black">
+                {{day}}
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>From time</label>
+        <ngb-timepicker class="form-control" formControlName="fromTime" [meridian]="true"></ngb-timepicker>
+    </div>
+
+    <div class="form-group">
+        <label>Until time</label>
+        <ngb-timepicker class="form-control" formControlName="untilTime" [meridian]="true"></ngb-timepicker>
+    </div>
+
+    <div class="form-group">
+        <label>General description</label>
+        <textarea type="text" class="form-control" formControlName="description" rows="8"></textarea>
+    </div>
+
+    <div class="row justify-content-between">
+        <button *ngIf="agreedActionId" class="btn btn-danger" (click)="deleteAction()">Delete</button>
+        <button [disabled]="!editForm.valid" class="btn btn-success ml-auto" (click)="saveAction()">Save</button>
+    </div>
+</div>

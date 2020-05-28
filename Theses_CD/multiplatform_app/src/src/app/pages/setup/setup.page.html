@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Setup</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Api base url</ion-label>
+    <ion-input type="text" [(ngModel)]="baseUrl" name="baseUrl"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Use url from config</ion-label>
+    <ion-toggle [(ngModel)]="useUrlFromConfig"></ion-toggle>
+  </ion-item>
+  <ion-button (click)="save()">Save</ion-button>
+</ion-content>

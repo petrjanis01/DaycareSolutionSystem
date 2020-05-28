@@ -1,0 +1,22 @@
+<div class="item-container" [ngClass]="bgCss" (click)="onItemClicked($event)">
+    <span class="header-text">{{headerText}}</span>
+
+    <div class="flex-row">
+        <span *ngIf="date != null" class="icon-text-container" style="margin-left: 10px">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <span class="secondary-text">{{date|date}}</span>
+        </span>
+
+        <span class="icon-text-container" [ngStyle]="{'margin-left': date !=null ? '8%' : '10px'}">
+            <ion-icon name="time-outline"></ion-icon>
+            <span class="secondary-text">
+                {{fromTime|date:'shortTime'}}
+                <ng-container *ngIf="untilTime">
+                    -
+                    {{untilTime|date:'shortTime'}}
+                </ng-container>
+
+            </span>
+        </span>
+    </div>
+</div>

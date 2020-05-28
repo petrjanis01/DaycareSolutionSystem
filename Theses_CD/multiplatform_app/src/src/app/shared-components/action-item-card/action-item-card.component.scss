@@ -1,0 +1,13 @@
+.item-container {
+  height: 50px;
+  width: 95%;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  .header-text {
+    margin-left: 10px;
+    font-size: 1.2em;
+  }
+}

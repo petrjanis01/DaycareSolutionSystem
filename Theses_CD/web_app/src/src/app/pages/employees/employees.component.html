@@ -1,0 +1,37 @@
+<div class="content">
+    <div class="col-xl-8 ml-auto mr-auto">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-xl-8" style="margin-top: 5px">
+                        <input type="text" placeholder="Find employee by name" class="form-control"
+                            [(ngModel)]="employeeNameText">
+                    </div>
+                    <div class="col-xl-4" style="display: flex;">
+                        <button class="btn btn-icon btn-simple btn-danger ml-auto" (click)="addNewEmployee()"> <i
+                                class="tim-icons icon-simple-add"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="employeeBasics">
+        <div *ngFor="let employee of (employeeBasics | employeeName: employeeNameText)" class="col-md-3 col-xl-2">
+            <div class=" card card-user">
+                <div class=" card-body">
+                    <p class=" card-text"></p>
+                    <div class=" author">
+                        <div class=" block block-one"></div>
+                        <div class=" block block-two"></div>
+                        <div class=" block block-three"></div>
+                        <div class=" block block-four"></div>
+                        <a href="javascript:void(0)" (click)="openEmployeeDetail(employee.id)">
+                            <img alt="..." class=" avatar" [src]="employee.profilePictureUri" />
+                        </a>
+                        <p class=" description">{{employee.fullName}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

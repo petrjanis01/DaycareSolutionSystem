@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="client">{{client.fullName}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="client">
+    <div class="flex-center">
+      <ion-avatar class="avatar-big">
+        <img [src]="client.profilePicture">
+      </ion-avatar>
+    </div>
+    <div class="flex-center">
+      <input type="file" hidden #imageInput accept="image/*" (change)="processFile($event)">
+      <ion-button ion-button fill="clear" size="small" (click)="changeClientProfilePicture()">
+        <ion-icon name="camera" slot="icon-only"></ion-icon>
+        Change photo
+      </ion-button>
+    </div>
+
+    <ion-item lines="full" mode="md">
+      <ion-label>Birthdate</ion-label>
+      {{client.birthDate | date}}
+    </ion-item>
+
+    <ion-item lines="full" mode="md">
+      <ion-label>Gender</ion-label>
+      {{generalHelper.getGenderString(client.gender)}}
+    </ion-item>
+
+    <ion-item-divider class="item-separator">
+      <h5>Contact information</h5>
+    </ion-item-divider>
+
+    <ion-item lines="full" mode="md" *ngIf="client.address.city">
+      <ion-label>Phone number</ion-label>
+      <a *ngIf="client.phoneNumber" [href]="'tel:' + client.phoneNumber">{{client.phoneNumber}}</a>
+    </ion-item>
+
+    <ion-item lines="full" mode="md" *ngIf="client.address.city">
+      <ion-label>Email</ion-label>
+      {{client.email}}
+    </ion-item>
+
+    <ion-item-divider class="item-separator">
+      <h5>Address</h5>
+    </ion-item-divider>
+
+    <ion-item lines="full" mode="md" *ngIf="client.address.city">
+      <ion-label>City</ion-label>
+      {{client.address.city}}
+    </ion-item>
+
+    <ion-item lines="full" mode="md" *ngIf="client.address.street">
+      <ion-label>Street</ion-label>
+      {{client.address.street}}
+    </ion-item>
+
+    <ion-item lines="full" mode="md" *ngIf="client.address.buildingNumber">
+      <ion-label>Building number</ion-label>
+      {{client.address.buildingNumber}}
+    </ion-item>
+
+    <ion-item lines="full" mode="md" *ngIf="client.address.postCode">
+      <ion-label>Zip</ion-label>
+      {{client.address.postCode}}
+    </ion-item>
+
+    <agm-map *ngIf="lat && lng" [latitude]="lat" [longitude]="lng" [zoom]="15">
+      <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+    </agm-map>
+
+    <ion-item-divider class="item-separator">
+      <h5>Individual plans</h5>
+    </ion-item-divider>
+    <ion-grid>
+      <ion-row>
+        <ion-col *ngFor="let individualPlan of individualPlans" [size]="visualHelper.getBasicDataGridSize()">
+          <ion-card>
+            <ion-card-title style="text-align: center;">{{individualPlan.validFrom | date}} -
+              {{individualPlan.validUntil | date}}</ion-card-title>
+
+            <ng-container *ngFor="let actionsForDay of individualPlan.actionsForDay">
+
+              <ion-item-divider class="divider-day">
+                {{generalHelper.getDayNameByIndex(actionsForDay.day)}}
+              </ion-item-divider>
+
+              <div class="flex-column" style="align-items: flex-end; margin-top: 10px;">
+                <div class="action-item-small" *ngFor="let agreedAction of actionsForDay.agreedActions">
+                  <action-item-card [headerText]="agreedAction.action.name" [fromTime]="agreedAction.plannedStartTime"
+                    [untilTime]="agreedAction.plannedEndTime" [bgCss]="'bg-default'">
+                  </action-item-card>
+                </div>
+              </div>
+            </ng-container>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
+</ion-content>

@@ -1,0 +1,77 @@
+<div class=" row justify-content-center">
+    <ngx-spinner></ngx-spinner>
+    <div class=" col-md-10" [@editOpenSlider]="editOpenCounter">
+        <div class=" card" *ngIf="editOpenCounter == 0">
+            <div class=" card-header row justify-content-between">
+                <h3 class="title" style="margin-top: 10px; margin-left: 10px">Individual plans</h3>
+                <button class="btn btn-icon btn-simple btn-danger ml-auto" style="margin-right: 10px;"
+                    (click)="addPlan()">
+                    <i class="tim-icons icon-simple-add"></i></button>
+            </div>
+            <div class=" card-body">
+                <p class="text-info">Individual plans that has some agreed client actions cannot be deleted.
+                    If you want to end plan validity change valid until date to today or any past date. </p>
+                <div class=" table-responsive" style="overflow-x: auto;">
+                    <table class=" table tablesorter" id="">
+                        <thead class=" text-primary">
+                            <tr>
+                                <th>Valid from</th>
+                                <th>Valid until</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="plans">
+                            <div *ngIf="plans.length == 0" style="display: flex; justify-content: center;">
+                                <p>No data</p>
+                            </div>
+                            <tr *ngFor="let plan of plans">
+                                <td>{{plan.validFrom  | date}}</td>
+                                <td>{{plan.validUntil  | date}}</td>
+                                <td style="display: flex;">
+                                    <button class="btn btn-icon btn-simple btn-danger ml-auto"
+                                        style="margin-right: 10px" (click)="openPlanEdit(plan.id)">
+                                        <i class="tim-icons icon-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-icon btn-simple btn-danger" style="margin-right: 10px"
+                                        [disabled]="plan.actionsForDay.length > 0" (click)="deletePlan(plan.id)">
+                                        <i class="tim-icons icon-trash-simple"></i>
+                                    </button>
+                                    <button class="btn btn-icon btn-simple btn-danger"
+                                        (click)="openPlanDetail(plan.id)">
+                                        <i class="tim-icons icon-zoom-split"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class=" card" *ngIf="editOpenCounter == 1">
+            <div class=" card-header row justify-content-between">
+                <h3 class="title" style="margin-top: 10px;">Individual plan edit</h3>
+                <button class="btn btn-danger ml-auto" style="height: 40px;" (click)="cancelEdit()">Cancel</button>
+                <button style="height: 40px; margin-left: 10px;" [disabled]="!planEditForm.valid"
+                    class="btn btn-success" (click)="savePlan()">Save</button>
+            </div>
+            <div class=" card-body">
+                <div class="flex-column" [formGroup]="planEditForm">
+                    <p *ngIf="isFromUntilWarningVisible" class="text-danger">Valid until date has to be greater than
+                        valid from date.</p>
+                    <div class=" form-group">
+                        <label>Valid from</label>
+                        <input type="text" formControlName="validFrom" (click)="dFrom.toggle()" ngbDatepicker
+                            #dFrom="ngbDatepicker" class="form-control" />
+                    </div>
+                    <div class=" form-group">
+                        <label>Valid until</label>
+                        <input type="text" formControlName="validUntil" (click)="dUntil.toggle()" ngbDatepicker
+                            #dUntil="ngbDatepicker" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-client-agreed-actions-detail *ngIf="isPlanDetailVisible && planId" [planId]="planId" (onclose)="onClose()">
+</app-client-agreed-actions-detail>

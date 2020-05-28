@@ -1,0 +1,8 @@
+{
+  "appId": "com.DaycareSolutionSystem.app",
+  "appName": "DaycareSolutionSystem",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "cordova": {}
+}
