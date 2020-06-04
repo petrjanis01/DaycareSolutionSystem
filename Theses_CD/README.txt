@@ -1,6 +1,11 @@
+API automaticky po připojení k DB vytvoří struktu tabulek a nahraje testovací data (jen pokud už neexistují).
+Přihlašovací údaje do aplikací jsou všude stejné:
+- aplikace pro mobilní pracovníky (login: dcemp, pass: 1234)
+- aplikace pro vedoucí pracovníky (login: mngr, pass: 1234)
+
 Webové werze aplikací jsou dostupny na adresách:
-https://dayss-clients.azurewebsites.net/#/login - aplikace pro mobilní pracovníky (login: dcemp, pass: 1234)
-http://dayss-clients.azurewebsites.net/manager_app/#/manager_app/login - aplikace pro vedoucí pracovníky (login: mngr, pass: 1234)
+https://dayss-clients.azurewebsites.net/#/login
+http://dayss-clients.azurewebsites.net/manager_app/#/manager_app/login
 https://daycaress-api-test.azurewebsites.net/index.html - API
 
 Služby přes které je hosting uskutečněn jsou zdarma, proto prvotní spuštění trvá déle a muže dojít k chybě 502 (stačí stránku aktualizovat).
