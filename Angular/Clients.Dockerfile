@@ -18,4 +18,4 @@ RUN ionic build --prod
 # run apache and copy builded web apps 
 FROM httpd:2.4
 COPY --from=build /app/DaycareSolutionSystem.WebApp/dist/ /usr/local/apache2/htdocs/manager_app/
- COPY --from=build /app/DaycareSolutionSystem.MobileApp/www/ /usr/local/apache2/htdocs/
+COPY --from=build /app/DaycareSolutionSystem.MobileApp/www/ /usr/local/apache2/htdocs/
