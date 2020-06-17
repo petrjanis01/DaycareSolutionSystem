@@ -1,5 +1,5 @@
 {
-    "apiBaseUrl": "https://daycaress-api-test.azurewebsites.net/",
+    "apiBaseUrl": "https://daycaress-api-test.azurewebsites.net",
     "googleMapsApiKey": "AIzaSyCQsd5nCdDeiSvHmgbcSt8Fbk7AOLqPmZw"
     
 }   
